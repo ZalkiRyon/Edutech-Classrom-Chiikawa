@@ -7,7 +7,6 @@ import com.edutech.grades.entity.Enrollment;
 import com.edutech.grades.mapper.EnrollmentMapper;
 import com.edutech.grades.repository.EnrollmentRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +15,20 @@ import static com.edutech.common.exception.ExceptionUtils.orThrow;
 import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 
 @Service
-@RequiredArgsConstructor
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
     private final EnrollmentMapper enrollmentMapper;
     private final UserClient userClient;
     private final CourseClient courseClient;
+
+    public EnrollmentService(EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper,
+                           UserClient userClient, CourseClient courseClient) {
+        this.enrollmentRepository = enrollmentRepository;
+        this.enrollmentMapper = enrollmentMapper;
+        this.userClient = userClient;
+        this.courseClient = courseClient;
+    }
 
     public List<EnrollmentDTO> findAll() {
         return enrollmentRepository.findAll().stream().map(enrollmentMapper::toDTO).toList();

@@ -2,7 +2,6 @@ package com.edutech.payments.controller;
 
 import com.edutech.common.dto.DiscountCouponDTO;
 import com.edutech.payments.service.DiscountCouponService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/discount-coupons")
-@RequiredArgsConstructor
 public class DiscountCouponController {
 
     private final DiscountCouponService discountCouponService;
+
+    public DiscountCouponController(DiscountCouponService discountCouponService) {
+        this.discountCouponService = discountCouponService;
+    }
 
     @GetMapping
     public ResponseEntity<List<DiscountCouponDTO>> findAll() {

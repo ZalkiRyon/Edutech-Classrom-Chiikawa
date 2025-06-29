@@ -6,7 +6,6 @@ import com.edutech.support.entity.SupportTicket;
 import com.edutech.support.mapper.SupportTicketMapper;
 import com.edutech.support.repository.SupportTicketRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +14,18 @@ import static com.edutech.common.exception.ExceptionUtils.orThrow;
 import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 
 @Service
-@RequiredArgsConstructor
 public class SupportTicketService {
 
     private final SupportTicketRepository supportTicketRepository;
     private final SupportTicketMapper supportTicketMapper;
     private final UserClient userClient;
+
+    public SupportTicketService(SupportTicketRepository supportTicketRepository, 
+                               SupportTicketMapper supportTicketMapper, UserClient userClient) {
+        this.supportTicketRepository = supportTicketRepository;
+        this.supportTicketMapper = supportTicketMapper;
+        this.userClient = userClient;
+    }
 
     public List<SupportTicketDTO> findAll() {
         return supportTicketRepository.findAll().stream().map(supportTicketMapper::toDTO).toList();

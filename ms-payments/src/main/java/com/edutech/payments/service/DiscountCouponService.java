@@ -5,7 +5,6 @@ import com.edutech.payments.entity.DiscountCoupon;
 import com.edutech.payments.mapper.DiscountCouponMapper;
 import com.edutech.payments.repository.DiscountCouponRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,11 +13,15 @@ import java.util.List;
 import static com.edutech.common.exception.ExceptionUtils.orThrow;
 
 @Service
-@RequiredArgsConstructor
 public class DiscountCouponService {
 
     private final DiscountCouponRepository discountCouponRepository;
     private final DiscountCouponMapper discountCouponMapper;
+
+    public DiscountCouponService(DiscountCouponRepository discountCouponRepository, DiscountCouponMapper discountCouponMapper) {
+        this.discountCouponRepository = discountCouponRepository;
+        this.discountCouponMapper = discountCouponMapper;
+    }
 
     public List<DiscountCouponDTO> findAll() {
         return discountCouponRepository.findAll().stream().map(discountCouponMapper::toDTO).toList();

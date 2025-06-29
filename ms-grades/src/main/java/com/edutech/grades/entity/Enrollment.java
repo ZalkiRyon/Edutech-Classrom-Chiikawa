@@ -3,14 +3,10 @@ package com.edutech.grades.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "enrollment")
 public class Enrollment {
@@ -36,4 +32,56 @@ public class Enrollment {
     @NotNull
     @Column(name = "status", nullable = false, length = 20)
     private String status;
+
+    // Constructors
+    public Enrollment() {}
+
+    public Enrollment(Integer id, Integer studentId, Integer courseId, Instant enrolledAt, String status) {
+        this.id = id;
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.enrolledAt = enrolledAt;
+        this.status = status;
+    }
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
+    public Instant getEnrolledAt() {
+        return enrolledAt;
+    }
+
+    public void setEnrolledAt(Instant enrolledAt) {
+        this.enrolledAt = enrolledAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 9005
+  port: 9004
   error:
     # Al seleccionar "include-stacktrace: never" no se incluirá la pila de errores en el Json
     # que se devuelve a la aplicación cliente. Esto es necesario en un ambiente de producción,
@@ -23,8 +23,8 @@ spring:
 
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: false
+    fetch-registry: false
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:

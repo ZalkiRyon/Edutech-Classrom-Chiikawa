@@ -5,7 +5,6 @@ import com.edutech.courses.entity.CourseCategory;
 import com.edutech.courses.mapper.CourseCategoryMapper;
 import com.edutech.courses.repository.CourseCategoryRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,15 @@ import java.util.List;
 import static com.edutech.common.exception.ExceptionUtils.orThrow;
 
 @Service
-@RequiredArgsConstructor
 public class CourseCategoryService {
 
     private final CourseCategoryRepository categRepo;
     private final CourseCategoryMapper categMapper;
+
+    public CourseCategoryService(CourseCategoryRepository categRepo, CourseCategoryMapper categMapper) {
+        this.categRepo = categRepo;
+        this.categMapper = categMapper;
+    }
 
     public List<CourseCategoryDTO> findAll() {
         return categRepo.findAll().stream().map(categMapper::toDTO).toList();

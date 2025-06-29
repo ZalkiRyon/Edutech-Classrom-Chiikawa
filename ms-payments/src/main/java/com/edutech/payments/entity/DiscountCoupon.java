@@ -3,15 +3,11 @@ package com.edutech.payments.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "discount_coupon")
 public class DiscountCoupon {
@@ -46,4 +42,74 @@ public class DiscountCoupon {
     @ColumnDefault("1")
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = false;
+
+    // Constructors
+    public DiscountCoupon() {}
+
+    public DiscountCoupon(String code, String description, BigDecimal discountPercentage,
+                         LocalDate validFrom, LocalDate validUntil, Boolean isActive) {
+        this.code = code;
+        this.description = description;
+        this.discountPercentage = discountPercentage;
+        this.validFrom = validFrom;
+        this.validUntil = validUntil;
+        this.isActive = isActive;
+    }
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public LocalDate getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public LocalDate getValidUntil() {
+        return validUntil;
+    }
+
+    public void setValidUntil(LocalDate validUntil) {
+        this.validUntil = validUntil;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 }

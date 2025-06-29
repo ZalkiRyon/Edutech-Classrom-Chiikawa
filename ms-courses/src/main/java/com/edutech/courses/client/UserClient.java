@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.edutech.common.dto.UserDTO;
 
-// Como estoy usando Eureka no necesito especificar el puerto en la Feign Client, por lo que:
-// Puedo usar: @FeignClient(name = "ms-users") 
-// en vez de:  @FeignClient(name = "ms-users", url = "http://localhost:9001/api/users")
-@FeignClient(name = "ms-users") 
+// Configuración temporal para desarrollo sin Eureka - conexión directa a ms-users
+// Cuando Eureka esté disponible, cambiar a: @FeignClient(name = "ms-users") 
+@FeignClient(name = "ms-users", url = "http://localhost:9001")
 public interface UserClient {
     @GetMapping("/api/users/{id}")
     UserDTO findById(@PathVariable("id") Integer id);

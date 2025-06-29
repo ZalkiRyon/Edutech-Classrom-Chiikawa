@@ -4,7 +4,6 @@ import com.edutech.common.dto.EnrollmentDTO;
 import com.edutech.grades.service.EnrollmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/enrollments")
-@RequiredArgsConstructor
 @Tag(name = "Inscripciones", description = "API para gestión de inscripciones de estudiantes a cursos")
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;
+
+    public EnrollmentController(EnrollmentService enrollmentService) {
+        this.enrollmentService = enrollmentService;
+    }
 
     @GetMapping
     @Operation(summary = "Obtener todas las inscripciones", description = "Retorna una lista de todas las inscripciones")

@@ -4,7 +4,6 @@ import com.edutech.common.dto.SupportTicketDTO;
 import com.edutech.support.service.SupportTicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/support-tickets")
-@RequiredArgsConstructor
 @Tag(name = "Tickets de Soporte", description = "API para gestión de tickets de soporte técnico")
 public class SupportTicketController {
 
     private final SupportTicketService supportTicketService;
+
+    public SupportTicketController(SupportTicketService supportTicketService) {
+        this.supportTicketService = supportTicketService;
+    }
 
     @GetMapping
     @Operation(summary = "Obtener todos los tickets", description = "Retorna una lista de todos los tickets de soporte")

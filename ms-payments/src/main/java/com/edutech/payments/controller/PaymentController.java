@@ -4,7 +4,6 @@ import com.edutech.common.dto.PaymentDTO;
 import com.edutech.payments.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/payments")
-@RequiredArgsConstructor
 @Tag(name = "Pagos", description = "API para gestión de pagos y transacciones")
 public class PaymentController {
 
     private final PaymentService paymentService;
+
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @GetMapping
     @Operation(summary = "Obtener todos los pagos", description = "Retorna una lista de todos los pagos")

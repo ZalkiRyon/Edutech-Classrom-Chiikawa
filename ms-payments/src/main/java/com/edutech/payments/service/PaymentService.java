@@ -6,7 +6,6 @@ import com.edutech.payments.entity.Payment;
 import com.edutech.payments.mapper.PaymentMapper;
 import com.edutech.payments.repository.PaymentRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +14,17 @@ import static com.edutech.common.exception.ExceptionUtils.orThrow;
 import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 
 @Service
-@RequiredArgsConstructor
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final UserClient userClient;
+
+    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, UserClient userClient) {
+        this.paymentRepository = paymentRepository;
+        this.paymentMapper = paymentMapper;
+        this.userClient = userClient;
+    }
 
     public List<PaymentDTO> findAll() {
         return paymentRepository.findAll().stream().map(paymentMapper::toDTO).toList();

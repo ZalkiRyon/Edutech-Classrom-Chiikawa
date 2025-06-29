@@ -136,12 +136,11 @@
 		            </execution>
 		        </executions>
 		        <configuration>
-		            <mainClass>com.edutech.users.ClassroomGradesModuleApplication</mainClass>
+		            <mainClass>com.edutech.grades.ClassroomGradesModuleApplication</mainClass>
 		        </configuration>
 		        </plugin>
 		
-		        <!-- Plugin de compilación - TEMPORALMENTE COMENTADO -->
-		        <!--
+		        <!-- Plugin de compilación COMENTADO para evitar errores de annotation processors
 		        <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-compiler-plugin</artifactId>

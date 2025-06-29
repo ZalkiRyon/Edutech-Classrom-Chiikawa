@@ -3,15 +3,11 @@ package com.edutech.payments.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "payment")
 public class Payment {
@@ -52,4 +48,84 @@ public class Payment {
     @NotNull
     @Column(name = "status", nullable = false, length = 50)
     private String status;
+
+    // Constructors
+    public Payment() {}
+
+    public Payment(Integer userId, BigDecimal amount, Instant paymentDate, 
+                   String paymentMethod, String paymentInstitution, 
+                   String transactionId, String status) {
+        this.userId = userId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+        this.paymentMethod = paymentMethod;
+        this.paymentInstitution = paymentInstitution;
+        this.transactionId = transactionId;
+        this.status = status;
+    }
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public Instant getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Instant paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentInstitution() {
+        return paymentInstitution;
+    }
+
+    public void setPaymentInstitution(String paymentInstitution) {
+        this.paymentInstitution = paymentInstitution;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

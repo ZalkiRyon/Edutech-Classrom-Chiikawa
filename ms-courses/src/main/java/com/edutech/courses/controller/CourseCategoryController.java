@@ -6,7 +6,6 @@ import com.edutech.courses.service.CourseCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/course-categories")
-@RequiredArgsConstructor
 @Tag(name = "Course Categories", description = "Course category management endpoints")
 public class CourseCategoryController {
 
     private final CourseCategoryService categService;
+
+    public CourseCategoryController(CourseCategoryService categService) {
+        this.categService = categService;
+    }
 
     @GetMapping
     @Operation(summary = "Get all course categories", description = "Retrieve all course categories with HATEOAS links")

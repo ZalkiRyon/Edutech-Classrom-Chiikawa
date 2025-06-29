@@ -136,7 +136,7 @@
 		            </execution>
 		        </executions>
 		        <configuration>
-		            <mainClass>com.edutech.users.ClassroomPaymentsModuleApplication</mainClass>
+		            <mainClass>com.edutech.payments.ClassroomPaymentsModuleApplication</mainClass>
 		        </configuration>
 		        </plugin>
 		
