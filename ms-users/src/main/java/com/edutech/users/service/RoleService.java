@@ -2,10 +2,9 @@ package com.edutech.users.service;
 
 import com.edutech.common.dto.RoleDTO;
 import com.edutech.users.entity.Role;
-import com.edutech.users.mapper.RoleMapper;
+import com.edutech.users.mapper.RoleMapperManual;
 import com.edutech.users.repository.RoleRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,16 @@ import java.util.List;
 import static com.edutech.common.exception.ExceptionUtils.orThrow;
 
 @Service
-@RequiredArgsConstructor
 public class RoleService {
 
     private final RoleRepository roleRepo;
-    private final RoleMapper roleMapper;
+    private final RoleMapperManual roleMapper;
+
+    // Constructor
+    public RoleService(RoleRepository roleRepo, RoleMapperManual roleMapper) {
+        this.roleRepo = roleRepo;
+        this.roleMapper = roleMapper;
+    }
 
     public List<RoleDTO> findAll() {
         return roleRepo.findAll().stream().map(roleMapper::toDTO).toList();
