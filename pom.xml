@@ -371,40 +371,17 @@
 
                     <!-- 
                         Procesadores de anotaciones que deben ejecutarse durante la compilación.
-                        Son necesarios para herramientas como MapStruct y Lombok que generan clases automáticamente.
+                        TEMPORALMENTE SIMPLIFICADO PARA RESOLVER PROBLEMAS DE COMPATIBILIDAD
                     -->
+                    <!-- 
                     <annotationProcessorPaths>
-                        
-                        <!-- 
-                            Procesador de MapStruct: genera clases de implementación para interfaces con @Mapper.
-                            Ejemplo: 
-                                UsuarioMapper.java → UsuarioMapperImpl.java (autogenerado)
-                        -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
                         </path>
-
-                        <!-- 
-                            Procesador de anotaciones de Lombok:
-                            Genera automáticamente métodos como:
-                            - Getters/Setters (@Getter, @Setter)
-                            - Constructores (@NoArgsConstructor, @AllArgsConstructor)
-                            - Builder (@Builder)
-                            - toString, equals, hashCode (@Data)
-                            
-                            TEMPORALMENTE COMENTADO PARA RESOLVER PROBLEMAS DE COMPATIBILIDAD
-                        -->
-                        <!--
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                        -->
-
                     </annotationProcessorPaths>
+                    -->
                 </configuration>
             </plugin>
 
