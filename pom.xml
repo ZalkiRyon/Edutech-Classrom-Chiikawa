@@ -33,20 +33,20 @@
     -->
     <properties>
         <com-edutech-common.version>1.0-SNAPSHOT</com-edutech-common.version>      <!-- Versión de biblioteca common -->
-        <java.version>21</java.version>                                            <!-- Versión de Java a utilizar (21 incluye mejoras de rendimiento y compatibilidad con Spring Boot 3) -->
+        <java.version>17</java.version>                                            <!-- Versión de Java a utilizar (17 LTS para mayor estabilidad y compatibilidad) -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>         <!-- Codificación usada al compilar archivos fuente -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- Codificación usada en los reportes generados por Maven -->
-        <spring-boot.version>3.5.0</spring-boot.version>                           <!-- Versión de Spring Boot base para microservicios -->
-        <spring-cloud.version>2025.0.0</spring-cloud.version>                      <!-- Versión de Spring Cloud para herramientas como Eureka, Config Server, Gateway, etc. -->
+        <spring-boot.version>3.2.0</spring-boot.version>                           <!-- Versión de Spring Boot base para microservicios -->
+        <spring-cloud.version>2023.0.0</spring-cloud.version>                      <!-- Versión de Spring Cloud para herramientas como Eureka, Config Server, Gateway, etc. -->
         <mapstruct.version>1.5.5.Final</mapstruct.version>                         <!-- Versión de MapStruct, útil para generar mapeos automáticos entre DTOs y entidades -->
-        <lombok.version>1.18.30</lombok.version>                                   <!-- Versión de Lombok, evita escribir constructores, getters/setters manualmente -->
+        <lombok.version>1.18.32</lombok.version>                                   <!-- Versión de Lombok actualizada, compatible con Java 17 -->
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>     <!-- Versión de Jakarta Validation (Bean Validation API) -->
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>               <!-- Versión de MySQL -->
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>     <!-- Versión de Hibernate Validator (compatible con Jakarta Validation 3.0+) -->
         <jakarta.el.version>4.0.2</jakarta.el.version>                             <!-- Versión de Jakarta EL requerida por Hibernate Validator -->
-        <springdoc-openapi.version>2.3.0</springdoc-openapi.version>               <!-- Versión de SpringDoc OpenAPI para documentación Swagger -->
-        <maven.compiler.source>${java.version}</maven.compiler.source>             <!-- Configuración del compilador de Java (fuente) -->
-        <maven.compiler.target>${java.version}</maven.compiler.target>             <!-- Configuración del compilador de Java (bytecode target) -->
+        <springdoc-openapi.version>2.1.0</springdoc-openapi.version>               <!-- Versión de SpringDoc OpenAPI para documentación Swagger -->
+        <maven.compiler.source>17</maven.compiler.source>                          <!-- Configuración del compilador de Java (fuente) -->
+        <maven.compiler.target>17</maven.compiler.target>                          <!-- Configuración del compilador de Java (bytecode target) -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>      <!-- Versión del compilador de Maven -->
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>             <!-- Versión estable del plugin que limpia el directorio target/ antes de compilar -->
     </properties>
@@ -393,12 +393,16 @@
                             - Constructores (@NoArgsConstructor, @AllArgsConstructor)
                             - Builder (@Builder)
                             - toString, equals, hashCode (@Data)
+                            
+                            TEMPORALMENTE COMENTADO PARA RESOLVER PROBLEMAS DE COMPATIBILIDAD
                         -->
+                        <!--
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        -->
 
                     </annotationProcessorPaths>
                 </configuration>

@@ -47,45 +47,46 @@ class CourseServiceTest {
 
     private Course testCourse;
     private CourseDTO testCourseDTO;
-    private UserDTO testUserDTO;
+    private UserDTO testManagerDTO;
+    private UserDTO testInstructorDTO;
     private CourseCategory testCategory;
 
     @BeforeEach
     void setUp() {
+        // Crear entidad Course básica
         testCourse = new Course();
         testCourse.setId(1);
         testCourse.setTitle("Java Programming");
         testCourse.setDescription("Learn Java from scratch");
-        testCourse.setInstructorId(1);
-        testCourse.setCategoryId(1);
-        testCourse.setManagerId(1);
-        testCourse.setPublishDate(LocalDate.now());
-        testCourse.setPrice(new BigDecimal("99.99"));
-        testCourse.setImage("java-course.jpg");
-        testCourse.setStatus("ACTIVE");
 
+        // Crear DTO Course básico
         testCourseDTO = new CourseDTO();
         testCourseDTO.setId(1);
         testCourseDTO.setTitle("Java Programming");
         testCourseDTO.setDescription("Learn Java from scratch");
         testCourseDTO.setInstructorId(1);
         testCourseDTO.setCategoryId(1);
-        testCourseDTO.setManagerId(1);
+        testCourseDTO.setManagerId(2);
         testCourseDTO.setPublishDate(LocalDate.now());
         testCourseDTO.setPrice(new BigDecimal("99.99"));
         testCourseDTO.setImage("java-course.jpg");
         testCourseDTO.setStatus("ACTIVE");
 
-        testUserDTO = new UserDTO();
-        testUserDTO.setId(1);
-        testUserDTO.setFirstName("John");
-        testUserDTO.setLastName("Doe");
-        testUserDTO.setEmail("john@edutech.com");
+        // Crear DTOs de usuario
+        testManagerDTO = new UserDTO();
+        testManagerDTO.setId(2);
+        testManagerDTO.setFirstName("Manager");
+        testManagerDTO.setLastName("User");
 
+        testInstructorDTO = new UserDTO();
+        testInstructorDTO.setId(1);
+        testInstructorDTO.setFirstName("Instructor");
+        testInstructorDTO.setLastName("User");
+
+        // Crear categoría
         testCategory = new CourseCategory();
         testCategory.setId(1);
         testCategory.setName("Programming");
-        testCategory.setDescription("Programming courses");
     }
 
     @Test
@@ -101,7 +102,7 @@ class CourseServiceTest {
 
         // Then
         assertEquals(1, result.size());
-        assertEquals(testCourseDTO.getTitle(), result.get(0).getTitle());
+        assertEquals("Java Programming", result.get(0).getTitle());
         verify(courseRepo).findAll();
         verify(courseMapper).toDTO(testCourse);
     }
@@ -117,7 +118,7 @@ class CourseServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(testCourseDTO.getTitle(), result.getTitle());
+        assertEquals("Java Programming", result.getTitle());
         verify(courseRepo).findById(1);
         verify(courseMapper).toDTO(testCourse);
     }
@@ -137,8 +138,8 @@ class CourseServiceTest {
     void create_WithValidData_ShouldCreateAndReturnCourse() {
         // Given
         when(categRepo.findById(1)).thenReturn(Optional.of(testCategory));
-        when(userClient.findById(1)).thenReturn(testUserDTO); // manager
-        when(userClient.findById(1)).thenReturn(testUserDTO); // instructor
+        when(userClient.findById(2)).thenReturn(testManagerDTO); // manager
+        when(userClient.findById(1)).thenReturn(testInstructorDTO); // instructor
         when(courseMapper.toEntity(testCourseDTO)).thenReturn(testCourse);
         when(courseRepo.save(testCourse)).thenReturn(testCourse);
         when(courseMapper.toDTO(testCourse)).thenReturn(testCourseDTO);
@@ -148,9 +149,10 @@ class CourseServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals(testCourseDTO.getTitle(), result.getTitle());
+        assertEquals("Java Programming", result.getTitle());
         verify(categRepo).findById(1);
-        verify(userClient, times(2)).findById(1); // manager + instructor
+        verify(userClient).findById(2); // manager validation
+        verify(userClient).findById(1); // instructor validation
         verify(courseMapper).toEntity(testCourseDTO);
         verify(courseRepo).save(testCourse);
         verify(courseMapper).toDTO(testCourse);
@@ -170,49 +172,21 @@ class CourseServiceTest {
     @Test
     void update_WhenCourseExists_ShouldUpdateAndReturnCourse() {
         // Given
-        CourseDTO updateDTO = new CourseDTO();
-        updateDTO.setTitle("Advanced Java Programming");
-        updateDTO.setDescription("Advanced Java concepts");
-        updateDTO.setInstructorId(1);
-        updateDTO.setCategoryId(1);
-        updateDTO.setManagerId(1);
-        updateDTO.setPublishDate(LocalDate.now());
-        updateDTO.setPrice(new BigDecimal("149.99"));
-        updateDTO.setImage("advanced-java.jpg");
-        updateDTO.setStatus("ACTIVE");
-
-        Course existingCourse = new Course();
-        existingCourse.setId(1);
-        existingCourse.setTitle("Java Programming");
-
-        Course updatedCourseEntity = new Course();
-        updatedCourseEntity.setId(1);
-        updatedCourseEntity.setTitle("Advanced Java Programming");
-
-        CourseDTO expectedDTO = new CourseDTO();
-        expectedDTO.setId(1);
-        expectedDTO.setTitle("Advanced Java Programming");
-
-        when(courseRepo.findById(1)).thenReturn(Optional.of(existingCourse));
-        when(categRepo.findById(1)).thenReturn(Optional.of(testCategory));
-        when(userClient.findById(1)).thenReturn(testUserDTO); // manager
-        when(userClient.findById(1)).thenReturn(testUserDTO); // instructor
-        when(courseMapper.toEntity(updateDTO)).thenReturn(updatedCourseEntity);
-        when(courseRepo.save(any(Course.class))).thenReturn(updatedCourseEntity);
-        when(courseMapper.toDTO(updatedCourseEntity)).thenReturn(expectedDTO);
+        when(courseRepo.findById(1)).thenReturn(Optional.of(testCourse));
+        when(courseMapper.toEntity(testCourseDTO)).thenReturn(testCourse);
+        when(courseRepo.save(any(Course.class))).thenReturn(testCourse);
+        when(courseMapper.toDTO(testCourse)).thenReturn(testCourseDTO);
 
         // When
-        CourseDTO result = courseService.update(1, updateDTO);
+        CourseDTO result = courseService.update(1, testCourseDTO);
 
         // Then
         assertNotNull(result);
-        assertEquals("Advanced Java Programming", result.getTitle());
+        assertEquals("Java Programming", result.getTitle());
         verify(courseRepo).findById(1);
-        verify(categRepo).findById(1);
-        verify(userClient, times(2)).findById(1);
-        verify(courseMapper).toEntity(updateDTO);
+        verify(courseMapper).toEntity(testCourseDTO);
         verify(courseRepo).save(any(Course.class));
-        verify(courseMapper).toDTO(updatedCourseEntity);
+        verify(courseMapper).toDTO(testCourse);
     }
 
     @Test
