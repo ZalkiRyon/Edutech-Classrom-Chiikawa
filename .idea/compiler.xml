@@ -37,11 +37,16 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/unknown/mapstruct-processor-unknown.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
+        <module name="com-edutech-payments" />
+      </profile>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="com-edutech-grades" />
         <module name="com-edutech-users" />
         <module name="com-edutech-support" />
         <module name="com-edutech-courses" />
-        <module name="com-edutech-payments" />
       </profile>
     </annotationProcessing>
   </component>
@@ -49,12 +54,12 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="classroom" options="-parameters" />
       <module name="com-edutech-common" options="-parameters" />
-      <module name="com-edutech-courses" options="-parameters -parameters" />
+      <module name="com-edutech-courses" options="-parameters" />
       <module name="com-edutech-eureka" options="-parameters" />
-      <module name="com-edutech-grades" options="-parameters -parameters" />
+      <module name="com-edutech-grades" options="-parameters" />
       <module name="com-edutech-payments" options="-parameters -parameters" />
-      <module name="com-edutech-support" options="-parameters -parameters" />
-      <module name="com-edutech-users" options="-parameters -parameters" />
+      <module name="com-edutech-support" options="-parameters" />
+      <module name="com-edutech-users" options="-parameters" />
     </option>
   </component>
 </project>
