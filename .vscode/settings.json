@@ -15,7 +15,7 @@
   //  4. Si rechazas, mantiene la configuración actual hasta que manualmente ejecutes
   //     el comando “Java: Update Project Configuration”.
   // Esto previene recargas automáticas y molestas, dándote control sobre cuándo reimportar.
-  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.configuration.updateBuildConfiguration": "automatic",
 
   // Activa el guardado automático de archivos tras un breve retraso
   // - Evita perder cambios si olvidas guardar manualmente.

@@ -104,6 +104,12 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
+        <!-- Spring HATEOAS para hypermedia -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+
         <!-- 
             Spring Boot DevTools: Permite recarga automática del proyecto (hot reload),
             útil solo en desarrollo. No se recomienda en producción. 

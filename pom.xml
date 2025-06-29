@@ -305,6 +305,24 @@
                 <version>${springdoc-openapi.version}</version>
             </dependency>
 
+            <!-- 
+                Spring HATEOAS: proporciona herramientas para implementar Hypermedia as the Engine of Application State.
+                Permite crear APIs REST que siguen el principio HATEOAS del modelo de madurez de Richardson (nivel 3).
+                
+                Incluye clases como:
+                - RepresentationModel: clase base para DTOs que incluyen links
+                - EntityModel: wrapper para entidades individuales con hypermedia
+                - CollectionModel: wrapper para colecciones con hypermedia
+                - WebMvcLinkBuilder: para generar links dinámicamente
+                
+                Facilita la navegación programática a través de la API REST mediante enlaces.
+            -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-hateoas</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

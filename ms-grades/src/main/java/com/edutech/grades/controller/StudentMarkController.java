@@ -2,52 +2,101 @@ package com.edutech.grades.controller;
 
 import com.edutech.common.dto.StudentMarkDTO;
 import com.edutech.grades.service.StudentMarkService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/student-marks")
 @RequiredArgsConstructor
+@Tag(name = "Calificaciones", description = "API para gestión de calificaciones de estudiantes")
 public class StudentMarkController {
 
     private final StudentMarkService studentMarkService;
 
     @GetMapping
-    public ResponseEntity<List<StudentMarkDTO>> findAll() {
-        return ResponseEntity.ok(studentMarkService.findAll());
+    @Operation(summary = "Obtener todas las calificaciones", description = "Retorna una lista de todas las calificaciones")
+    public ResponseEntity<CollectionModel<EntityModel<StudentMarkDTO>>> findAll() {
+        List<EntityModel<StudentMarkDTO>> marks = studentMarkService.findAll().stream()
+                .map(this::toEntityModel)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<StudentMarkDTO>> collectionModel = CollectionModel.of(marks)
+                .add(linkTo(methodOn(StudentMarkController.class).findAll()).withSelfRel());
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentMarkDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(studentMarkService.findById(id));
+    @Operation(summary = "Obtener calificación por ID", description = "Retorna una calificación específica por su ID")
+    public ResponseEntity<EntityModel<StudentMarkDTO>> findById(@PathVariable Integer id) {
+        StudentMarkDTO mark = studentMarkService.findById(id);
+        return ResponseEntity.ok(toEntityModel(mark));
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<StudentMarkDTO>> findByStudentId(@PathVariable Integer studentId) {
-        return ResponseEntity.ok(studentMarkService.findByStudentId(studentId));
+    @Operation(summary = "Obtener calificaciones por estudiante", description = "Retorna todas las calificaciones de un estudiante específico")
+    public ResponseEntity<CollectionModel<EntityModel<StudentMarkDTO>>> findByStudentId(@PathVariable Integer studentId) {
+        List<EntityModel<StudentMarkDTO>> marks = studentMarkService.findByStudentId(studentId).stream()
+                .map(this::toEntityModel)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<StudentMarkDTO>> collectionModel = CollectionModel.of(marks)
+                .add(linkTo(methodOn(StudentMarkController.class).findByStudentId(studentId)).withSelfRel())
+                .add(linkTo(methodOn(StudentMarkController.class).findAll()).withRel("all-marks"));
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/quiz/{quizId}")
-    public ResponseEntity<List<StudentMarkDTO>> findByQuizId(@PathVariable Integer quizId) {
-        return ResponseEntity.ok(studentMarkService.findByQuizId(quizId));
+    @Operation(summary = "Obtener calificaciones por quiz", description = "Retorna todas las calificaciones de un quiz específico")
+    public ResponseEntity<CollectionModel<EntityModel<StudentMarkDTO>>> findByQuizId(@PathVariable Integer quizId) {
+        List<EntityModel<StudentMarkDTO>> marks = studentMarkService.findByQuizId(quizId).stream()
+                .map(this::toEntityModel)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<StudentMarkDTO>> collectionModel = CollectionModel.of(marks)
+                .add(linkTo(methodOn(StudentMarkController.class).findByQuizId(quizId)).withSelfRel())
+                .add(linkTo(methodOn(StudentMarkController.class).findAll()).withRel("all-marks"));
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @PostMapping
-    public ResponseEntity<StudentMarkDTO> create(@RequestBody StudentMarkDTO dto) {
-        return ResponseEntity.ok(studentMarkService.create(dto));
+    @Operation(summary = "Crear nueva calificación", description = "Crea una nueva calificación para un estudiante")
+    public ResponseEntity<EntityModel<StudentMarkDTO>> create(@RequestBody StudentMarkDTO dto) {
+        StudentMarkDTO created = studentMarkService.create(dto);
+        return ResponseEntity.ok(toEntityModel(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentMarkDTO> update(@PathVariable Integer id, @RequestBody StudentMarkDTO dto) {
-        return ResponseEntity.ok(studentMarkService.update(id, dto));
+    @Operation(summary = "Actualizar calificación", description = "Actualiza una calificación existente")
+    public ResponseEntity<EntityModel<StudentMarkDTO>> update(@PathVariable Integer id, @RequestBody StudentMarkDTO dto) {
+        StudentMarkDTO updated = studentMarkService.update(id, dto);
+        return ResponseEntity.ok(toEntityModel(updated));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar calificación", description = "Elimina una calificación por su ID")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         studentMarkService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    private EntityModel<StudentMarkDTO> toEntityModel(StudentMarkDTO mark) {
+        return EntityModel.of(mark)
+                .add(linkTo(methodOn(StudentMarkController.class).findById(mark.getId())).withSelfRel())
+                .add(linkTo(methodOn(StudentMarkController.class).findByStudentId(mark.getStudentId())).withRel("student-marks"))
+                .add(linkTo(methodOn(StudentMarkController.class).findByQuizId(mark.getQuizId())).withRel("quiz-marks"))
+                .add(linkTo(methodOn(StudentMarkController.class).findAll()).withRel("all-marks"));
     }
 }
