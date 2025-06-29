@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Annotation profile for EduTech Classroom Parent Project" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -15,8 +16,8 @@
         <module name="com-edutech-users" />
         <module name="com-edutech-eureka" />
         <module name="com-edutech-support" />
-        <module name="com-edutech-courses" />
         <module name="com-edutech-payments" />
+        <module name="com-edutech-courses" />
         <module name="com-edutech-common" />
       </profile>
     </annotationProcessing>
