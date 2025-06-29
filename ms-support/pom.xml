@@ -140,7 +140,8 @@
 		        </configuration>
 		        </plugin>
 		
-		        <!-- Plugin de compilación para procesadores de anotaciones (MapStruct + Lombok) -->
+		        <!-- Plugin de compilación - TEMPORALMENTE COMENTADO -->
+		        <!--
 		        <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-compiler-plugin</artifactId>
@@ -158,6 +159,7 @@
 		            </annotationProcessorPaths>
 		        </configuration>
 	        </plugin>
+	        -->
 	    </plugins>
     </build>
 
