@@ -120,6 +120,12 @@
             <optional>true</optional> <!-- Indica que es opcional: no se transita a otros módulos ni se empaqueta por defecto -->
         </dependency>
 
+        <!-- Dependencia para habilitar Feign Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!-- Empaquetado ejecutable con Spring Boot -->
