@@ -1,0 +1,127 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Modelo base de Maven -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Hereda del proyecto padre "classroom" -->
+    <parent>
+        <groupId>com.edutech</groupId>
+        <artifactId>classroom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <!-- Coordenadas GAV -->
+    <groupId>com.edutech</groupId>
+    <artifactId>com-edutech-common</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>EduTech Common Library</name>
+    <description>
+        Librería compartida con DTOs, manejadores de excepción,
+        configuración y utilidades para microservicios EduTech.
+    </description>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+        <!-- Reduce código repetitivo en Java (getters, setters, equals, etc.) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- MapStruct: generador de código para mapeo entre entidades y DTOs -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+        <!-- Procesador de anotaciones de MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 
+            Hibernate Validator: implementación de referencia de Jakarta Bean Validation (JSR 380/385).
+            Permite compilar y procesar anotaciones como @NotNull, @Size, @Email, etc. en clases DTO.
+            Es esencial para módulos que usan validación, pero no son aplicaciones Spring Boot.
+            
+            Esta dependencia NO arranca ningún contexto de Spring, solo proporciona la lógica de validación.
+        -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <!-- 
+            Jakarta EL (Expression Language): necesario para evaluar expresiones utilizadas por Hibernate Validator.
+            Requerido especialmente cuando las anotaciones de validación contienen expresiones dinámicas,
+            o al invocar el validador programáticamente (por ejemplo, con Validation.buildDefaultValidatorFactory()).
+
+            Hibernate Validator lo necesita como dependencia para inicializar correctamente su entorno.
+        -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+        </dependency>
+
+        <!-- Cliente declarativo REST (OpenFeign) para comunicación entre microservicios -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- 
+                Plugin oficial de Spring Boot para Maven.
+
+                Motivo de inclusión en este módulo (common):
+                - Este módulo contiene código compartido (DTOs, excepciones, utilidades) utilizado por múltiples microservicios.
+                - No posee una clase con método `main`, por lo tanto **no debe generar un JAR ejecutable**.
+                - Sin embargo, este plugin se hereda desde el POM padre, donde sí se configura con `repackage`.
+
+                Problema que se evita:
+                - Si no se sobrescribe esta configuración aquí, Maven intentará ejecutar el objetivo `repackage` en este módulo.
+                - Como no existe una clase principal (`@SpringBootApplication`), la construcción fallará con un error: 
+                “Unable to find main class”.
+
+                Solución aplicada:
+                - Se redefine el plugin en este `pom.xml` local del módulo `common`.
+                - Se anula la fase de ejecución del objetivo `repackage` usando `<phase>none</phase>`, 
+                lo que evita el intento de crear un "fat JAR".
+
+                Impacto:
+                - Permite que el módulo se compile, instale y empaquete como JAR normal (biblioteca).
+                - No afecta a los microservicios que sí necesitan el empaquetado ejecutable, ya que ellos heredan 
+                la configuración completa del padre sin sobrescritura.
+
+                Alternativas consideradas:
+                - Sacar el plugin `spring-boot-maven-plugin` del padre y declararlo solo en cada microservicio.
+                (Requiere más mantenimiento, rompe la centralización de versiones).
+                - Por eso esta solución es más limpia y escalable.
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <phase>none</phase> <!-- Anula la ejecución de `repackage` en este módulo -->
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
