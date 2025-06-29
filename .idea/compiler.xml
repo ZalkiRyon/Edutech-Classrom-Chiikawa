@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Annotation profile for EduTech Classroom Parent Project" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="com-edutech-grades" />
+        <module name="com-edutech-users" />
+        <module name="com-edutech-eureka" />
+        <module name="com-edutech-support" />
+        <module name="com-edutech-courses" />
+        <module name="com-edutech-payments" />
+        <module name="com-edutech-common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="classroom" options="-parameters" />
+      <module name="com-edutech-common" options="-parameters" />
+      <module name="com-edutech-courses" options="-parameters -parameters" />
+      <module name="com-edutech-eureka" options="-parameters" />
+      <module name="com-edutech-grades" options="-parameters -parameters" />
+      <module name="com-edutech-payments" options="-parameters -parameters" />
+      <module name="com-edutech-support" options="-parameters -parameters" />
+      <module name="com-edutech-users" options="-parameters -parameters" />
+    </option>
+  </component>
+</project>

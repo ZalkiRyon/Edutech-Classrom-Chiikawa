@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-courses/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-courses/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-grades/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-grades/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-payments/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-payments/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-support/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-support/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-users/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-users/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

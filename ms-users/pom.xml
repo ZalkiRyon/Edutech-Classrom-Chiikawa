@@ -98,6 +98,12 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency> 
 
+        <!-- SpringDoc OpenAPI para documentación Swagger -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
         <!-- 
             Spring Boot DevTools: Permite recarga automática del proyecto (hot reload),
             útil solo en desarrollo. No se recomienda en producción. 

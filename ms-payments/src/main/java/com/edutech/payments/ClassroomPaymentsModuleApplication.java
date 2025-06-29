@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.edutech.payment.client")
+@EnableFeignClients(basePackages = "com.edutech.payments.client")
 @SpringBootApplication
 public class ClassroomPaymentsModuleApplication {
 

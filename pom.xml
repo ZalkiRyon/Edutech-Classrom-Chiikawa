@@ -44,6 +44,7 @@
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>               <!-- Versión de MySQL -->
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>     <!-- Versión de Hibernate Validator (compatible con Jakarta Validation 3.0+) -->
         <jakarta.el.version>4.0.2</jakarta.el.version>                             <!-- Versión de Jakarta EL requerida por Hibernate Validator -->
+        <springdoc-openapi.version>2.3.0</springdoc-openapi.version>               <!-- Versión de SpringDoc OpenAPI para documentación Swagger -->
         <maven.compiler.source>${java.version}</maven.compiler.source>             <!-- Configuración del compilador de Java (fuente) -->
         <maven.compiler.target>${java.version}</maven.compiler.target>             <!-- Configuración del compilador de Java (bytecode target) -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>      <!-- Versión del compilador de Maven -->
@@ -284,6 +285,24 @@
                 <groupId>com.edutech</groupId>
                 <artifactId>com-edutech-common</artifactId>
                 <version>${com-edutech-common.version}</version>
+            </dependency>
+
+            <!-- 
+                SpringDoc OpenAPI 3: biblioteca para generar documentación API automática usando OpenAPI 3.0 (Swagger).
+                Reemplaza a SpringFox que era usado en versiones anteriores de Spring Boot.
+                
+                Proporciona un interfaz web interactiva en /swagger-ui.html donde se puede:
+                - Ver todas las rutas REST disponibles
+                - Probar endpoints directamente desde el navegador
+                - Descargar el archivo OpenAPI 3.0 specification
+
+                Compatible con Spring Boot 3.x y genera automáticamente la documentación
+                basándose en anotaciones @RestController, @RequestMapping, @GetMapping, etc.
+            -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
 
         </dependencies>
