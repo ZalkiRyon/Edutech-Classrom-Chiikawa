@@ -60,24 +60,8 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Lombok para reducir boilerplate con anotaciones como @Getter, @Builder -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope> <!-- No se empaqueta, solo se usa en compilación -->
-        </dependency>
-
-        <!-- MapStruct: generador de código para mapeo entre entidades y DTOs -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-
-        <!-- Procesador de anotaciones de MapStruct -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-        </dependency>
+        <!-- Lombok REMOVED: Using manual POJOs instead -->
+        <!-- MapStruct REMOVED: Using manual mappers instead -->
 
         <!-- Dependencias de testing con JUnit, MockMvc, etc. -->
         <dependency>
