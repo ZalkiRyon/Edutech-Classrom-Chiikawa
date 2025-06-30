@@ -51,7 +51,7 @@ public class CourseController {
     }
 
     @PostMapping
-    @Operation(summary = "Create course", description = "Create a new course and return it with HATEOAS links")
+    @Operation(summary = "Crear curso", description = "Crea un nuevo curso y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<CourseDTO>> create(@RequestBody @Valid CourseDTO dto) {
         CourseDTO createdCourse = courseService.create(dto);
         EntityModel<CourseDTO> courseModel = addLinksToDto(createdCourse);
@@ -59,7 +59,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update course", description = "Update an existing course and return it with HATEOAS links")
+    @Operation(summary = "Actualizar curso", description = "Actualiza un curso existente y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<CourseDTO>> update(@PathVariable Integer id, @RequestBody @Valid CourseDTO dto) {
         CourseDTO updatedCourse = courseService.update(id, dto);
         EntityModel<CourseDTO> courseModel = addLinksToDto(updatedCourse);
@@ -67,7 +67,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete course", description = "Delete a course by its ID")
+    @Operation(summary = "Eliminar curso", description = "Elimina un curso por su ID")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         courseService.delete(id);
         return ResponseEntity.noContent().build();

@@ -1,16 +1,17 @@
 package com.edutech.grades.service;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.edutech.common.dto.QuizDTO;
 import com.edutech.common.exception.ResourceNotFoundException;
 import com.edutech.grades.entity.CourseQuiz;
 import com.edutech.grades.mapper.CourseQuizMapperManual;
 import com.edutech.grades.repository.CourseQuizRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service for managing course quizzes

@@ -18,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/course-categories")
-@Tag(name = "Course Categories", description = "Course category management endpoints")
+@Tag(name = "Categorías de Cursos", description = "API para gestión de categorías de cursos")
 public class CourseCategoryController {
 
     private final CourseCategoryService categService;
@@ -28,7 +28,7 @@ public class CourseCategoryController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all course categories", description = "Retrieve all course categories with HATEOAS links")
+    @Operation(summary = "Obtener todas las categorías", description = "Retorna una lista de todas las categorías de cursos con enlaces HATEOAS")
     public ResponseEntity<CollectionModel<EntityModel<CourseCategoryDTO>>> findAll() {
         List<CourseCategoryDTO> categories = categService.findAll();
         
@@ -43,7 +43,7 @@ public class CourseCategoryController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get course category by ID", description = "Retrieve a specific course category by its ID with HATEOAS links")
+    @Operation(summary = "Obtener categoría por ID", description = "Retorna una categoría específica por su ID con enlaces HATEOAS")
     public ResponseEntity<EntityModel<CourseCategoryDTO>> findById(@PathVariable Integer id) {
         CourseCategoryDTO category = categService.findById(id);
         EntityModel<CourseCategoryDTO> categoryModel = addLinksToDto(category);
@@ -51,7 +51,7 @@ public class CourseCategoryController {
     }
 
     @PostMapping
-    @Operation(summary = "Create course category", description = "Create a new course category and return it with HATEOAS links")
+    @Operation(summary = "Crear categoría", description = "Crea una nueva categoría de curso y la retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<CourseCategoryDTO>> create(@RequestBody @Valid CourseCategoryDTO dto) {
         CourseCategoryDTO createdCategory = categService.create(dto);
         EntityModel<CourseCategoryDTO> categoryModel = addLinksToDto(createdCategory);
@@ -59,7 +59,7 @@ public class CourseCategoryController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update course category", description = "Update an existing course category and return it with HATEOAS links")
+    @Operation(summary = "Actualizar categoría", description = "Actualiza una categoría existente y la retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<CourseCategoryDTO>> update(@PathVariable Integer id, @RequestBody @Valid CourseCategoryDTO dto) {
         CourseCategoryDTO updatedCategory = categService.update(id, dto);
         EntityModel<CourseCategoryDTO> categoryModel = addLinksToDto(updatedCategory);
@@ -67,7 +67,7 @@ public class CourseCategoryController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete course category", description = "Delete a course category by its ID")
+    @Operation(summary = "Eliminar categoría", description = "Elimina una categoría de curso por su ID")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categService.delete(id);
         return ResponseEntity.noContent().build();

@@ -1,10 +1,11 @@
 package com.edutech.grades.repository;
 
-import com.edutech.grades.entity.CourseQuiz;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.edutech.grades.entity.CourseQuiz;
 
 /**
  * Repository for CourseQuiz entity

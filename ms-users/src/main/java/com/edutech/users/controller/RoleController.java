@@ -20,13 +20,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/api/roles")
 @RequiredArgsConstructor
-@Tag(name = "Roles", description = "Role management endpoints")
+@Tag(name = "Roles", description = "API para gestión de roles del sistema")
 public class RoleController {
 
     private final RoleService roleService;
 
     @GetMapping
-    @Operation(summary = "Get all roles", description = "Retrieve all roles with HATEOAS links")
+    @Operation(summary = "Obtener todos los roles", description = "Retorna una lista de todos los roles con enlaces HATEOAS")
     public ResponseEntity<CollectionModel<EntityModel<RoleDTO>>> findAll() {
         List<RoleDTO> roles = roleService.findAll();
         
@@ -41,7 +41,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get role by ID", description = "Retrieve a specific role by its ID with HATEOAS links")
+    @Operation(summary = "Obtener rol por ID", description = "Retorna un rol específico por su ID con enlaces HATEOAS")
     public ResponseEntity<EntityModel<RoleDTO>> findById(@PathVariable Integer id) {
         RoleDTO role = roleService.findById(id);
         EntityModel<RoleDTO> roleModel = addLinksToDto(role);
@@ -49,7 +49,7 @@ public class RoleController {
     }
 
     @PostMapping
-    @Operation(summary = "Create role", description = "Create a new role and return it with HATEOAS links")
+    @Operation(summary = "Crear rol", description = "Crea un nuevo rol y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<RoleDTO>> create(@RequestBody @Valid RoleDTO dto) {
         RoleDTO createdRole = roleService.create(dto);
         EntityModel<RoleDTO> roleModel = addLinksToDto(createdRole);
@@ -57,7 +57,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update role", description = "Update an existing role and return it with HATEOAS links")
+    @Operation(summary = "Actualizar rol", description = "Actualiza un rol existente y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<RoleDTO>> update(@PathVariable Integer id, @RequestBody @Valid RoleDTO dto) {
         RoleDTO updatedRole = roleService.update(id, dto);
         EntityModel<RoleDTO> roleModel = addLinksToDto(updatedRole);
@@ -65,7 +65,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete role", description = "Delete a role by its ID")
+    @Operation(summary = "Eliminar rol", description = "Elimina un rol por su ID")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         roleService.delete(id);
         return ResponseEntity.noContent().build();

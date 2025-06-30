@@ -2,6 +2,9 @@ package com.edutech.courses.controller;
 
 import com.edutech.common.dto.CourseCommentDTO;
 import com.edutech.courses.service.CourseCommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/course-comments")
+@Tag(name = "Comentarios de Cursos", description = "API para gestión de comentarios de cursos")
 public class CourseCommentController {
 
     @Autowired
@@ -24,6 +28,7 @@ public class CourseCommentController {
      * Get all course comments
      */
     @GetMapping
+    @Operation(summary = "Obtener todos los comentarios", description = "Retorna una lista de todos los comentarios de cursos")
     public ResponseEntity<List<CourseCommentDTO>> getAllCourseComments() {
         List<CourseCommentDTO> courseComments = courseCommentService.findAll();
         return ResponseEntity.ok(courseComments);

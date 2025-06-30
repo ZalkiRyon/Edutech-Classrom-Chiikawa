@@ -17,7 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "Users", description = "User management endpoints")
+@Tag(name = "Usuarios", description = "API para gestión de usuarios del sistema")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all users", description = "Retrieve all users with HATEOAS links")
+    @Operation(summary = "Obtener todos los usuarios", description = "Retorna una lista de todos los usuarios con enlaces HATEOAS")
     public ResponseEntity<CollectionModel<EntityModel<UserDTO>>> findAll() {
         List<UserDTO> users = userService.findAll();
         
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID", description = "Retrieve a specific user by its ID with HATEOAS links")
+    @Operation(summary = "Obtener usuario por ID", description = "Retorna un usuario específico por su ID con enlaces HATEOAS")
     public ResponseEntity<EntityModel<UserDTO>> findById(@PathVariable Integer id) {
         UserDTO user = userService.findById(id);
         EntityModel<UserDTO> userModel = addLinksToDto(user);
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "Create user", description = "Create a new user and return it with HATEOAS links")
+    @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<UserDTO>> create(@RequestBody UserDTO dto) {
         UserDTO createdUser = userService.create(dto);
         EntityModel<UserDTO> userModel = addLinksToDto(createdUser);
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update user", description = "Update an existing user and return it with HATEOAS links")
+    @Operation(summary = "Actualizar usuario", description = "Actualiza un usuario existente y lo retorna con enlaces HATEOAS")
     public ResponseEntity<EntityModel<UserDTO>> update(@PathVariable Integer id, @RequestBody UserDTO dto) {
         UserDTO updatedUser = userService.update(id, dto);
         EntityModel<UserDTO> userModel = addLinksToDto(updatedUser);
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete user", description = "Delete a user by its ID")
+    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario por su ID")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
