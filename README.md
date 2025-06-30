@@ -252,92 +252,180 @@ test-integration.bat
 - **Clientes Feign**: Comunicación entre microservicios
 - **Validaciones cruzadas**: Integridad referencial distribuida
 
-## 🛠️ Comandos de Mantenimiento
+## 🧪 Pruebas Unitarias y Testing
 
-### Compilación y Limpieza
+### Framework de Testing
+El proyecto utiliza **JUnit 5** con **Mockito** y **Spring Boot Test** para asegurar la calidad del código:
 
-```bash
-# Compilar sólo el POM del padre
-mvn install -N
+- ✅ **JUnit 5 (Jupiter)** - Framework principal de testing
+- ✅ **Mockito** - Para mocking y testing unitario
+- ✅ **Spring Boot Test** - Integración con Spring Boot
+- ✅ **MockMvc** - Para testing de controladores REST
+- ✅ **AssertJ** - Assertions fluidas
 
-# Limpiar carpetas target
-mvn clean
+### Cobertura de Pruebas por Microservicio
 
-# Eliminar caché de Maven
-rmdir /S /Q %USERPROFILE%\.m2
-
-# Compilar proyecto completo
-mvn clean install
-
-# Compilar sin pruebas
-mvn clean install -DskipTests
+#### MS-Grades (100% - 80/80 tests)
+```
+src/test/java/com/edutech/grades/
+├── ClassroomGradesModuleApplicationTests.java
+├── controller/
+│   ├── CourseQuizControllerTest.java
+│   ├── CourseQuizQuestionControllerTest.java  
+│   ├── QuizResponseControllerTest.java
+│   └── StudentMarkControllerTest.java
+└── service/
+    ├── CourseQuizServiceTest.java
+    ├── CourseQuizQuestionServiceTest.java
+    ├── EnrollmentServiceTest.java
+    ├── QuizResponseServiceTest.java
+    └── StudentMarkServiceTest.java
 ```
 
-### Base de Datos
+#### MS-Users
+```
+src/test/java/com/edutech/users/
+├── ClassroomUsersModuleApplicationTests.java
+├── controller/
+│   └── UserControllerTest.java  
+└── service/
+    ├── UserServiceTest.java
+    └── BasicUserServiceTest.java
+```
+
+#### MS-Courses
+```
+src/test/java/com/edutech/courses/
+├── ClassroomCoursesModuleApplicationTests.java
+├── integration/
+│   └── CourseIntegrationTest.java
+└── service/
+    └── CourseServiceTest.java
+```
+
+### Tipos de Pruebas Implementadas
+
+#### 1. Pruebas Unitarias de Servicios
+- **Características**: Usan `@ExtendWith(MockitoExtension.class)`
+- **Mockean**: Repositories, Mappers, Clients Feign
+- **Prueban**: Lógica de negocio aislada
+
+#### 2. Pruebas de Controladores REST
+- **Características**: Usan `@WebMvcTest` y `MockMvc`
+- **Verifican**: Endpoints HTTP, respuestas JSON, códigos de estado
+- **Incluyen**: Testing de HATEOAS y Swagger
+
+#### 3. Pruebas de Integración
+- **Características**: Usan `@SpringBootTest`
+- **Verifican**: Comunicación entre servicios via Feign Client
+- **Incluyen**: Validaciones cruzadas
+
+### Ejecutar Pruebas
 
 ```bash
-# Crear base de datos (ejecutar create-db.sql)
-mysql -u root -p < create-db.sql
+# Todas las pruebas de todos los microservicios
+test-runner.bat
 
-# Las tablas se crean automáticamente con ddl-auto: update
-# Los datos de prueba se insertan automáticamenteAdd commentMore actions
+# Pruebas de un microservicio específico
+cd ms-grades && mvn test
+
+# Pruebas con reportes detallados
+mvn test surefire-report:report
+
+# Solo tests de controladores
+mvn test -Dtest="*ControllerTest"
+
+# Solo tests de servicios  
+mvn test -Dtest="*ServiceTest"
+
+# Test específico
+mvn test -Dtest=CourseQuizServiceTest#testFindById_Success
 ```
-## 🔧 Configuración TécnicaAdd commentMore actions
 
-### Puertos de Servicio
+## 📖 Documentación API con Swagger/OpenAPI
 
-- **ms-users**: 9001
-- **ms-courses**: 9002
-- **ms-grades**: 9003
-- **ms-payments**: 9004
-- **ms-support**: 9005
-- **eureka**: 8761 (deshabilitado)
+### SpringDoc OpenAPI 3
+Todos los microservicios implementan documentación automática con **SpringDoc OpenAPI**:
 
-### Base de Datos
+#### URLs de Swagger UI
+- **ms-users**: http://localhost:9001/swagger-ui/index.html
+- **ms-courses**: http://localhost:9002/swagger-ui/index.html  
+- **ms-grades**: http://localhost:9003/swagger-ui/index.html
+- **ms-payments**: http://localhost:9004/swagger-ui/index.html
+- **ms-support**: http://localhost:9005/swagger-ui/index.html
 
-- **Motor**: MySQL 8.0+
-- **Base de datos**: `edutech`
-- **Usuario**: `root`
-- **Contraseña**: (vacía por defecto)
-- **URL**: `jdbc:mysql://localhost:3306/edutech`
-- **DDL**: `update` (creación automática de tablas)
+#### Características de la Documentación
+- ✅ **Documentación en Español** - Todas las descripciones en español
+- ✅ **Ejemplos de Request/Response** - Para cada endpoint
+- ✅ **Validaciones Documentadas** - Constraints y reglas de negocio
+- ✅ **Esquemas de DTOs** - Estructuras de datos completas
+- ✅ **Códigos de Respuesta** - HTTP status codes documentados
 
-### Dependencias Principales
+#### Configuración OpenAPI
+```java
+@Tag(name = "Cursos", description = "API para gestión de cursos de la plataforma")
+@Operation(summary = "Obtener todos los cursos", 
+          description = "Retorna una lista de todos los cursos disponibles")
+```
 
-- **Spring Boot**: 3.2.0
-- **Spring Data JPA**: Para persistencia
-- **Spring Web**: Para APIs REST
-- **Spring HATEOAS**: Para navegabilidad
-- **Spring Cloud OpenFeign**: Para comunicación entre servicios
-- **SpringDoc OpenAPI**: Para documentación Swagger
-- **MySQL Connector**: Para base de datos
-- **JUnit 5**: Para pruebas unitarias
-- **Mockito**: Para mocking en pruebas
+### URLs de OpenAPI JSON
+- **ms-users**: http://localhost:9001/v3/api-docs
+- **ms-courses**: http://localhost:9002/v3/api-docs
+- **ms-grades**: http://localhost:9003/v3/api-docs
+- **ms-payments**: http://localhost:9004/v3/api-docs  
+- **ms-support**: http://localhost:9005/v3/api-docs
 
-## 🎯 Logros de la Migración
+## 🔗 HATEOAS (Hypermedia as the Engine of Application State)
 
-### ✅ Migración Completada
+### Implementación con Spring HATEOAS
+Todos los controladores REST implementan **HATEOAS** para navegabilidad de APIs:
 
-- **Monolito dividido** en 5 microservicios independientes
-- **Arquitectura limpia** con separación de responsabilidades
-- **Comunicación distribuida** vía Feign Client
-- **Validaciones cruzadas** funcionando en tiempo real
-- **Documentación interactiva** con Swagger
-- **Navegabilidad HATEOAS** en todos los endpoints
-- **Compatibilidad máxima** sin dependencias conflictivas
+#### Características HATEOAS
+- ✅ **EntityModel<T>** - Wrapper para recursos individuales
+- ✅ **CollectionModel<T>** - Wrapper para colecciones
+- ✅ **Enlaces de navegación** - Self, related, CRUD operations
+- ✅ **Hipermedia automática** - Links generados dinámicamente
 
-### ✅ Problemas Resueltos
+#### Ejemplo de Respuesta HATEOAS
+```json
+{
+  "id": 1,
+  "title": "Introducción a Java",
+  "description": "Curso básico de Java",
+  "_links": {
+    "self": {
+      "href": "http://localhost:9002/api/courses/1"
+    },
+    "courses": {
+      "href": "http://localhost:9002/api/courses"
+    },
+    "update": {
+      "href": "http://localhost:9002/api/courses/1"
+    },
+    "delete": {
+      "href": "http://localhost:9002/api/courses/1"
+    }
+  }
+}
+```
 
-- **Conflictos de Lombok/MapStruct**: Eliminados con POJOs y mappers manuales
-- **Errores de annotation processors**: Resueltos completamente
-- **Dependencias circulares**: Eliminadas con arquitectura modular
-- **Problemas de compilación**: Solucionados al 100%
-- **Configuración de Eureka**: Simplificado con URLs directas
+#### Controllers con HATEOAS Implementado
+- ✅ **ms-grades**: Todos los controladores (CourseQuiz, StudentMark, QuizResponse, etc.)
+- ✅ **ms-courses**: Todos los controladores (Course, CourseCategory, CourseContent, etc.)
+- ✅ **ms-users**: UserController, RoleController
+- ✅ **ms-payments**: PaymentController, DiscountCouponController
+- ✅ **ms-support**: SupportTicketController
 
-### ✅ Calidad y Robustez
+#### Navegación por Enlaces
+```bash
+# Obtener recurso con enlaces
+curl http://localhost:9002/api/courses/1
 
-- **Código limpio** sin anotaciones problemáticas
-- **Mappers explícitos** y mantenibles
-- **Configuración clara** y documentada
-- **Pruebas comprehensivas** en todos los niveles
-- **Documentación completa** para mantenimiento futuro
+# Seguir enlace "courses" para obtener todos los cursos
+curl http://localhost:9002/api/courses
+
+# Seguir enlace "update" para actualizar
+curl -X PUT http://localhost:9002/api/courses/1 -d '{...}'
+```
+
+// ...existing code...

@@ -7,11 +7,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 /**
  * REST Controller for managing course content
@@ -28,55 +33,71 @@ public class CourseContentController {
      * Get all course contents
      */
     @GetMapping
-    @Operation(summary = "Obtener todo el contenido", description = "Retorna una lista de todo el contenido de cursos")
-    public ResponseEntity<List<CourseContentDTO>> getAllCourseContents() {
+    @Operation(summary = "Obtener todo el contenido", description = "Retorna una lista de todo el contenido de cursos con enlaces HATEOAS")
+    public ResponseEntity<CollectionModel<EntityModel<CourseContentDTO>>> getAllCourseContents() {
         List<CourseContentDTO> courseContents = courseContentService.findAll();
-        return ResponseEntity.ok(courseContents);
+        
+        List<EntityModel<CourseContentDTO>> contentModels = courseContents.stream()
+                .map(this::addLinksToDto)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<CourseContentDTO>> collectionModel = CollectionModel.of(contentModels);
+        collectionModel.add(linkTo(CourseContentController.class).withSelfRel());
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     /**
      * Get course content by ID
      */
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener contenido por ID", description = "Retorna contenido específico de curso por su ID")
-    public ResponseEntity<CourseContentDTO> getCourseContentById(
+    @Operation(summary = "Obtener contenido por ID", description = "Retorna contenido específico de curso por su ID con enlaces HATEOAS")
+    public ResponseEntity<EntityModel<CourseContentDTO>> getCourseContentById(
             @Parameter(description = "ID del contenido a obtener") @PathVariable Integer id) {
         CourseContentDTO courseContent = courseContentService.findById(id);
-        return ResponseEntity.ok(courseContent);
+        EntityModel<CourseContentDTO> contentModel = addLinksToDto(courseContent);
+        return ResponseEntity.ok(contentModel);
     }
 
     /**
      * Get course contents by course ID
      */
     @GetMapping("/course/{courseId}")
-    @Operation(summary = "Obtener contenido por curso", description = "Retorna todo el contenido de un curso específico")
-    public ResponseEntity<List<CourseContentDTO>> getCourseContentsByCourseId(
+    @Operation(summary = "Obtener contenido por curso", description = "Retorna todo el contenido de un curso específico con enlaces HATEOAS")
+    public ResponseEntity<List<EntityModel<CourseContentDTO>>> getCourseContentsByCourseId(
             @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
         List<CourseContentDTO> courseContents = courseContentService.findByCourseId(courseId);
-        return ResponseEntity.ok(courseContents);
+        
+        List<EntityModel<CourseContentDTO>> contentModels = courseContents.stream()
+                .map(this::addLinksToDto)
+                .collect(Collectors.toList());
+        
+        return ResponseEntity.ok(contentModels);
     }
 
     /**
      * Create new course content
      */
     @PostMapping
-    @Operation(summary = "Crear nuevo contenido", description = "Crea un nuevo contenido de curso")
-    public ResponseEntity<CourseContentDTO> createCourseContent(
+    @Operation(summary = "Crear nuevo contenido", description = "Crea un nuevo contenido de curso y lo retorna con enlaces HATEOAS")
+    public ResponseEntity<EntityModel<CourseContentDTO>> createCourseContent(
             @Parameter(description = "Datos del nuevo contenido") @Valid @RequestBody CourseContentDTO courseContentDTO) {
         CourseContentDTO createdCourseContent = courseContentService.create(courseContentDTO);
-        return new ResponseEntity<>(createdCourseContent, HttpStatus.CREATED);
+        EntityModel<CourseContentDTO> contentModel = addLinksToDto(createdCourseContent);
+        return new ResponseEntity<>(contentModel, HttpStatus.CREATED);
     }
 
     /**
      * Update existing course content
      */
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar contenido", description = "Actualiza contenido existente de curso")
-    public ResponseEntity<CourseContentDTO> updateCourseContent(
+    @Operation(summary = "Actualizar contenido", description = "Actualiza contenido existente de curso y lo retorna con enlaces HATEOAS")
+    public ResponseEntity<EntityModel<CourseContentDTO>> updateCourseContent(
             @Parameter(description = "ID del contenido a actualizar") @PathVariable Integer id, 
             @Parameter(description = "Nuevos datos del contenido") @Valid @RequestBody CourseContentDTO courseContentDTO) {
         CourseContentDTO updatedCourseContent = courseContentService.update(id, courseContentDTO);
-        return ResponseEntity.ok(updatedCourseContent);
+        EntityModel<CourseContentDTO> contentModel = addLinksToDto(updatedCourseContent);
+        return ResponseEntity.ok(contentModel);
     }
 
     /**
@@ -88,5 +109,17 @@ public class CourseContentController {
             @Parameter(description = "ID del contenido a eliminar") @PathVariable Integer id) {
         courseContentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private EntityModel<CourseContentDTO> addLinksToDto(CourseContentDTO content) {
+        EntityModel<CourseContentDTO> contentModel = EntityModel.of(content);
+        
+        contentModel.add(linkTo(methodOn(CourseContentController.class).getCourseContentById(content.getId())).withSelfRel());
+        contentModel.add(linkTo(CourseContentController.class).withRel("all-contents"));
+        contentModel.add(linkTo(methodOn(CourseContentController.class).getCourseContentsByCourseId(content.getCourseId())).withRel("course-contents"));
+        contentModel.add(linkTo(methodOn(CourseContentController.class).updateCourseContent(content.getId(), content)).withRel("update"));
+        contentModel.add(linkTo(methodOn(CourseContentController.class).deleteCourseContent(content.getId())).withRel("delete"));
+        
+        return contentModel;
     }
 }

@@ -1,2 +1,7 @@
 # Ignore Monolitico project and its contents
 Monolitico/
+
+# Ignore documentation and debug files
+GUIA_RESOLUCION.md
+REORGANIZATION_SUMMARY.md
+DEBUG_LOG.md
