@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/quiz-responses")
+@RequestMapping("/api/quiz-response")
 @Tag(name = "Respuestas de Evaluaciones", description = "API para gestión de respuestas de estudiantes a evaluaciones")
 public class QuizResponseController {
 

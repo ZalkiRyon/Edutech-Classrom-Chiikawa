@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/api/student-marks")
+@RequestMapping("/api/student-mark")
 @Tag(name = "Calificaciones", description = "API para gestión de calificaciones de estudiantes")
 public class StudentMarkController {
 

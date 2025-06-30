@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/course-quiz-questions")
+@RequestMapping("/api/course-quiz-question")
 @Tag(name = "Preguntas de Cuestionarios", description = "API para gestionar las preguntas de los cuestionarios de cursos")
 public class CourseQuizQuestionController {
 

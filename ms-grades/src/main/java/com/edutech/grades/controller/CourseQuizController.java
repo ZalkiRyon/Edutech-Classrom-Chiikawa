@@ -2,6 +2,8 @@ package com.edutech.grades.controller;
 
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +23,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @RestController
-@RequestMapping("/api/course-quizzes")
+@RequestMapping("/api/course-quiz")
 @Tag(name = "Evaluaciones de Curso", description = "API para gestión de evaluaciones y quizzes de cursos")
 public class CourseQuizController {
 
@@ -34,17 +38,33 @@ public class CourseQuizController {
 
     @GetMapping
     @Operation(summary = "Obtener todas las evaluaciones", description = "Retorna una lista de todas las evaluaciones de cursos")
-    public ResponseEntity<List<QuizDTO>> getAllCourseQuizzes() {
+    public ResponseEntity<CollectionModel<EntityModel<QuizDTO>>> getAllCourseQuizzes() {
         List<QuizDTO> quizzes = courseQuizService.findAll();
-        return ResponseEntity.ok(quizzes);
+        
+        List<EntityModel<QuizDTO>> quizModels = quizzes.stream()
+            .map(quiz -> EntityModel.of(quiz)
+                .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizById(quiz.getId())).withSelfRel())
+                .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizzesByCourseId(quiz.getCourseId())).withRel("course-quizzes")))
+            .toList();
+        
+        CollectionModel<EntityModel<QuizDTO>> collectionModel = CollectionModel.of(quizModels)
+            .add(linkTo(methodOn(CourseQuizController.class).getAllCourseQuizzes()).withSelfRel());
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener evaluación por ID", description = "Retorna una evaluación específica por su ID")
-    public ResponseEntity<QuizDTO> getCourseQuizById(
+    public ResponseEntity<EntityModel<QuizDTO>> getCourseQuizById(
             @Parameter(description = "ID de la evaluación a obtener") @PathVariable Integer id) {
         QuizDTO quiz = courseQuizService.findById(id);
-        return ResponseEntity.ok(quiz);
+        
+        EntityModel<QuizDTO> quizModel = EntityModel.of(quiz)
+            .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizById(id)).withSelfRel())
+            .add(linkTo(methodOn(CourseQuizController.class).getAllCourseQuizzes()).withRel("all-quizzes"))
+            .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizzesByCourseId(quiz.getCourseId())).withRel("course-quizzes"));
+        
+        return ResponseEntity.ok(quizModel);
     }
 
     @GetMapping("/course/{courseId}")
