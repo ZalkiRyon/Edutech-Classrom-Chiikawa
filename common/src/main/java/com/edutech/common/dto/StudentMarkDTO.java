@@ -10,7 +10,6 @@ import java.time.Instant;
 
 public class StudentMarkDTO {
 
-    @NotNull(message = "El ID de la calificación es obligatorio.")
     private Integer id;
 
     @NotNull(message = "Debe especificar el ID del quiz.")

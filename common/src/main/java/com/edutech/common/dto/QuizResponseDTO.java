@@ -7,7 +7,6 @@ import java.time.Instant;
 
 public class QuizResponseDTO {
 
-    @NotNull(message = "El ID de la respuesta es obligatorio.")
     private Integer id;
 
     @NotNull(message = "Debe especificar el ID del quiz.")

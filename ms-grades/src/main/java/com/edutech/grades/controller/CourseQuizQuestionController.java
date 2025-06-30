@@ -5,12 +5,16 @@ import com.edutech.grades.service.CourseQuizQuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/course-quiz-question")
@@ -25,25 +29,52 @@ public class CourseQuizQuestionController {
 
     @GetMapping
     @Operation(summary = "Obtener todas las preguntas de cuestionarios", description = "Obtiene una lista de todas las preguntas de cuestionarios")
-    public ResponseEntity<List<CourseQuizQuestionDTO>> getAllCourseQuizQuestions() {
+    public ResponseEntity<CollectionModel<EntityModel<CourseQuizQuestionDTO>>> getAllCourseQuizQuestions() {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findAll();
-        return ResponseEntity.ok(questions);
+        
+        List<EntityModel<CourseQuizQuestionDTO>> questionModels = questions.stream()
+            .map(question -> EntityModel.of(question)
+                .add(linkTo(methodOn(CourseQuizQuestionController.class).getCourseQuizQuestionById(question.getId())).withSelfRel())
+                .add(linkTo(methodOn(CourseQuizQuestionController.class).getQuestionsByQuizId(question.getQuizId())).withRel("quiz-questions")))
+            .toList();
+        
+        CollectionModel<EntityModel<CourseQuizQuestionDTO>> collectionModel = CollectionModel.of(questionModels)
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withSelfRel());
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener pregunta por ID", description = "Obtiene una pregunta específica de cuestionario por su ID")
-    public ResponseEntity<CourseQuizQuestionDTO> getCourseQuizQuestionById(
+    public ResponseEntity<EntityModel<CourseQuizQuestionDTO>> getCourseQuizQuestionById(
             @Parameter(description = "ID de la pregunta de cuestionario a obtener") @PathVariable Integer id) {
         CourseQuizQuestionDTO question = courseQuizQuestionService.findById(id);
-        return ResponseEntity.ok(question);
+        
+        EntityModel<CourseQuizQuestionDTO> questionModel = EntityModel.of(question)
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getCourseQuizQuestionById(id)).withSelfRel())
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withRel("all-questions"))
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getQuestionsByQuizId(question.getQuizId())).withRel("quiz-questions"));
+        
+        return ResponseEntity.ok(questionModel);
     }
 
     @GetMapping("/quiz/{quizId}")
     @Operation(summary = "Obtener preguntas por ID de cuestionario", description = "Obtiene todas las preguntas de un cuestionario específico")
-    public ResponseEntity<List<CourseQuizQuestionDTO>> getQuestionsByQuizId(
+    public ResponseEntity<CollectionModel<EntityModel<CourseQuizQuestionDTO>>> getQuestionsByQuizId(
             @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findByQuizId(quizId);
-        return ResponseEntity.ok(questions);
+        
+        List<EntityModel<CourseQuizQuestionDTO>> questionModels = questions.stream()
+            .map(question -> EntityModel.of(question)
+                .add(linkTo(methodOn(CourseQuizQuestionController.class).getCourseQuizQuestionById(question.getId())).withSelfRel())
+                .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withRel("all-questions")))
+            .toList();
+        
+        CollectionModel<EntityModel<CourseQuizQuestionDTO>> collectionModel = CollectionModel.of(questionModels)
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getQuestionsByQuizId(quizId)).withSelfRel())
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withRel("all-questions"));
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/quiz/{quizId}/ordered")
@@ -80,19 +111,31 @@ public class CourseQuizQuestionController {
 
     @PostMapping
     @Operation(summary = "Crear nueva pregunta de cuestionario", description = "Crea una nueva pregunta de cuestionario")
-    public ResponseEntity<CourseQuizQuestionDTO> createCourseQuizQuestion(
+    public ResponseEntity<EntityModel<CourseQuizQuestionDTO>> createCourseQuizQuestion(
             @Valid @RequestBody CourseQuizQuestionDTO courseQuizQuestionDTO) {
         CourseQuizQuestionDTO createdQuestion = courseQuizQuestionService.create(courseQuizQuestionDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
+        
+        EntityModel<CourseQuizQuestionDTO> questionModel = EntityModel.of(createdQuestion)
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getCourseQuizQuestionById(createdQuestion.getId())).withSelfRel())
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getQuestionsByQuizId(createdQuestion.getQuizId())).withRel("quiz-questions"))
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withRel("all-questions"));
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionModel);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar pregunta de cuestionario", description = "Actualiza una pregunta de cuestionario existente por su ID")
-    public ResponseEntity<CourseQuizQuestionDTO> updateCourseQuizQuestion(
+    public ResponseEntity<EntityModel<CourseQuizQuestionDTO>> updateCourseQuizQuestion(
             @Parameter(description = "ID de la pregunta de cuestionario a actualizar") @PathVariable Integer id,
             @Valid @RequestBody CourseQuizQuestionDTO courseQuizQuestionDTO) {
         CourseQuizQuestionDTO updatedQuestion = courseQuizQuestionService.update(id, courseQuizQuestionDTO);
-        return ResponseEntity.ok(updatedQuestion);
+        
+        EntityModel<CourseQuizQuestionDTO> questionModel = EntityModel.of(updatedQuestion)
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getCourseQuizQuestionById(id)).withSelfRel())
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getQuestionsByQuizId(updatedQuestion.getQuizId())).withRel("quiz-questions"))
+            .add(linkTo(methodOn(CourseQuizQuestionController.class).getAllCourseQuizQuestions()).withRel("all-questions"));
+        
+        return ResponseEntity.ok(questionModel);
     }
 
     @DeleteMapping("/{id}")

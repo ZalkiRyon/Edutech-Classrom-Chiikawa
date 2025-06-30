@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edutech.common.dto.QuizDTO;
+import com.edutech.common.dto.CourseQuizDTO;
 import com.edutech.common.exception.ResourceNotFoundException;
 import com.edutech.grades.entity.CourseQuiz;
 import com.edutech.grades.mapper.CourseQuizMapperManual;
@@ -29,7 +29,7 @@ public class CourseQuizService {
     /**
      * Get all course quizzes
      */
-    public List<QuizDTO> findAll() {
+    public List<CourseQuizDTO> findAll() {
         return courseQuizRepository.findAll()
                 .stream()
                 .map(courseQuizMapper::toDTO)
@@ -39,7 +39,7 @@ public class CourseQuizService {
     /**
      * Get course quiz by ID
      */
-    public QuizDTO findById(Integer id) {
+    public CourseQuizDTO findById(Integer id) {
         CourseQuiz courseQuiz = courseQuizRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course quiz not found with id: " + id));
         return courseQuizMapper.toDTO(courseQuiz);
@@ -48,7 +48,7 @@ public class CourseQuizService {
     /**
      * Get quizzes by course ID
      */
-    public List<QuizDTO> findByCourseId(Integer courseId) {
+    public List<CourseQuizDTO> findByCourseId(Integer courseId) {
         return courseQuizRepository.findByCourseIdOrderByCreatedAtDesc(courseId)
                 .stream()
                 .map(courseQuizMapper::toDTO)
@@ -58,7 +58,7 @@ public class CourseQuizService {
     /**
      * Get quizzes by quiz type
      */
-    public List<QuizDTO> findByQuizType(String quizType) {
+    public List<CourseQuizDTO> findByQuizType(String quizType) {
         return courseQuizRepository.findByQuizTypeOrderByCreatedAtDesc(quizType)
                 .stream()
                 .map(courseQuizMapper::toDTO)
@@ -68,7 +68,7 @@ public class CourseQuizService {
     /**
      * Get quizzes by course ID and quiz type
      */
-    public List<QuizDTO> findByCourseIdAndQuizType(Integer courseId, String quizType) {
+    public List<CourseQuizDTO> findByCourseIdAndQuizType(Integer courseId, String quizType) {
         return courseQuizRepository.findByCourseIdAndQuizTypeOrderByCreatedAtDesc(courseId, quizType)
                 .stream()
                 .map(courseQuizMapper::toDTO)
@@ -78,7 +78,7 @@ public class CourseQuizService {
     /**
      * Create new course quiz
      */
-    public QuizDTO create(QuizDTO courseQuizDTO) {
+    public CourseQuizDTO create(CourseQuizDTO courseQuizDTO) {
         CourseQuiz courseQuiz = courseQuizMapper.toEntity(courseQuizDTO);
         
         // Set creation timestamp if not provided
@@ -93,7 +93,7 @@ public class CourseQuizService {
     /**
      * Update existing course quiz
      */
-    public QuizDTO update(Integer id, QuizDTO courseQuizDTO) {
+    public CourseQuizDTO update(Integer id, CourseQuizDTO courseQuizDTO) {
         // Verify that the course quiz exists
         if (!courseQuizRepository.existsById(id)) {
             throw new ResourceNotFoundException("Course quiz not found with id: " + id);

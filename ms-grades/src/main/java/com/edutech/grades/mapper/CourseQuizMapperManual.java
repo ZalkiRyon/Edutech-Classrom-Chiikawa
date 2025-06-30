@@ -1,22 +1,22 @@
 package com.edutech.grades.mapper;
 
-import com.edutech.common.dto.QuizDTO;
+import com.edutech.common.dto.CourseQuizDTO;
 import com.edutech.grades.entity.CourseQuiz;
 import org.springframework.stereotype.Component;
 
 /**
  * Manual mapper for CourseQuiz entity and DTO conversion
- * Uses QuizDTO for compatibility and simplicity
+ * Uses CourseQuizDTO for proper semantic naming
  */
 @Component
 public class CourseQuizMapperManual {
 
-    public QuizDTO toDTO(CourseQuiz entity) {
+    public CourseQuizDTO toDTO(CourseQuiz entity) {
         if (entity == null) {
             return null;
         }
 
-        QuizDTO dto = new QuizDTO();
+        CourseQuizDTO dto = new CourseQuizDTO();
         dto.setId(entity.getId());
         dto.setCourseId(entity.getCourseId());
         dto.setTitle(entity.getTitle());
@@ -27,7 +27,7 @@ public class CourseQuizMapperManual {
         return dto;
     }
 
-    public CourseQuiz toEntity(QuizDTO dto) {
+    public CourseQuiz toEntity(CourseQuizDTO dto) {
         if (dto == null) {
             return null;
         }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edutech.common.dto.QuizDTO;
+import com.edutech.common.dto.CourseQuizDTO;
 import com.edutech.grades.service.CourseQuizService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,16 +38,16 @@ public class CourseQuizController {
 
     @GetMapping
     @Operation(summary = "Obtener todas las evaluaciones", description = "Retorna una lista de todas las evaluaciones de cursos")
-    public ResponseEntity<CollectionModel<EntityModel<QuizDTO>>> getAllCourseQuizzes() {
-        List<QuizDTO> quizzes = courseQuizService.findAll();
+    public ResponseEntity<CollectionModel<EntityModel<CourseQuizDTO>>> getAllCourseQuizzes() {
+        List<CourseQuizDTO> quizzes = courseQuizService.findAll();
         
-        List<EntityModel<QuizDTO>> quizModels = quizzes.stream()
+        List<EntityModel<CourseQuizDTO>> quizModels = quizzes.stream()
             .map(quiz -> EntityModel.of(quiz)
                 .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizById(quiz.getId())).withSelfRel())
                 .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizzesByCourseId(quiz.getCourseId())).withRel("course-quizzes")))
             .toList();
         
-        CollectionModel<EntityModel<QuizDTO>> collectionModel = CollectionModel.of(quizModels)
+        CollectionModel<EntityModel<CourseQuizDTO>> collectionModel = CollectionModel.of(quizModels)
             .add(linkTo(methodOn(CourseQuizController.class).getAllCourseQuizzes()).withSelfRel());
         
         return ResponseEntity.ok(collectionModel);
@@ -55,11 +55,11 @@ public class CourseQuizController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener evaluación por ID", description = "Retorna una evaluación específica por su ID")
-    public ResponseEntity<EntityModel<QuizDTO>> getCourseQuizById(
+    public ResponseEntity<EntityModel<CourseQuizDTO>> getCourseQuizById(
             @Parameter(description = "ID de la evaluación a obtener") @PathVariable Integer id) {
-        QuizDTO quiz = courseQuizService.findById(id);
+        CourseQuizDTO quiz = courseQuizService.findById(id);
         
-        EntityModel<QuizDTO> quizModel = EntityModel.of(quiz)
+        EntityModel<CourseQuizDTO> quizModel = EntityModel.of(quiz)
             .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizById(id)).withSelfRel())
             .add(linkTo(methodOn(CourseQuizController.class).getAllCourseQuizzes()).withRel("all-quizzes"))
             .add(linkTo(methodOn(CourseQuizController.class).getCourseQuizzesByCourseId(quiz.getCourseId())).withRel("course-quizzes"));
@@ -69,43 +69,43 @@ public class CourseQuizController {
 
     @GetMapping("/course/{courseId}")
     @Operation(summary = "Obtener evaluaciones por curso", description = "Retorna todas las evaluaciones de un curso específico")
-    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByCourseId(
+    public ResponseEntity<List<CourseQuizDTO>> getCourseQuizzesByCourseId(
             @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
-        List<QuizDTO> quizzes = courseQuizService.findByCourseId(courseId);
+        List<CourseQuizDTO> quizzes = courseQuizService.findByCourseId(courseId);
         return ResponseEntity.ok(quizzes);
     }
 
     @GetMapping("/type/{quizType}")
     @Operation(summary = "Obtener evaluaciones por tipo", description = "Retorna todas las evaluaciones de un tipo específico")
-    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByType(
+    public ResponseEntity<List<CourseQuizDTO>> getCourseQuizzesByType(
             @Parameter(description = "Tipo de evaluación") @PathVariable String quizType) {
-        List<QuizDTO> quizzes = courseQuizService.findByQuizType(quizType);
+        List<CourseQuizDTO> quizzes = courseQuizService.findByQuizType(quizType);
         return ResponseEntity.ok(quizzes);
     }
 
     @GetMapping("/course/{courseId}/type/{quizType}")
     @Operation(summary = "Obtener evaluaciones por curso y tipo", description = "Retorna evaluaciones filtradas por curso y tipo")
-    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByCourseIdAndType(
+    public ResponseEntity<List<CourseQuizDTO>> getCourseQuizzesByCourseIdAndType(
             @Parameter(description = "ID del curso") @PathVariable Integer courseId,
             @Parameter(description = "Tipo de evaluación") @PathVariable String quizType) {
-        List<QuizDTO> quizzes = courseQuizService.findByCourseIdAndQuizType(courseId, quizType);
+        List<CourseQuizDTO> quizzes = courseQuizService.findByCourseIdAndQuizType(courseId, quizType);
         return ResponseEntity.ok(quizzes);
     }
 
     @PostMapping
     @Operation(summary = "Crear nueva evaluación", description = "Crea una nueva evaluación para un curso")
-    public ResponseEntity<QuizDTO> createCourseQuiz(
-            @Parameter(description = "Datos de la nueva evaluación") @Valid @RequestBody QuizDTO courseQuizDTO) {
-        QuizDTO createdQuiz = courseQuizService.create(courseQuizDTO);
+    public ResponseEntity<CourseQuizDTO> createCourseQuiz(
+            @Parameter(description = "Datos de la nueva evaluación") @Valid @RequestBody CourseQuizDTO courseQuizDTO) {
+        CourseQuizDTO createdQuiz = courseQuizService.create(courseQuizDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuiz);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar evaluación", description = "Actualiza una evaluación existente")
-    public ResponseEntity<QuizDTO> updateCourseQuiz(
+    public ResponseEntity<CourseQuizDTO> updateCourseQuiz(
             @Parameter(description = "ID de la evaluación a actualizar") @PathVariable Integer id,
-            @Parameter(description = "Nuevos datos de la evaluación") @Valid @RequestBody QuizDTO courseQuizDTO) {
-        QuizDTO updatedQuiz = courseQuizService.update(id, courseQuizDTO);
+            @Parameter(description = "Nuevos datos de la evaluación") @Valid @RequestBody CourseQuizDTO courseQuizDTO) {
+        CourseQuizDTO updatedQuiz = courseQuizService.update(id, courseQuizDTO);
         return ResponseEntity.ok(updatedQuiz);
     }
 

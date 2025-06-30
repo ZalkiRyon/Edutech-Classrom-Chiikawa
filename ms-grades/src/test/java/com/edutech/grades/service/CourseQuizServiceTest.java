@@ -1,6 +1,7 @@
 package com.edutech.grades.service;
 
-import com.edutech.common.dto.QuizDTO;
+import com.edutech.common.dto.CourseQuizDTO;
+import com.edutech.common.exception.ResourceNotFoundException;
 import com.edutech.grades.entity.CourseQuiz;
 import com.edutech.grades.mapper.CourseQuizMapperManual;
 import com.edutech.grades.repository.CourseQuizRepository;
@@ -33,7 +34,7 @@ class CourseQuizServiceTest {
     private CourseQuizService courseQuizService;
 
     private CourseQuiz courseQuiz;
-    private QuizDTO quizDTO;
+    private CourseQuizDTO courseQuizDTO;
 
     @BeforeEach
     void setUp() {
@@ -45,25 +46,25 @@ class CourseQuizServiceTest {
         courseQuiz.setQuizType("Multiple Choice");
         courseQuiz.setCreatedAt(Instant.now());
 
-        quizDTO = new QuizDTO();
-        quizDTO.setId(1);
-        quizDTO.setCourseId(1);
-        quizDTO.setTitle("Quiz de Prueba");
-        quizDTO.setDescription("Descripción del quiz de prueba");
-        quizDTO.setQuizType("Multiple Choice");
+        courseQuizDTO = new CourseQuizDTO();
+        courseQuizDTO.setId(1);
+        courseQuizDTO.setCourseId(1);
+        courseQuizDTO.setTitle("Quiz de Prueba");
+        courseQuizDTO.setDescription("Descripción del quiz de prueba");
+        courseQuizDTO.setQuizType("Multiple Choice");
     }
 
     @Test
     void testFindAll() {
         // Arrange
         List<CourseQuiz> courseQuizzes = Arrays.asList(courseQuiz);
-        List<QuizDTO> expectedDTOs = Arrays.asList(quizDTO);
-        
+        List<CourseQuizDTO> expectedDTOs = Arrays.asList(courseQuizDTO);
+
         when(courseQuizRepository.findAll()).thenReturn(courseQuizzes);
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        List<QuizDTO> result = courseQuizService.findAll();
+        List<CourseQuizDTO> result = courseQuizService.findAll();
 
         // Assert
         assertNotNull(result);
@@ -77,40 +78,42 @@ class CourseQuizServiceTest {
     void testFindById() {
         // Arrange
         when(courseQuizRepository.findById(1)).thenReturn(Optional.of(courseQuiz));
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        QuizDTO result = courseQuizService.findById(1);
+        CourseQuizDTO result = courseQuizService.findById(1);
 
         // Assert
         assertNotNull(result);
-        assertEquals(quizDTO.getTitle(), result.getTitle());
-        assertEquals(quizDTO.getCourseId(), result.getCourseId());
+        assertEquals(courseQuizDTO.getTitle(), result.getTitle());
+        assertEquals(courseQuizDTO.getCourseId(), result.getCourseId());
         verify(courseQuizRepository).findById(1);
         verify(courseQuizMapper).toDTO(courseQuiz);
     }
 
     @Test
-    void testFindByIdNotFound() {
+    void testFindById_NotFound() {
         // Arrange
         when(courseQuizRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> courseQuizService.findById(1));
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, 
+                () -> courseQuizService.findById(1));
+        assertNotNull(exception);
         verify(courseQuizRepository).findById(1);
-        verify(courseQuizMapper, never()).toDTO(any());
     }
 
     @Test
     void testFindByCourseId() {
         // Arrange
         List<CourseQuiz> courseQuizzes = Arrays.asList(courseQuiz);
-        List<QuizDTO> expectedDTOs = Arrays.asList(quizDTO);
+        List<CourseQuizDTO> expectedDTOs = Arrays.asList(courseQuizDTO);
+
         when(courseQuizRepository.findByCourseIdOrderByCreatedAtDesc(1)).thenReturn(courseQuizzes);
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        List<QuizDTO> result = courseQuizService.findByCourseId(1);
+        List<CourseQuizDTO> result = courseQuizService.findByCourseId(1);
 
         // Assert
         assertNotNull(result);
@@ -125,12 +128,13 @@ class CourseQuizServiceTest {
         // Arrange
         String quizType = "Multiple Choice";
         List<CourseQuiz> courseQuizzes = Arrays.asList(courseQuiz);
-        List<QuizDTO> expectedDTOs = Arrays.asList(quizDTO);
+        List<CourseQuizDTO> expectedDTOs = Arrays.asList(courseQuizDTO);
+
         when(courseQuizRepository.findByQuizTypeOrderByCreatedAtDesc(quizType)).thenReturn(courseQuizzes);
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        List<QuizDTO> result = courseQuizService.findByQuizType(quizType);
+        List<CourseQuizDTO> result = courseQuizService.findByQuizType(quizType);
 
         // Assert
         assertNotNull(result);
@@ -143,18 +147,18 @@ class CourseQuizServiceTest {
     @Test
     void testCreate() {
         // Arrange
-        when(courseQuizMapper.toEntity(quizDTO)).thenReturn(courseQuiz);
+        when(courseQuizMapper.toEntity(courseQuizDTO)).thenReturn(courseQuiz);
         when(courseQuizRepository.save(courseQuiz)).thenReturn(courseQuiz);
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        QuizDTO result = courseQuizService.create(quizDTO);
+        CourseQuizDTO result = courseQuizService.create(courseQuizDTO);
 
         // Assert
         assertNotNull(result);
-        assertEquals(quizDTO.getTitle(), result.getTitle());
-        verify(courseQuizMapper).toEntity(quizDTO);
+        assertEquals(courseQuizDTO.getTitle(), result.getTitle());
         verify(courseQuizRepository).save(courseQuiz);
+        verify(courseQuizMapper).toEntity(courseQuizDTO);
         verify(courseQuizMapper).toDTO(courseQuiz);
     }
 
@@ -162,20 +166,32 @@ class CourseQuizServiceTest {
     void testUpdate() {
         // Arrange
         when(courseQuizRepository.existsById(1)).thenReturn(true);
-        when(courseQuizMapper.toEntity(quizDTO)).thenReturn(courseQuiz);
-        when(courseQuizRepository.save(any(CourseQuiz.class))).thenReturn(courseQuiz);
-        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(quizDTO);
+        when(courseQuizMapper.toEntity(courseQuizDTO)).thenReturn(courseQuiz);
+        when(courseQuizRepository.save(courseQuiz)).thenReturn(courseQuiz);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
         // Act
-        QuizDTO result = courseQuizService.update(1, quizDTO);
+        CourseQuizDTO result = courseQuizService.update(1, courseQuizDTO);
 
         // Assert
         assertNotNull(result);
-        assertEquals(quizDTO.getTitle(), result.getTitle());
+        assertEquals(courseQuizDTO.getTitle(), result.getTitle());
         verify(courseQuizRepository).existsById(1);
-        verify(courseQuizMapper).toEntity(quizDTO);
-        verify(courseQuizRepository).save(any(CourseQuiz.class));
+        verify(courseQuizRepository).save(courseQuiz);
+        verify(courseQuizMapper).toEntity(courseQuizDTO);
         verify(courseQuizMapper).toDTO(courseQuiz);
+    }
+
+    @Test
+    void testUpdate_NotFound() {
+        // Arrange
+        when(courseQuizRepository.existsById(1)).thenReturn(false);
+
+        // Act & Assert
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, 
+                () -> courseQuizService.update(1, courseQuizDTO));
+        assertNotNull(exception);
+        verify(courseQuizRepository).existsById(1);
     }
 
     @Test
@@ -192,7 +208,7 @@ class CourseQuizServiceTest {
     }
 
     @Test
-    void testDeleteNotFound() {
+    void testDelete_NotFound() {
         // Arrange
         when(courseQuizRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -218,13 +234,13 @@ class CourseQuizServiceTest {
     @Test
     void testCountByCourseId() {
         // Arrange
-        when(courseQuizRepository.countByCourseId(1)).thenReturn(5L);
+        when(courseQuizRepository.countByCourseId(1)).thenReturn(3L);
 
         // Act
         long result = courseQuizService.countByCourseId(1);
 
         // Assert
-        assertEquals(5L, result);
+        assertEquals(3L, result);
         verify(courseQuizRepository).countByCourseId(1);
     }
 
@@ -239,5 +255,28 @@ class CourseQuizServiceTest {
         // Assert
         assertTrue(result);
         verify(courseQuizRepository).existsByCourseId(1);
+    }
+
+    @Test
+    void testFindByCourseIdAndQuizType() {
+        // Arrange
+        Integer courseId = 1;
+        String quizType = "Multiple Choice";
+        List<CourseQuiz> courseQuizzes = Arrays.asList(courseQuiz);
+        List<CourseQuizDTO> expectedDTOs = Arrays.asList(courseQuizDTO);
+
+        when(courseQuizRepository.findByCourseIdAndQuizTypeOrderByCreatedAtDesc(courseId, quizType)).thenReturn(courseQuizzes);
+        when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
+
+        // Act
+        List<CourseQuizDTO> result = courseQuizService.findByCourseIdAndQuizType(courseId, quizType);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(expectedDTOs.get(0).getTitle(), result.get(0).getTitle());
+        assertEquals(expectedDTOs.get(0).getQuizType(), result.get(0).getQuizType());
+        verify(courseQuizRepository).findByCourseIdAndQuizTypeOrderByCreatedAtDesc(courseId, quizType);
+        verify(courseQuizMapper).toDTO(courseQuiz);
     }
 }
