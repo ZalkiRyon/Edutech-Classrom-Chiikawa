@@ -1,4 +1,4 @@
-package com.edutech.courses.entity;
+package com.edutech.grades.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -6,8 +6,8 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.Instant;
 
 @Entity
-@Table(name = "course_comment")
-public class CourseComment {
+@Table(name = "course_quiz")
+public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -16,28 +16,28 @@ public class CourseComment {
     @Column(name = "course_id", nullable = false)
     private Integer courseId;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @Column(name = "title", nullable = false, length = 200)
+    private String title;
 
-    @Column(name = "comment_text", nullable = false, length = 800)
-    private String commentText;
+    @Column(name = "description", nullable = false, length = 800)
+    private String description;
 
-    @Column(name = "rating", nullable = false)
-    private Integer rating;
+    @Column(name = "quiz_type", nullable = false, length = 50)
+    private String quizType;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     // Constructors
-    public CourseComment() {}
+    public Quiz() {}
 
-    public CourseComment(Integer id, Integer courseId, Integer userId, String commentText, Integer rating, Instant createdAt) {
+    public Quiz(Integer id, Integer courseId, String title, String description, String quizType, Instant createdAt) {
         this.id = id;
         this.courseId = courseId;
-        this.userId = userId;
-        this.commentText = commentText;
-        this.rating = rating;
+        this.title = title;
+        this.description = description;
+        this.quizType = quizType;
         this.createdAt = createdAt;
     }
 
@@ -58,28 +58,28 @@ public class CourseComment {
         this.courseId = courseId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getCommentText() {
-        return commentText;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getRating() {
-        return rating;
+    public String getQuizType() {
+        return quizType;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setQuizType(String quizType) {
+        this.quizType = quizType;
     }
 
     public Instant getCreatedAt() {

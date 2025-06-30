@@ -1,4 +1,4 @@
-package com.edutech.grades.entity;
+package com.edutech.courses.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

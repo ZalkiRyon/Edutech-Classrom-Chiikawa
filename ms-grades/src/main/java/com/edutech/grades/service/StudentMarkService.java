@@ -3,10 +3,9 @@ package com.edutech.grades.service;
 import com.edutech.common.dto.StudentMarkDTO;
 import com.edutech.grades.client.UserClient;
 import com.edutech.grades.entity.StudentMark;
-import com.edutech.grades.mapper.StudentMarkMapper;
+import com.edutech.grades.mapper.StudentMarkMapperManual;
 import com.edutech.grades.repository.StudentMarkRepository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +14,19 @@ import static com.edutech.common.exception.ExceptionUtils.orThrow;
 import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 
 @Service
-@RequiredArgsConstructor
 public class StudentMarkService {
 
     private final StudentMarkRepository studentMarkRepository;
-    private final StudentMarkMapper studentMarkMapper;
+    private final StudentMarkMapperManual studentMarkMapper;
     private final UserClient userClient;
+
+    public StudentMarkService(StudentMarkRepository studentMarkRepository, 
+                             StudentMarkMapperManual studentMarkMapper, 
+                             UserClient userClient) {
+        this.studentMarkRepository = studentMarkRepository;
+        this.studentMarkMapper = studentMarkMapper;
+        this.userClient = userClient;
+    }
 
     public List<StudentMarkDTO> findAll() {
         return studentMarkRepository.findAll().stream().map(studentMarkMapper::toDTO).toList();

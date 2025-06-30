@@ -3,23 +3,29 @@ package com.edutech.courses.integration;
 import com.edutech.common.dto.CourseDTO;
 import com.edutech.common.dto.UserDTO;
 import com.edutech.courses.ClassroomCoursesModuleApplication;
+import com.edutech.courses.client.UserClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = ClassroomCoursesModuleApplication.class)
-@AutoConfigureWebMvc
+@AutoConfigureMockMvc
 @TestPropertySource(properties = {
     "eureka.client.enabled=false",
     "spring.cloud.discovery.enabled=false"
@@ -31,6 +37,25 @@ class CourseIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private UserClient userClient;
+
+    @BeforeEach
+    void setUp() {
+        // Mock the UserClient to return a valid user for any ID
+        UserDTO mockUser = new UserDTO();
+        mockUser.setId(1);
+        mockUser.setFirstName("Test");
+        mockUser.setLastName("User");
+        mockUser.setEmail("test@edutech.com");
+        mockUser.setRoleId(1);
+        mockUser.setIsActive(true);
+        mockUser.setCreatedAt(Instant.now());
+        mockUser.setUpdatedAt(Instant.now());
+        
+        when(userClient.findById(anyInt())).thenReturn(mockUser);
+    }
 
     @Test
     void createCourse_ShouldReturnHateoasResponse() throws Exception {

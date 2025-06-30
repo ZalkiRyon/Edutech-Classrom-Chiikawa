@@ -1,6 +1,7 @@
 package com.edutech.users.controller;
 
 import com.edutech.common.dto.UserDTO;
+import com.edutech.common.exception.ResourceNotFoundException;
 import com.edutech.users.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,12 +94,12 @@ class UserControllerTest {
     @Test
     void findById_WhenUserNotExists_ShouldReturnNotFound() throws Exception {
         // Given
-        when(userService.findById(anyInt())).thenThrow(new RuntimeException("User not found"));
+        when(userService.findById(anyInt())).thenThrow(new ResourceNotFoundException("User not found"));
 
         // When & Then
         mockMvc.perform(get("/api/users/999")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound());
 
         verify(userService).findById(999);
     }
@@ -198,12 +199,12 @@ class UserControllerTest {
     @Test
     void delete_WhenUserNotExists_ShouldReturnError() throws Exception {
         // Given
-        doThrow(new RuntimeException("User not found")).when(userService).delete(999);
+        doThrow(new ResourceNotFoundException("User not found")).when(userService).delete(999);
 
         // When & Then
         mockMvc.perform(delete("/api/users/999")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound());
 
         verify(userService).delete(999);
     }

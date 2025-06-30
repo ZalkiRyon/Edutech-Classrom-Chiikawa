@@ -4,7 +4,6 @@ import com.edutech.common.dto.StudentMarkDTO;
 import com.edutech.grades.service.StudentMarkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/student-marks")
-@RequiredArgsConstructor
 @Tag(name = "Calificaciones", description = "API para gestión de calificaciones de estudiantes")
 public class StudentMarkController {
 
     private final StudentMarkService studentMarkService;
+
+    public StudentMarkController(StudentMarkService studentMarkService) {
+        this.studentMarkService = studentMarkService;
+    }
 
     @GetMapping
     @Operation(summary = "Obtener todas las calificaciones", description = "Retorna una lista de todas las calificaciones")

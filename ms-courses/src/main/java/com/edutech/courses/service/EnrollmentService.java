@@ -1,11 +1,11 @@
-package com.edutech.grades.service;
+package com.edutech.courses.service;
 
 import com.edutech.common.dto.EnrollmentDTO;
-import com.edutech.grades.client.UserClient;
-import com.edutech.grades.client.CourseClient;
-import com.edutech.grades.entity.Enrollment;
-import com.edutech.grades.mapper.EnrollmentMapper;
-import com.edutech.grades.repository.EnrollmentRepository;
+import com.edutech.courses.client.UserClient;
+import com.edutech.courses.entity.Enrollment;
+import com.edutech.courses.mapper.EnrollmentMapperManual;
+import com.edutech.courses.repository.EnrollmentRepository;
+import com.edutech.courses.repository.CourseRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -18,16 +18,16 @@ import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
-    private final EnrollmentMapper enrollmentMapper;
+    private final EnrollmentMapperManual enrollmentMapper;
     private final UserClient userClient;
-    private final CourseClient courseClient;
+    private final CourseRepository courseRepository;
 
-    public EnrollmentService(EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper,
-                           UserClient userClient, CourseClient courseClient) {
+    public EnrollmentService(EnrollmentRepository enrollmentRepository, EnrollmentMapperManual enrollmentMapper,
+                           UserClient userClient, CourseRepository courseRepository) {
         this.enrollmentRepository = enrollmentRepository;
         this.enrollmentMapper = enrollmentMapper;
         this.userClient = userClient;
-        this.courseClient = courseClient;
+        this.courseRepository = courseRepository;
     }
 
     public List<EnrollmentDTO> findAll() {
@@ -51,7 +51,7 @@ public class EnrollmentService {
         orThrowFeign(dto.getStudentId(), userClient::findById, "Estudiante");
 
         // Validar que el curso exista
-        orThrowFeign(dto.getCourseId(), courseClient::findById, "Curso");
+        orThrow(courseRepository.findById(dto.getCourseId()), "Curso");
 
         // Crear nueva inscripción
         return saveDTO(dto, null);
@@ -64,7 +64,7 @@ public class EnrollmentService {
         orThrowFeign(dto.getStudentId(), userClient::findById, "Estudiante");
 
         // Validar que el curso exista
-        orThrowFeign(dto.getCourseId(), courseClient::findById, "Curso");
+        orThrow(courseRepository.findById(dto.getCourseId()), "Curso");
         
         return saveDTO(dto, id);
     }

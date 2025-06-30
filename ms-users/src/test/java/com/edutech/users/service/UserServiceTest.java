@@ -3,7 +3,7 @@ package com.edutech.users.service;
 import com.edutech.common.dto.UserDTO;
 import com.edutech.common.exception.ResourceNotFoundException;
 import com.edutech.users.entity.User;
-import com.edutech.users.mapper.UserMapper;
+import com.edutech.users.mapper.UserMapperManual;
 import com.edutech.users.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class UserServiceTest {
     private UserRepository userRepo;
 
     @Mock
-    private UserMapper userMapper;
+    private UserMapperManual userMapper;
 
     @InjectMocks
     private UserService userService;

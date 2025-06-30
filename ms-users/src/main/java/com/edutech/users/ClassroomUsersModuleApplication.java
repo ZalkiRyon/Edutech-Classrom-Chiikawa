@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 // @EnableDiscoveryClient  // Comentado temporalmente para desarrollo sin Eureka
-@EnableFeignClients(basePackages = "com.edutech.users.client")
+@EnableFeignClients(basePackages = "com.edutech.users.client", defaultConfiguration = {})
 @SpringBootApplication
 public class ClassroomUsersModuleApplication {
 

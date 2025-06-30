@@ -1,11 +1,16 @@
-package com.edutech.grades.mapper;
+package com.edutech.courses.mapper;
 
 import com.edutech.common.dto.EnrollmentDTO;
-import com.edutech.grades.entity.Enrollment;
+import com.edutech.courses.entity.Enrollment;
 import org.springframework.stereotype.Component;
 
-@Component
-public class EnrollmentMapper {
+import java.time.Instant;
+
+/**
+ * Mapper manual para conversión entre Enrollment entity y DTO
+ */
+@Component("enrollmentMapperManual")
+public class EnrollmentMapperManual {
     
     public EnrollmentDTO toDTO(Enrollment entity) {
         if (entity == null) {
@@ -31,7 +36,7 @@ public class EnrollmentMapper {
         entity.setId(dto.getId());
         entity.setStudentId(dto.getStudentId());
         entity.setCourseId(dto.getCourseId());
-        entity.setEnrolledAt(dto.getEnrolledAt());
+        entity.setEnrolledAt(dto.getEnrolledAt() != null ? dto.getEnrolledAt() : Instant.now());
         entity.setStatus(dto.getStatus());
         
         return entity;

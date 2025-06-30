@@ -3,14 +3,10 @@ package com.edutech.grades.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "quiz_response")
 public class QuizResponse {
@@ -43,4 +39,75 @@ public class QuizResponse {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "submitted_at", nullable = false)
     private Instant submittedAt;
+
+    // Constructors
+    public QuizResponse() {}
+
+    public QuizResponse(Integer id, Integer quizId, Integer studentId, String selectedOption, 
+                       String responseContent, String assignmentUrl, Instant submittedAt) {
+        this.id = id;
+        this.quizId = quizId;
+        this.studentId = studentId;
+        this.selectedOption = selectedOption;
+        this.responseContent = responseContent;
+        this.assignmentUrl = assignmentUrl;
+        this.submittedAt = submittedAt;
+    }
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(Integer quizId) {
+        this.quizId = quizId;
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getSelectedOption() {
+        return selectedOption;
+    }
+
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
+    }
+
+    public String getResponseContent() {
+        return responseContent;
+    }
+
+    public void setResponseContent(String responseContent) {
+        this.responseContent = responseContent;
+    }
+
+    public String getAssignmentUrl() {
+        return assignmentUrl;
+    }
+
+    public void setAssignmentUrl(String assignmentUrl) {
+        this.assignmentUrl = assignmentUrl;
+    }
+
+    public Instant getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(Instant submittedAt) {
+        this.submittedAt = submittedAt;
+    }
 }

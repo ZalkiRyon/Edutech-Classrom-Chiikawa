@@ -1,7 +1,7 @@
-package com.edutech.grades.controller;
+package com.edutech.courses.controller;
 
 import com.edutech.common.dto.EnrollmentDTO;
-import com.edutech.grades.service.EnrollmentService;
+import com.edutech.courses.service.EnrollmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.EntityModel;

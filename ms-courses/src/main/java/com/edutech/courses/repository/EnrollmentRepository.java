@@ -1,6 +1,6 @@
-package com.edutech.grades.repository;
+package com.edutech.courses.repository;
 
-import com.edutech.grades.entity.Enrollment;
+import com.edutech.courses.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
