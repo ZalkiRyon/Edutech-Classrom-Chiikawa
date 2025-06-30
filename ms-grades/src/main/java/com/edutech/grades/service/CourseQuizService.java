@@ -113,4 +113,34 @@ public class CourseQuizService {
                 .orElseThrow(() -> new ResourceNotFoundException("Course quiz not found with id: " + id));
         courseQuizRepository.delete(courseQuiz);
     }
+
+    /**
+     * Check if course quiz exists by ID
+     */
+    public boolean existsById(Integer id) {
+        if (id == null) {
+            return false;
+        }
+        return courseQuizRepository.existsById(id);
+    }
+
+    /**
+     * Count course quizzes by course ID
+     */
+    public long countByCourseId(Integer courseId) {
+        if (courseId == null) {
+            return 0L;
+        }
+        return courseQuizRepository.countByCourseId(courseId);
+    }
+
+    /**
+     * Check if course has any quizzes
+     */
+    public boolean existsByCourseId(Integer courseId) {
+        if (courseId == null) {
+            return false;
+        }
+        return courseQuizRepository.existsByCourseId(courseId);
+    }
 }

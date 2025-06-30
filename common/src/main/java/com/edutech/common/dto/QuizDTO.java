@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
+/**
+ * DTO for Quiz entity
+ * Used for compatibility with CourseQuiz mapping
+ */
 public class QuizDTO {
 
     private Integer id;
@@ -86,5 +90,17 @@ public class QuizDTO {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "QuizDTO{" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", quizType='" + quizType + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

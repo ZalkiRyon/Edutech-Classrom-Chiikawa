@@ -1,0 +1,114 @@
+package com.edutech.grades.controller;
+
+import com.edutech.common.dto.QuizDTO;
+import com.edutech.grades.service.CourseQuizService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/course-quizzes")
+@Tag(name = "Evaluaciones de Curso", description = "API para gestión de evaluaciones y quizzes de cursos")
+public class CourseQuizController {
+
+    private final CourseQuizService courseQuizService;
+
+    public CourseQuizController(CourseQuizService courseQuizService) {
+        this.courseQuizService = courseQuizService;
+    }
+
+    @GetMapping
+    @Operation(summary = "Obtener todas las evaluaciones", description = "Retorna una lista de todas las evaluaciones de cursos")
+    public ResponseEntity<List<QuizDTO>> getAllCourseQuizzes() {
+        List<QuizDTO> quizzes = courseQuizService.findAll();
+        return ResponseEntity.ok(quizzes);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener evaluación por ID", description = "Retorna una evaluación específica por su ID")
+    public ResponseEntity<QuizDTO> getCourseQuizById(
+            @Parameter(description = "ID de la evaluación a obtener") @PathVariable Integer id) {
+        QuizDTO quiz = courseQuizService.findById(id);
+        return ResponseEntity.ok(quiz);
+    }
+
+    @GetMapping("/course/{courseId}")
+    @Operation(summary = "Obtener evaluaciones por curso", description = "Retorna todas las evaluaciones de un curso específico")
+    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByCourseId(
+            @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
+        List<QuizDTO> quizzes = courseQuizService.findByCourseId(courseId);
+        return ResponseEntity.ok(quizzes);
+    }
+
+    @GetMapping("/type/{quizType}")
+    @Operation(summary = "Obtener evaluaciones por tipo", description = "Retorna todas las evaluaciones de un tipo específico")
+    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByType(
+            @Parameter(description = "Tipo de evaluación") @PathVariable String quizType) {
+        List<QuizDTO> quizzes = courseQuizService.findByQuizType(quizType);
+        return ResponseEntity.ok(quizzes);
+    }
+
+    @GetMapping("/course/{courseId}/type/{quizType}")
+    @Operation(summary = "Obtener evaluaciones por curso y tipo", description = "Retorna evaluaciones filtradas por curso y tipo")
+    public ResponseEntity<List<QuizDTO>> getCourseQuizzesByCourseIdAndType(
+            @Parameter(description = "ID del curso") @PathVariable Integer courseId,
+            @Parameter(description = "Tipo de evaluación") @PathVariable String quizType) {
+        List<QuizDTO> quizzes = courseQuizService.findByCourseIdAndQuizType(courseId, quizType);
+        return ResponseEntity.ok(quizzes);
+    }
+
+    @PostMapping
+    @Operation(summary = "Crear nueva evaluación", description = "Crea una nueva evaluación para un curso")
+    public ResponseEntity<QuizDTO> createCourseQuiz(
+            @Parameter(description = "Datos de la nueva evaluación") @Valid @RequestBody QuizDTO courseQuizDTO) {
+        QuizDTO createdQuiz = courseQuizService.create(courseQuizDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuiz);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar evaluación", description = "Actualiza una evaluación existente")
+    public ResponseEntity<QuizDTO> updateCourseQuiz(
+            @Parameter(description = "ID de la evaluación a actualizar") @PathVariable Integer id,
+            @Parameter(description = "Nuevos datos de la evaluación") @Valid @RequestBody QuizDTO courseQuizDTO) {
+        QuizDTO updatedQuiz = courseQuizService.update(id, courseQuizDTO);
+        return ResponseEntity.ok(updatedQuiz);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar evaluación", description = "Elimina una evaluación por su ID")
+    public ResponseEntity<Void> deleteCourseQuiz(
+            @Parameter(description = "ID de la evaluación a eliminar") @PathVariable Integer id) {
+        courseQuizService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/exists")
+    @Operation(summary = "Verificar existencia de evaluación", description = "Verifica si existe una evaluación con el ID dado")
+    public ResponseEntity<Boolean> courseQuizExists(
+            @Parameter(description = "ID de la evaluación a verificar") @PathVariable Integer id) {
+        boolean exists = courseQuizService.existsById(id);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/course/{courseId}/count")
+    @Operation(summary = "Contar evaluaciones por curso", description = "Retorna el número de evaluaciones en un curso específico")
+    public ResponseEntity<Long> countCourseQuizzesByCourseId(
+            @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
+        long count = courseQuizService.countByCourseId(courseId);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/course/{courseId}/exists")
+    @Operation(summary = "Verificar evaluaciones en curso", description = "Verifica si un curso tiene evaluaciones")
+    public ResponseEntity<Boolean> courseQuizzesExistByCourseId(
+            @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
+        boolean exists = courseQuizService.existsByCourseId(courseId);
+        return ResponseEntity.ok(exists);
+    }
+}

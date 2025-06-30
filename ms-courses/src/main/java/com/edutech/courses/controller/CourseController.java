@@ -18,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/courses")
-@Tag(name = "Courses", description = "Course management endpoints")
+@Tag(name = "Cursos", description = "API para gestión de cursos de la plataforma")
 public class CourseController {
 
     private final CourseService courseService;
@@ -28,7 +28,7 @@ public class CourseController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all courses", description = "Retrieve all courses with HATEOAS links")
+    @Operation(summary = "Obtener todos los cursos", description = "Retorna una lista de todos los cursos disponibles")
     public ResponseEntity<CollectionModel<EntityModel<CourseDTO>>> findAll() {
         List<CourseDTO> courses = courseService.findAll();
         
@@ -43,7 +43,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get course by ID", description = "Retrieve a specific course by its ID with HATEOAS links")
+    @Operation(summary = "Obtener curso por ID", description = "Retorna un curso específico por su ID")
     public ResponseEntity<EntityModel<CourseDTO>> findById(@PathVariable Integer id) {
         CourseDTO course = courseService.findById(id);
         EntityModel<CourseDTO> courseModel = addLinksToDto(course);
