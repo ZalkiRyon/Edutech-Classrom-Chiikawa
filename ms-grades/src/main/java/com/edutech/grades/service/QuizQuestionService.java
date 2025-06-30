@@ -1,7 +1,7 @@
 package com.edutech.grades.service;
 
 import com.edutech.common.dto.QuizQuestionDTO;
-import com.edutech.grades.entity.QuizQuestion;
+import com.edutech.grades.entity.CourseQuizQuestion;
 import com.edutech.grades.mapper.QuizQuestionMapperManual;
 import com.edutech.grades.repository.QuizQuestionRepository;
 import com.edutech.grades.repository.CourseQuizRepository;
@@ -62,7 +62,7 @@ public class QuizQuestionService {
     }
 
     private QuizQuestionDTO saveDTO(QuizQuestionDTO dto, Integer id) {
-        QuizQuestion entity = quizQuestionMapper.toEntity(dto);
+        CourseQuizQuestion entity = quizQuestionMapper.toEntity(dto);
         if (id != null) entity.setId(id);
         return quizQuestionMapper.toDTO(quizQuestionRepository.save(entity));
     }

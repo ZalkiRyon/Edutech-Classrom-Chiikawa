@@ -1,58 +1,34 @@
-package com.edutech.grades.entity;
-
-import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
+package com.edutech.common.dto;
 
 import java.time.Instant;
 
-@Entity
-@Table(name = "course_quiz_question")
-public class QuizQuestion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+/**
+ * Data Transfer Object for CourseQuizQuestion
+ * Manual POJO implementation (no Lombok)
+ */
+public class CourseQuizQuestionDTO {
+
     private Integer id;
-
-    @Column(name = "quiz_id")
     private Integer quizId;
-
-    @Column(name = "question_text", length = 800)
     private String questionText;
-
-    @Column(name = "option_a", length = 800)
     private String optionA;
-
-    @Column(name = "option_b", length = 800)
     private String optionB;
-
-    @Column(name = "option_c", length = 800)
     private String optionC;
-
-    @Column(name = "option_d", length = 800)
     private String optionD;
-
-    @Column(name = "option_e", length = 800)
     private String optionE;
-
-    @Column(name = "correct_answer", length = 800)
     private String correctAnswer;
-
-    @Column(name = "correct_option", length = 1)
     private String correctOption;
-
-    @Column(name = "order_index", nullable = false)
     private Integer orderIndex;
-
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    // Constructors
-    public QuizQuestion() {}
+    // Default constructor
+    public CourseQuizQuestionDTO() {}
 
-    public QuizQuestion(Integer id, Integer quizId, String questionText, String optionA, String optionB, 
-                       String optionC, String optionD, String optionE, String correctAnswer, 
-                       String correctOption, Integer orderIndex, Instant createdAt) {
+    // Parameterized constructor
+    public CourseQuizQuestionDTO(Integer id, Integer quizId, String questionText, String optionA, 
+                                String optionB, String optionC, String optionD, String optionE, 
+                                String correctAnswer, String correctOption, Integer orderIndex, 
+                                Instant createdAt) {
         this.id = id;
         this.quizId = quizId;
         this.questionText = questionText;
@@ -67,7 +43,7 @@ public class QuizQuestion {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public Integer getId() {
         return id;
     }
