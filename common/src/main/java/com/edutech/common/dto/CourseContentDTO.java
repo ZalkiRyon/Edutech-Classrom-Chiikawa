@@ -4,9 +4,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
-@Data
+/**
+ * DTO for CourseContent entity - Manual POJO implementation
+ */
 public class CourseContentDTO {
 
     @NotNull(message = "El ID del contenido es obligatorio.")
@@ -30,4 +31,65 @@ public class CourseContentDTO {
     @NotNull(message = "Debe especificar el orden del contenido.")
     @Min(value = 1, message = "El orden debe ser un número positivo mayor a 0.")
     private Integer orderIndex;
+
+    // Constructors
+    public CourseContentDTO() {}
+
+    public CourseContentDTO(Integer id, Integer courseId, String title, String contentType, String url, Integer orderIndex) {
+        this.id = id;
+        this.courseId = courseId;
+        this.title = title;
+        this.contentType = contentType;
+        this.url = url;
+        this.orderIndex = orderIndex;
+    }
+
+    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 }
