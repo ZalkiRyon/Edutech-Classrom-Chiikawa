@@ -100,7 +100,7 @@ class DiscountCouponControllerTest {
         mockMvc.perform(post("/api/discount-coupons")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(discountCouponDTO)))
-                .andExpect(status().isOk()) // El controlador devuelve 200, no 201
+                .andExpect(status().isCreated()) // El controlador devuelve 201
                 .andExpect(content().contentType("application/hal+json"))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.code").value("DESCUENTO20"))

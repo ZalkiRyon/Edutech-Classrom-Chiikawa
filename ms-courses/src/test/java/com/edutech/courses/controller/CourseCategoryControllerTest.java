@@ -72,7 +72,7 @@ class CourseCategoryControllerTest {
                 .andExpect(jsonPath("$.name").value("Programación"))
                 .andExpect(jsonPath("$.description").value("Categoría de cursos de programación"))
                 .andExpect(jsonPath("$._links.self.href").exists())
-                .andExpect(jsonPath("$._links.all-categories.href").exists())
+                .andExpect(jsonPath("$._links.course-categories.href").exists())
                 .andExpect(jsonPath("$._links.update.href").exists())
                 .andExpect(jsonPath("$._links.delete.href").exists());
 
