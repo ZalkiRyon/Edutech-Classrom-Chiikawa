@@ -4,7 +4,7 @@ import com.edutech.common.dto.QuizResponseDTO;
 import com.edutech.grades.entity.QuizResponse;
 import com.edutech.grades.mapper.QuizResponseMapperManual;
 import com.edutech.grades.repository.QuizResponseRepository;
-import com.edutech.grades.repository.QuizRepository;
+import com.edutech.grades.repository.CourseQuizRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -17,14 +17,14 @@ public class QuizResponseService {
 
     private final QuizResponseRepository quizResponseRepository;
     private final QuizResponseMapperManual quizResponseMapper;
-    private final QuizRepository quizRepository;
+    private final CourseQuizRepository courseQuizRepository;
 
     public QuizResponseService(QuizResponseRepository quizResponseRepository, 
                               QuizResponseMapperManual quizResponseMapper, 
-                              QuizRepository quizRepository) {
+                              CourseQuizRepository courseQuizRepository) {
         this.quizResponseRepository = quizResponseRepository;
         this.quizResponseMapper = quizResponseMapper;
-        this.quizRepository = quizRepository;
+        this.courseQuizRepository = courseQuizRepository;
     }
 
     public List<QuizResponseDTO> findAll() {
@@ -49,7 +49,7 @@ public class QuizResponseService {
 
     public QuizResponseDTO create(QuizResponseDTO dto) {
         // Validar que el quiz exista
-        orThrow(quizRepository.findById(dto.getQuizId()), "Quiz");
+        orThrow(courseQuizRepository.findById(dto.getQuizId()), "Quiz");
 
         return saveDTO(dto, null);
     }
@@ -58,7 +58,7 @@ public class QuizResponseService {
         orThrow(quizResponseRepository.findById(id), "Respuesta de Quiz");
         
         // Validar que el quiz exista
-        orThrow(quizRepository.findById(dto.getQuizId()), "Quiz");
+        orThrow(courseQuizRepository.findById(dto.getQuizId()), "Quiz");
         
         return saveDTO(dto, id);
     }

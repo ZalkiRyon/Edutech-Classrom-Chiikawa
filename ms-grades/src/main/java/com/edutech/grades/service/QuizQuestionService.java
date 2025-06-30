@@ -4,7 +4,7 @@ import com.edutech.common.dto.QuizQuestionDTO;
 import com.edutech.grades.entity.QuizQuestion;
 import com.edutech.grades.mapper.QuizQuestionMapperManual;
 import com.edutech.grades.repository.QuizQuestionRepository;
-import com.edutech.grades.repository.QuizRepository;
+import com.edutech.grades.repository.CourseQuizRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,12 @@ public class QuizQuestionService {
 
     private final QuizQuestionRepository quizQuestionRepository;
     private final QuizQuestionMapperManual quizQuestionMapper;
-    private final QuizRepository quizRepository;
+    private final CourseQuizRepository courseQuizRepository;
 
-    public QuizQuestionService(QuizQuestionRepository quizQuestionRepository, QuizQuestionMapperManual quizQuestionMapper, QuizRepository quizRepository) {
+    public QuizQuestionService(QuizQuestionRepository quizQuestionRepository, QuizQuestionMapperManual quizQuestionMapper, CourseQuizRepository courseQuizRepository) {
         this.quizQuestionRepository = quizQuestionRepository;
         this.quizQuestionMapper = quizQuestionMapper;
-        this.quizRepository = quizRepository;
+        this.courseQuizRepository = courseQuizRepository;
     }
 
     public List<QuizQuestionDTO> findAll() {
@@ -43,7 +43,7 @@ public class QuizQuestionService {
 
     public QuizQuestionDTO create(QuizQuestionDTO dto) {
         // Validar que el quiz exista
-        orThrow(quizRepository.findById(dto.getQuizId()), "Quiz");
+        orThrow(courseQuizRepository.findById(dto.getQuizId()), "Quiz");
 
         return saveDTO(dto, null);
     }
@@ -52,7 +52,7 @@ public class QuizQuestionService {
         orThrow(quizQuestionRepository.findById(id), "Pregunta de Quiz");
         
         // Validar que el quiz exista
-        orThrow(quizRepository.findById(dto.getQuizId()), "Quiz");
+        orThrow(courseQuizRepository.findById(dto.getQuizId()), "Quiz");
         
         return saveDTO(dto, id);
     }

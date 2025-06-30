@@ -190,7 +190,7 @@ The microservices reorganization is now **100% complete and fully tested** with:
 
 ### Final Entity Distribution Summary
 - **ms-courses**: Course, CourseCategory, Enrollment, CourseContent, CourseComment
-- **ms-grades**: Quiz, QuizQuestion (CourseQuizQuestion), QuizResponse, StudentMark
+- **ms-grades**: Quiz (CourseQuiz), QuizQuestion (CourseQuizQuestion), QuizResponse, StudentMark
 - **ms-users**: User, Role  
 - **ms-support**: SupportTicket
 - **ms-payments**: Payment, DiscountCoupon
@@ -202,6 +202,12 @@ The microservices reorganization is now **100% complete and fully tested** with:
 - **Created REST controllers** with full endpoint coverage for both entities
 - **Added repository methods** for proper data querying (by course ID, user ID, ordered results)
 - **Created CourseQuizQuestion alias** for better semantic naming matching database schema
+- **Implemented CourseQuiz alias entity** with complete CRUD functionality:
+  - CourseQuiz entity extends Quiz (maps to course_quiz table)
+  - CourseQuizRepository with query methods for course ID, quiz type filtering
+  - CourseQuizService with full business logic implementation
+  - CourseQuizController with complete REST endpoints
+  - Uses existing QuizDTO for compatibility and simplicity
 - **Committed and pushed all changes** to "Desarrollo" branch on GitHub
 
 **Final Status: READY FOR PRODUCTION** 🎉
