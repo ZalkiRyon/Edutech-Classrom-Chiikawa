@@ -239,3 +239,50 @@ The microservices reorganization is now **100% complete and fully tested** with:
 **Final Status: READY FOR PRODUCTION** 🎉
 
 **Git Status**: All changes committed to `Desarrollo` branch and pushed to GitHub ✅
+
+### CourseQuizQuestion Infrastructure Completed
+Added complete infrastructure for CourseQuizQuestion entity to match the database table `course_quiz_question`:
+
+#### New Components Added
+- **CourseQuizQuestionRepository** - Repository with specialized query methods:
+  - `findByQuizId(Integer quizId)` - Get questions for a quiz
+  - `findByQuizIdOrderByOrderIndex(Integer quizId)` - Get questions ordered by index
+  - `findByQuizIdOrderByOrderIndexAsc/Desc(Integer quizId)` - Ordered queries
+  - `countByQuizId(Integer quizId)` - Count questions per quiz
+  - `deleteByQuizId(Integer quizId)` - Bulk delete operations
+
+- **CourseQuizQuestionService** - Business logic service with:
+  - Full CRUD operations (create, read, update, delete)
+  - Quiz validation (ensures parent quiz exists before creating questions)
+  - Ordered retrieval methods by order_index
+  - Transactional operations for data consistency
+
+- **CourseQuizQuestionController** - REST API endpoints:
+  - `GET /api/course-quiz-questions` - Get all questions
+  - `GET /api/course-quiz-questions/{id}` - Get question by ID
+  - `GET /api/course-quiz-questions/quiz/{quizId}` - Get questions by quiz
+  - `GET /api/course-quiz-questions/quiz/{quizId}/ordered` - Get ordered questions
+  - `GET /api/course-quiz-questions/quiz/{quizId}/count` - Count questions
+  - `POST /api/course-quiz-questions` - Create new question
+  - `PUT /api/course-quiz-questions/{id}` - Update question
+  - `DELETE /api/course-quiz-questions/{id}` - Delete question
+  - `DELETE /api/course-quiz-questions/quiz/{quizId}` - Delete all questions for quiz
+
+- **CourseQuizQuestionMapperManual** - Manual mapping between entity and DTO
+- **CourseQuizQuestionDTO** - Manual POJO DTO in common module
+
+#### Entity Consolidation
+- **Removed duplicate QuizQuestion entity** that was conflicting with CourseQuizQuestion
+- **Updated existing QuizQuestion services** to use CourseQuizQuestion entity
+- **Fixed table mapping conflicts** - only CourseQuizQuestion maps to `course_quiz_question`
+
+#### Database Schema Compliance
+The CourseQuizQuestion entity properly maps to the `course_quiz_question` table with all fields:
+- `id` - Auto-generated primary key
+- `quiz_id` - Foreign key to course_quiz table
+- `question_text` - Question content
+- `option_a`, `option_b`, `option_c`, `option_d`, `option_e` - Multiple choice options
+- `correct_answer` - Correct answer for written questions
+- `correct_option` - Correct option letter for multiple choice
+- `order_index` - Question order within the quiz
+- `created_at` - Timestamp with automatic generation
