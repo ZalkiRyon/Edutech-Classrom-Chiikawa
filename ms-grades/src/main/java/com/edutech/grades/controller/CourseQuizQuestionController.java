@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/course-quiz-questions")
-@Tag(name = "Course Quiz Questions", description = "API for managing course quiz questions")
+@Tag(name = "Preguntas de Cuestionarios", description = "API para gestionar las preguntas de los cuestionarios de cursos")
 public class CourseQuizQuestionController {
 
     private final CourseQuizQuestionService courseQuizQuestionService;
@@ -24,62 +24,62 @@ public class CourseQuizQuestionController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all course quiz questions", description = "Retrieve a list of all course quiz questions")
+    @Operation(summary = "Obtener todas las preguntas de cuestionarios", description = "Obtiene una lista de todas las preguntas de cuestionarios")
     public ResponseEntity<List<CourseQuizQuestionDTO>> getAllCourseQuizQuestions() {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findAll();
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get course quiz question by ID", description = "Retrieve a specific course quiz question by its ID")
+    @Operation(summary = "Obtener pregunta por ID", description = "Obtiene una pregunta específica de cuestionario por su ID")
     public ResponseEntity<CourseQuizQuestionDTO> getCourseQuizQuestionById(
-            @Parameter(description = "ID of the course quiz question to retrieve") @PathVariable Integer id) {
+            @Parameter(description = "ID de la pregunta de cuestionario a obtener") @PathVariable Integer id) {
         CourseQuizQuestionDTO question = courseQuizQuestionService.findById(id);
         return ResponseEntity.ok(question);
     }
 
     @GetMapping("/quiz/{quizId}")
-    @Operation(summary = "Get questions by quiz ID", description = "Retrieve all questions for a specific quiz")
+    @Operation(summary = "Obtener preguntas por ID de cuestionario", description = "Obtiene todas las preguntas de un cuestionario específico")
     public ResponseEntity<List<CourseQuizQuestionDTO>> getQuestionsByQuizId(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findByQuizId(quizId);
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/quiz/{quizId}/ordered")
-    @Operation(summary = "Get questions by quiz ID ordered by index", description = "Retrieve all questions for a specific quiz ordered by order_index")
+    @Operation(summary = "Obtener preguntas ordenadas por índice", description = "Obtiene todas las preguntas de un cuestionario específico ordenadas por índice de orden")
     public ResponseEntity<List<CourseQuizQuestionDTO>> getQuestionsByQuizIdOrdered(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findByQuizIdOrderByOrderIndex(quizId);
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/quiz/{quizId}/ordered/asc")
-    @Operation(summary = "Get questions by quiz ID ordered ascending", description = "Retrieve all questions for a specific quiz ordered by order_index ascending")
+    @Operation(summary = "Obtener preguntas ordenadas ascendentemente", description = "Obtiene todas las preguntas de un cuestionario específico ordenadas por índice ascendente")
     public ResponseEntity<List<CourseQuizQuestionDTO>> getQuestionsByQuizIdOrderedAsc(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findByQuizIdOrderByOrderIndexAsc(quizId);
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/quiz/{quizId}/ordered/desc")
-    @Operation(summary = "Get questions by quiz ID ordered descending", description = "Retrieve all questions for a specific quiz ordered by order_index descending")
+    @Operation(summary = "Obtener preguntas ordenadas descendentemente", description = "Obtiene todas las preguntas de un cuestionario específico ordenadas por índice descendente")
     public ResponseEntity<List<CourseQuizQuestionDTO>> getQuestionsByQuizIdOrderedDesc(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         List<CourseQuizQuestionDTO> questions = courseQuizQuestionService.findByQuizIdOrderByOrderIndexDesc(quizId);
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/quiz/{quizId}/count")
-    @Operation(summary = "Count questions by quiz ID", description = "Get the number of questions for a specific quiz")
+    @Operation(summary = "Contar preguntas por cuestionario", description = "Obtiene el número de preguntas de un cuestionario específico")
     public ResponseEntity<Long> countQuestionsByQuizId(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         long count = courseQuizQuestionService.countByQuizId(quizId);
         return ResponseEntity.ok(count);
     }
 
     @PostMapping
-    @Operation(summary = "Create a new course quiz question", description = "Create a new course quiz question")
+    @Operation(summary = "Crear nueva pregunta de cuestionario", description = "Crea una nueva pregunta de cuestionario")
     public ResponseEntity<CourseQuizQuestionDTO> createCourseQuizQuestion(
             @Valid @RequestBody CourseQuizQuestionDTO courseQuizQuestionDTO) {
         CourseQuizQuestionDTO createdQuestion = courseQuizQuestionService.create(courseQuizQuestionDTO);
@@ -87,26 +87,26 @@ public class CourseQuizQuestionController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a course quiz question", description = "Update an existing course quiz question by its ID")
+    @Operation(summary = "Actualizar pregunta de cuestionario", description = "Actualiza una pregunta de cuestionario existente por su ID")
     public ResponseEntity<CourseQuizQuestionDTO> updateCourseQuizQuestion(
-            @Parameter(description = "ID of the course quiz question to update") @PathVariable Integer id,
+            @Parameter(description = "ID de la pregunta de cuestionario a actualizar") @PathVariable Integer id,
             @Valid @RequestBody CourseQuizQuestionDTO courseQuizQuestionDTO) {
         CourseQuizQuestionDTO updatedQuestion = courseQuizQuestionService.update(id, courseQuizQuestionDTO);
         return ResponseEntity.ok(updatedQuestion);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a course quiz question", description = "Delete a course quiz question by its ID")
+    @Operation(summary = "Eliminar pregunta de cuestionario", description = "Elimina una pregunta de cuestionario por su ID")
     public ResponseEntity<Void> deleteCourseQuizQuestion(
-            @Parameter(description = "ID of the course quiz question to delete") @PathVariable Integer id) {
+            @Parameter(description = "ID de la pregunta de cuestionario a eliminar") @PathVariable Integer id) {
         courseQuizQuestionService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/quiz/{quizId}")
-    @Operation(summary = "Delete all questions for a quiz", description = "Delete all questions for a specific quiz")
+    @Operation(summary = "Eliminar todas las preguntas de un cuestionario", description = "Elimina todas las preguntas de un cuestionario específico")
     public ResponseEntity<Void> deleteQuestionsByQuizId(
-            @Parameter(description = "ID of the quiz") @PathVariable Integer quizId) {
+            @Parameter(description = "ID del cuestionario") @PathVariable Integer quizId) {
         courseQuizQuestionService.deleteByQuizId(quizId);
         return ResponseEntity.noContent().build();
     }

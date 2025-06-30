@@ -38,7 +38,9 @@ public class CourseCommentController {
      * Get course comment by ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CourseCommentDTO> getCourseCommentById(@PathVariable Integer id) {
+    @Operation(summary = "Obtener comentario por ID", description = "Retorna un comentario específico por su ID")
+    public ResponseEntity<CourseCommentDTO> getCourseCommentById(
+            @Parameter(description = "ID del comentario a obtener") @PathVariable Integer id) {
         CourseCommentDTO courseComment = courseCommentService.findById(id);
         return ResponseEntity.ok(courseComment);
     }
@@ -47,7 +49,9 @@ public class CourseCommentController {
      * Get comments by course ID
      */
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<CourseCommentDTO>> getCommentsByCourseId(@PathVariable Integer courseId) {
+    @Operation(summary = "Obtener comentarios por curso", description = "Retorna todos los comentarios de un curso específico")
+    public ResponseEntity<List<CourseCommentDTO>> getCommentsByCourseId(
+            @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
         List<CourseCommentDTO> courseComments = courseCommentService.findByCourseId(courseId);
         return ResponseEntity.ok(courseComments);
     }
@@ -56,7 +60,9 @@ public class CourseCommentController {
      * Get comments by user ID
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CourseCommentDTO>> getCommentsByUserId(@PathVariable Integer userId) {
+    @Operation(summary = "Obtener comentarios por usuario", description = "Retorna todos los comentarios de un usuario específico")
+    public ResponseEntity<List<CourseCommentDTO>> getCommentsByUserId(
+            @Parameter(description = "ID del usuario") @PathVariable Integer userId) {
         List<CourseCommentDTO> courseComments = courseCommentService.findByUserId(userId);
         return ResponseEntity.ok(courseComments);
     }
@@ -65,6 +71,7 @@ public class CourseCommentController {
      * Create new course comment
      */
     @PostMapping
+    @Operation(summary = "Crear nuevo comentario", description = "Crea un nuevo comentario en un curso")
     public ResponseEntity<CourseCommentDTO> createCourseComment(@Valid @RequestBody CourseCommentDTO courseCommentDTO) {
         CourseCommentDTO createdCourseComment = courseCommentService.create(courseCommentDTO);
         return new ResponseEntity<>(createdCourseComment, HttpStatus.CREATED);
@@ -74,8 +81,9 @@ public class CourseCommentController {
      * Update existing course comment
      */
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar comentario", description = "Actualiza un comentario existente")
     public ResponseEntity<CourseCommentDTO> updateCourseComment(
-            @PathVariable Integer id, 
+            @Parameter(description = "ID del comentario a actualizar") @PathVariable Integer id, 
             @Valid @RequestBody CourseCommentDTO courseCommentDTO) {
         CourseCommentDTO updatedCourseComment = courseCommentService.update(id, courseCommentDTO);
         return ResponseEntity.ok(updatedCourseComment);
@@ -85,7 +93,9 @@ public class CourseCommentController {
      * Delete course comment
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourseComment(@PathVariable Integer id) {
+    @Operation(summary = "Eliminar comentario", description = "Elimina un comentario por su ID")
+    public ResponseEntity<Void> deleteCourseComment(
+            @Parameter(description = "ID del comentario a eliminar") @PathVariable Integer id) {
         courseCommentService.delete(id);
         return ResponseEntity.noContent().build();
     }
