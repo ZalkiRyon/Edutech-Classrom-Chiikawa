@@ -5,12 +5,17 @@ import com.edutech.payments.service.DiscountCouponService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/discount-coupons")
@@ -25,43 +30,62 @@ public class DiscountCouponController {
 
     @GetMapping
     @Operation(summary = "Obtener todos los cupones", description = "Retorna una lista de todos los cupones de descuento")
-    public ResponseEntity<List<DiscountCouponDTO>> findAll() {
-        return ResponseEntity.ok(discountCouponService.findAll());
+    public ResponseEntity<CollectionModel<EntityModel<DiscountCouponDTO>>> findAll() {
+        List<EntityModel<DiscountCouponDTO>> coupons = discountCouponService.findAll().stream()
+                .map(this::toEntityModel)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<DiscountCouponDTO>> collectionModel = CollectionModel.of(coupons)
+                .add(linkTo(methodOn(DiscountCouponController.class).findAll()).withSelfRel());
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener cupón por ID", description = "Retorna un cupón específico por su ID")
-    public ResponseEntity<DiscountCouponDTO> findById(
+    public ResponseEntity<EntityModel<DiscountCouponDTO>> findById(
             @Parameter(description = "ID del cupón a obtener") @PathVariable Integer id) {
-        return ResponseEntity.ok(discountCouponService.findById(id));
+        DiscountCouponDTO coupon = discountCouponService.findById(id);
+        return ResponseEntity.ok(toEntityModel(coupon));
     }
 
     @GetMapping("/code/{code}")
     @Operation(summary = "Obtener cupón por código", description = "Retorna un cupón específico por su código")
-    public ResponseEntity<DiscountCouponDTO> findByCode(
+    public ResponseEntity<EntityModel<DiscountCouponDTO>> findByCode(
             @Parameter(description = "Código del cupón a buscar") @PathVariable String code) {
-        return ResponseEntity.ok(discountCouponService.findByCode(code));
+        DiscountCouponDTO coupon = discountCouponService.findByCode(code);
+        return ResponseEntity.ok(toEntityModel(coupon));
     }
 
     @GetMapping("/active")
     @Operation(summary = "Obtener cupones activos", description = "Retorna todos los cupones activos para la fecha actual")
-    public ResponseEntity<List<DiscountCouponDTO>> findActiveForToday() {
-        return ResponseEntity.ok(discountCouponService.findActiveForDate(LocalDate.now()));
+    public ResponseEntity<CollectionModel<EntityModel<DiscountCouponDTO>>> findActiveForToday() {
+        List<EntityModel<DiscountCouponDTO>> activeCoupons = discountCouponService.findActiveForDate(LocalDate.now()).stream()
+                .map(this::toEntityModel)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<DiscountCouponDTO>> collectionModel = CollectionModel.of(activeCoupons)
+                .add(linkTo(methodOn(DiscountCouponController.class).findActiveForToday()).withSelfRel())
+                .add(linkTo(methodOn(DiscountCouponController.class).findAll()).withRel("all-coupons"));
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     @PostMapping
     @Operation(summary = "Crear nuevo cupón", description = "Crea un nuevo cupón de descuento")
-    public ResponseEntity<DiscountCouponDTO> create(
+    public ResponseEntity<EntityModel<DiscountCouponDTO>> create(
             @Parameter(description = "Datos del nuevo cupón") @Valid @RequestBody DiscountCouponDTO dto) {
-        return ResponseEntity.ok(discountCouponService.create(dto));
+        DiscountCouponDTO createdCoupon = discountCouponService.create(dto);
+        return ResponseEntity.status(201).body(toEntityModel(createdCoupon));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar cupón", description = "Actualiza un cupón existente")
-    public ResponseEntity<DiscountCouponDTO> update(
+    public ResponseEntity<EntityModel<DiscountCouponDTO>> update(
             @Parameter(description = "ID del cupón a actualizar") @PathVariable Integer id, 
             @Parameter(description = "Nuevos datos del cupón") @Valid @RequestBody DiscountCouponDTO dto) {
-        return ResponseEntity.ok(discountCouponService.update(id, dto));
+        DiscountCouponDTO updatedCoupon = discountCouponService.update(id, dto);
+        return ResponseEntity.ok(toEntityModel(updatedCoupon));
     }
 
     @DeleteMapping("/{id}")
@@ -70,5 +94,13 @@ public class DiscountCouponController {
             @Parameter(description = "ID del cupón a eliminar") @PathVariable Integer id) {
         discountCouponService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private EntityModel<DiscountCouponDTO> toEntityModel(DiscountCouponDTO coupon) {
+        return EntityModel.of(coupon)
+                .add(linkTo(methodOn(DiscountCouponController.class).findById(coupon.getId())).withSelfRel())
+                .add(linkTo(methodOn(DiscountCouponController.class).findAll()).withRel("all-coupons"))
+                .add(linkTo(methodOn(DiscountCouponController.class).findByCode(coupon.getCode())).withRel("by-code"))
+                .add(linkTo(methodOn(DiscountCouponController.class).findActiveForToday()).withRel("active-coupons"));
     }
 }
