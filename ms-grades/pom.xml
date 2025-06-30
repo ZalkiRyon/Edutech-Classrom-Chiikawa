@@ -94,11 +94,10 @@
             <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
 
-        <!-- Jackson JSR310 para soporte de java.time.Instant en tests -->
+        <!-- Jackson JSR310 para soporte de java.time.Instant -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!-- 
