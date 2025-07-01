@@ -323,31 +323,6 @@
                 <version>${spring-boot.version}</version>
             </dependency>
 
-            <!-- 
-                Caffeine: cache de alto rendimiento para Java.
-                Utilizado principalmente por Eureka Server para optimizar el rendimiento.
-            -->
-            <dependency>
-                <groupId>com.github.ben-manes.caffeine</groupId>
-                <artifactId>caffeine</artifactId>
-                <version>3.1.8</version>
-            </dependency>
-
-            <!-- 
-                Spring Boot Starter Test: proporciona dependencias esenciales para testing.
-                Incluye JUnit 5, Mockito, AssertJ, Hamcrest, etc.
-            -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <!-- 
-                Hibernate Validator: implementación de referencia de Bean Validation (JSR 303/349/380).
-                Utilizado para validación de datos en DTOs y entidades.
-            -->
         </dependencies>
     </dependencyManagement>
 
@@ -552,7 +527,7 @@
                             <report>dependencies</report>
                             <report>dependency-convergence</report>
                             <report>dependency-management</report>
-                            <!-- <report>modules</report> Comentado temporalmente por problemas de compatibilidad -->
+                            <report>modules</report>
                             <report>plugins</report>
                             <report>plugin-management</report>
                         </reports>

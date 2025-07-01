@@ -1,5 +1,5 @@
 # ============================================
-# EDUTECH CLASSROOM - GITIGNORE COMPLETO
+# EDUTECH CLASSROOM - GITIGNORE OPTIMIZADO
 # ============================================
 
 # Ignore Monolitico project and its contents
@@ -38,12 +38,7 @@ hs_err_pid*.log
 # Java compiled classes
 *.class
 
-# Maven wrapper files (optional - uncomment if not needed)
-# .mvn/
-# mvnw
-# mvnw.cmd
-
-# Documentation obsoleta y archivos de desarrollo
+# Documentation and debug files (obsoletos)
 GUIA_RESOLUCION.md
 REORGANIZATION_SUMMARY.md
 DEBUG_LOG.md
@@ -56,31 +51,6 @@ fix-annotation-processors.bat
 test-*.bat
 quick-test.bat
 verificacion-*.bat
-test-runner.bat
-test-integration.bat
-test-entities-detailed.bat
-test-all-modules.bat
 
-# Reportes duplicados o obsoletos
+# Reportes obsoletos (mantener solo los principales)
 REPORTE_EXTENSIVO_COMPLETO.md
-
-# Archivos de configuración local
-*.properties.local
-application-local.yml
-
-# Node modules si hay frontend
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Package managers
-*.lock
-
-# Database files
-*.db
-*.sqlite
-
-# Configuraciones específicas del entorno
-.env
-.env.local
