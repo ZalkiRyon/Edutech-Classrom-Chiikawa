@@ -323,6 +323,31 @@
                 <version>${spring-boot.version}</version>
             </dependency>
 
+            <!-- 
+                Caffeine: cache de alto rendimiento para Java.
+                Utilizado principalmente por Eureka Server para optimizar el rendimiento.
+            -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>3.1.8</version>
+            </dependency>
+
+            <!-- 
+                Spring Boot Starter Test: proporciona dependencias esenciales para testing.
+                Incluye JUnit 5, Mockito, AssertJ, Hamcrest, etc.
+            -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- 
+                Hibernate Validator: implementación de referencia de Bean Validation (JSR 303/349/380).
+                Utilizado para validación de datos en DTOs y entidades.
+            -->
         </dependencies>
     </dependencyManagement>
 
@@ -467,7 +492,100 @@
             </executions>
             </plugin>
 
+            <!-- Maven Site Plugin - Para generar sitios del proyecto -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <locales>en</locales>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-site-renderer</artifactId>
+                        <version>1.11.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
+
+    <!-- Sección de reporting para generar sitios del proyecto padre y módulos -->
+    <reporting>
+        <plugins>
+            <!-- Plugin para generar reportes de pruebas unitarias agregados -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <showSuccess>true</showSuccess>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            
+            <!-- Plugin para información del proyecto -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.4.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>dependency-management</report>
+                            <!-- <report>modules</report> Comentado temporalmente por problemas de compatibilidad -->
+                            <report>plugins</report>
+                            <report>plugin-management</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!-- Plugin para generar reportes JavaDoc agregados -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

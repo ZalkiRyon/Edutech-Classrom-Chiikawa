@@ -158,6 +158,47 @@
 		            <mainClass>com.edutech.users.ClassroomUsersModuleApplication</mainClass>
 		        </configuration>
 		        </plugin>
+
+		        <!-- Maven Surefire Plugin - Configuración para reportes HTML detallados -->
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <version>3.0.0</version>
+		            <configuration>
+		                <!-- Configuración de reportes HTML -->
+		                <printSummary>true</printSummary>
+		                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+		                <forkCount>1</forkCount>
+		                <reuseForks>true</reuseForks>
+		                <argLine>-Dfile.encoding=UTF-8</argLine>
+		                
+		                <!-- Incluir todas las pruebas -->
+		                <includes>
+		                    <include>**/*Test.java</include>
+		                    <include>**/*Tests.java</include>
+		                </includes>
+		                
+		                <!-- Configuración para reportes detallados -->
+		                <reportFormat>xml</reportFormat>
+		                <useFile>true</useFile>
+		                
+		                <!-- Propiedades del sistema para las pruebas -->
+		                <systemPropertyVariables>
+		                    <spring.profiles.active>test</spring.profiles.active>
+		                </systemPropertyVariables>
+		            </configuration>
+		        </plugin>
+		        
+		        <!-- Maven Surefire Report Plugin - Genera reportes HTML -->
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-report-plugin</artifactId>
+		            <version>3.0.0</version>
+		            <configuration>
+		                <showSuccess>true</showSuccess>
+		                <outputDirectory>${project.build.directory}/surefire-reports</outputDirectory>
+		            </configuration>
+		        </plugin>
 		
 		        <!-- Plugin de compilación - SIMPLIFICADO TEMPORALMENTE -->
 		        <!-- 
@@ -181,5 +222,38 @@
 	        -->
 	    </plugins>
     </build>
+
+    <!-- Sección de reporting para generar reportes HTML automáticamente -->
+    <reporting>
+        <plugins>
+            <!-- Plugin para generar reportes de pruebas unitarias en HTML -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <showSuccess>true</showSuccess>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+            
+            <!-- Plugin para información del proyecto -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.4.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>dependencies</report>
+                            <report>plugins</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

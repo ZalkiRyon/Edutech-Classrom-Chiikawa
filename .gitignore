@@ -1,8 +1,86 @@
+# ============================================
+# EDUTECH CLASSROOM - GITIGNORE COMPLETO
+# ============================================
+
 # Ignore Monolitico project and its contents
 Monolitico/
 
-# Ignore documentation and debug files
+# Maven build artifacts
+target/
+!*/target/site/index.html
+!*/target/site/surefire-report.html
+!target/site/index.html
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+hs_err_pid*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# Java compiled classes
+*.class
+
+# Maven wrapper files (optional - uncomment if not needed)
+# .mvn/
+# mvnw
+# mvnw.cmd
+
+# Documentation obsoleta y archivos de desarrollo
 GUIA_RESOLUCION.md
 REORGANIZATION_SUMMARY.md
 DEBUG_LOG.md
 INFORME_PRUEBAS_UNITARIAS.md
+COMANDOS_VERIFICACION.md
+ESTADO_PROYECTO.md
+
+# Scripts de desarrollo temporales
+fix-annotation-processors.bat
+test-*.bat
+quick-test.bat
+verificacion-*.bat
+test-runner.bat
+test-integration.bat
+test-entities-detailed.bat
+test-all-modules.bat
+
+# Reportes duplicados o obsoletos
+REPORTE_EXTENSIVO_COMPLETO.md
+
+# Archivos de configuración local
+*.properties.local
+application-local.yml
+
+# Node modules si hay frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Package managers
+*.lock
+
+# Database files
+*.db
+*.sqlite
+
+# Configuraciones específicas del entorno
+.env
+.env.local
