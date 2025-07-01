@@ -21,7 +21,7 @@ public class StudentMarkService {
     private final UserClient userClient;
 
     public StudentMarkService(StudentMarkRepository studentMarkRepository, 
-                             StudentMarkMapperManual studentMarkMapper, 
+                             StudentMarkMapperManual studentMarkMapper,
                              UserClient userClient) {
         this.studentMarkRepository = studentMarkRepository;
         this.studentMarkMapper = studentMarkMapper;
