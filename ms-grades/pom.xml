@@ -137,6 +137,21 @@
 		        </configuration>
 		        </plugin>
 		
+		        <!-- Plugin Maven Surefire para ms-grades -->
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <configuration>
+		                <includes>
+		                    <include>**/*Test.java</include>
+		                    <include>**/*Tests.java</include>
+		                </includes>
+		                <systemPropertyVariables>
+		                    <spring.profiles.active>test</spring.profiles.active>
+		                </systemPropertyVariables>
+		            </configuration>
+		        </plugin>
+
 		        <!-- Plugin de compilación COMENTADO para evitar errores de annotation processors
 		        <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
@@ -158,5 +173,18 @@
 	        -->
 	    </plugins>
     </build>
+
+    <!-- Reportes específicos para ms-grades -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <configuration>
+                    <outputName>grades-surefire-report</outputName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

@@ -159,6 +159,21 @@
 		        </configuration>
 		        </plugin>
 		
+		        <!-- Plugin Maven Surefire para ms-users -->
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <configuration>
+		                <includes>
+		                    <include>**/*Test.java</include>
+		                    <include>**/*Tests.java</include>
+		                </includes>
+		                <systemPropertyVariables>
+		                    <spring.profiles.active>test</spring.profiles.active>
+		                </systemPropertyVariables>
+		            </configuration>
+		        </plugin>
+
 		        <!-- Plugin de compilación - SIMPLIFICADO TEMPORALMENTE -->
 		        <!-- 
 		        <plugin>
@@ -181,5 +196,18 @@
 	        -->
 	    </plugins>
     </build>
+
+    <!-- Reportes específicos para ms-users -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <configuration>
+                    <outputName>users-surefire-report</outputName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

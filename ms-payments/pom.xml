@@ -152,6 +152,35 @@
 		        </configuration>
 		        </plugin>
 		
+		        <!-- Plugin Maven Surefire para ms-payments -->
+		        <plugin>
+		            <groupId>org.apache.maven.plugins</groupId>
+		            <artifactId>maven-surefire-plugin</artifactId>
+		            <configuration>
+		                <!-- Configuración específica para tests de payments -->
+		                <includes>
+		                    <include>**/*Test.java</include>
+		                    <include>**/*Tests.java</include>
+		                    <include>**/Test*.java</include>
+		                </includes>
+		                
+		                <!-- Reportes específicos para payments -->
+		                <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+		                
+		                <!-- Configuración JVM compatible con Java 21 -->
+		                <argLine>-Xmx2048m --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+		                
+		                <!-- Propiedades del sistema para tests -->
+		                <systemPropertyVariables>
+		                    <spring.profiles.active>test</spring.profiles.active>
+		                </systemPropertyVariables>
+		                
+		                <!-- Configuración para evitar forks problemáticos -->
+		                <forkCount>1</forkCount>
+		                <reuseForks>false</reuseForks>
+		            </configuration>
+		        </plugin>
+
 		        <!-- Plugin de compilación - TEMPORALMENTE COMENTADO -->
 		        <!--
 		        <plugin>
@@ -174,5 +203,35 @@
 	        -->
 	    </plugins>
     </build>
+
+    <!-- Reportes específicos para ms-payments -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <configuration>
+                    <showSuccess>true</showSuccess>
+                    <linkXRef>true</linkXRef>
+                    <outputName>payments-surefire-report</outputName>
+                </configuration>
+            </plugin>
+            
+            <!-- Información específica del módulo payments -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>dependencies</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

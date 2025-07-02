@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech Classroom - Informes de Pruebas Unitarias</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)" /></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid rgba(255,255,255,0.2);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header h1::before {
+            content: '🎓';
+            margin-right: 15px;
+            font-size: 0.8em;
+        }
+        
+        .header p {
+            margin: 15px 0 0 0;
+            opacity: 0.95;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .module-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 6px solid #667eea;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .module-card:hover::before {
+            opacity: 1;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.25);
+            border-left-color: #f093fb;
+            border-color: rgba(240, 147, 251, 0.3);
+        }
+        
+        .module-card h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 1.3em;
+        }
+        
+        .module-card p {
+            color: #666;
+            margin: 0 0 15px 0;
+            line-height: 1.6;
+        }
+        
+        .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .link:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .link.secondary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+        
+        .link.secondary:hover {
+            background: linear-gradient(135deg, #ff8e53 0%, #ff6b6b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+        
+        .parent-nav {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(240, 147, 251, 0.1) 100%);
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .parent-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .parent-link:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .breadcrumb {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 EduTech Classroom</h1>
+            <p>Informes de Pruebas Unitarias - Arquitectura de Microservicios</p>
+        </div>
+        
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 Proyecto Principal</a> / Informes de Tests
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Módulos</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">98+</div>
+                <div class="stat-label">Tests</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">HATEOAS</div>
+                <div class="stat-label">Navegación</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">CI/CD</div>
+                <div class="stat-label">Ready</div>
+            </div>
+        </div>
+        
+        <div class="nav-grid">
+            <!-- Módulo Common -->
+            <div class="module-card" onclick="navigateTo('common')">
+                <h3>📚 Common Library</h3>
+                <p>DTOs compartidos, excepciones, utilidades y validadores utilizados por todos los microservicios.</p>
+                <div class="links">
+                    <a href="common/target/site/common-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="common/target/site/index.html" class="link secondary">📖 Documentación</a>
+                </div>
+            </div>
+            
+            <!-- Módulo Eureka -->
+            <div class="module-card" onclick="navigateTo('eureka')">
+                <h3>🔍 Eureka Server</h3>
+                <p>Servidor de descubrimiento de servicios para registro y comunicación entre microservicios.</p>
+                <div class="links">
+                    <a href="eureka/target/site/eureka-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="eureka/target/site/index.html" class="link secondary">📖 Documentación</a>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Users -->
+            <div class="module-card" onclick="navigateTo('ms-users')">
+                <h3>👥 MS-Users (Puerto: 9001)</h3>
+                <p>Microservicio para gestión de usuarios, autenticación, roles y permisos del sistema.</p>
+                <div class="links">
+                    <a href="ms-users/target/site/users-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="ms-users/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="http://localhost:9001/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Courses -->
+            <div class="module-card" onclick="navigateTo('ms-courses')">
+                <h3>📚 MS-Courses (Puerto: 9002)</h3>
+                <p>Microservicio para gestión de cursos, contenidos, categorías e inscripciones académicas.</p>
+                <div class="links">
+                    <a href="ms-courses/target/site/courses-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="ms-courses/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="http://localhost:9002/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Grades -->
+            <div class="module-card" onclick="navigateTo('ms-grades')">
+                <h3>📊 MS-Grades (Puerto: 9003)</h3>
+                <p>Microservicio para evaluaciones, calificaciones, notas y resultados académicos.</p>
+                <div class="links">
+                    <a href="ms-grades/target/site/grades-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="ms-grades/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="http://localhost:9003/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Payments -->
+            <div class="module-card" onclick="navigateTo('ms-payments')">
+                <h3>💳 MS-Payments (Puerto: 9004)</h3>
+                <p>Microservicio para gestión de pagos, transacciones financieras y cupones de descuento.</p>
+                <div class="links">
+                    <a href="ms-payments/target/site/payments-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="ms-payments/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="http://localhost:9004/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Support -->
+            <div class="module-card" onclick="navigateTo('ms-support')">
+                <h3>🎧 MS-Support (Puerto: 9005)</h3>
+                <p>Microservicio para gestión de tickets de soporte técnico y atención al usuario.</p>
+                <div class="links">
+                    <a href="ms-support/target/site/support-surefire-report.html" class="link">📊 Reportes Tests</a>
+                    <a href="ms-support/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="http://localhost:9005/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="parent-nav">
+            <a href="target/site/surefire-report.html" class="parent-link">
+                📈 Ver Reporte Agregado de Todo el Proyecto
+            </a>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%); padding: 20px; text-align: center; border-top: 1px solid rgba(102, 126, 234, 0.1);">
+            <p style="margin: 0; color: #666; font-size: 0.9em;">
+                🎓 <strong>EduTech Classroom</strong> - Arquitectura de Microservicios | 
+                <a href="#" onclick="showHelp(); return false;" style="color: #667eea; text-decoration: none;">❓ Ayuda (F1)</a> | 
+                <a href="generate-test-reports.bat" style="color: #667eea; text-decoration: none;">⚡ Generar Reportes</a> |
+                <a href="SUREFIRE_REPORTS_GUIDE.md" style="color: #667eea; text-decoration: none;">📚 Guía Técnica</a>
+            </p>
+            <p style="margin: 5px 0 0 0; color: #999; font-size: 0.8em;">
+                Desarrollado con ❤️ para pruebas unitarias automatizadas | Java 21 + Maven + Spring Boot
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        function navigateTo(module) {
+            // Funcionalidad adicional para navegación si se requiere
+            console.log('Navegando a módulo:', module);
+            
+            // Mostrar información del módulo seleccionado
+            const moduleCard = event.currentTarget;
+            moduleCard.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                moduleCard.style.transform = '';
+            }, 150);
+        }
+        
+        // Verificar disponibilidad de reportes al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎓 EduTech Classroom - Dashboard de Tests iniciado');
+            
+            const links = document.querySelectorAll('a[href*="target/site"]');
+            links.forEach(link => {
+                // Verificación básica de disponibilidad del reporte
+                link.addEventListener('click', function(e) {
+                    if (this.href.includes('target/site')) {
+                        const moduleName = this.href.split('/')[0];
+                        console.log(`Abriendo reporte para módulo: ${moduleName}`);
+                        
+                        // Verificar si el reporte existe (solo simulación en cliente)
+                        if (!confirm(`¿Deseas abrir el reporte para ${moduleName}?\n\nAsegúrate de que los tests hayan sido ejecutados con:\nmvn clean test site\n\nO ejecuta: generate-test-reports.bat`)) {
+                            e.preventDefault();
+                        }
+                    }
+                });
+                
+                // Agregar efecto hover mejorado
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+            
+            // Agregar estadísticas dinámicas
+            updateStats();
+            
+            // Agregar efecto de carga completada
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        function updateStats() {
+            // Simular actualización de estadísticas (en un entorno real, esto sería una llamada API)
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach((stat, index) => {
+                const originalText = stat.textContent;
+                stat.style.opacity = '0.7';
+                setTimeout(() => {
+                    stat.style.opacity = '1';
+                    // Agregar un pequeño efecto de pulso
+                    stat.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        stat.style.transform = 'scale(1)';
+                    }, 200);
+                }, index * 100);
+            });
+        }
+        
+        // Función para mostrar información de ayuda
+        function showHelp() {
+            alert(`🎓 EduTech Classroom - Guía de Navegación
+
+📊 Dashboard de Tests:
+• Haz clic en cualquier tarjeta de módulo para ver detalles
+• Los enlaces azules llevan a los reportes de tests
+• Los enlaces rojos llevan a documentación del módulo
+• El enlace verde lleva al reporte agregado de todo el proyecto
+
+🔧 Comandos útiles:
+• generate-test-reports.bat - Genera todos los reportes
+• mvn clean test - Ejecuta solo los tests
+• mvn surefire-report:report - Genera solo reportes
+
+💡 Tips:
+• Asegúrate de ejecutar los tests antes de abrir reportes
+• Los reportes se actualizan automáticamente con cada ejecución
+• Usa Ctrl+F5 para refrescar la página forzosamente`);
+        }
+        
+        // Agregar atajo de teclado para ayuda
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F1' || (e.ctrlKey && e.key === 'h')) {
+                e.preventDefault();
+                showHelp();
+            }
+        });
+        
+        // Estilo inicial para animación de carga
+        document.body.style.opacity = '0';
+        document.body.style.transform = 'translateY(20px)';
+        document.body.style.transition = 'all 0.5s ease';
+    </script>
+</body>
+</html>

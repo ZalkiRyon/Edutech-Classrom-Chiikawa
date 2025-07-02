@@ -33,7 +33,7 @@
     -->
     <properties>
         <com-edutech-common.version>1.0-SNAPSHOT</com-edutech-common.version>      <!-- Versión de biblioteca common -->
-        <java.version>17</java.version>                                            <!-- Versión de Java a utilizar (17 LTS para mayor estabilidad y compatibilidad) -->
+        <java.version>21</java.version>                                            <!-- Versión de Java a utilizar (21 LTS para máxima compatibilidad) -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>         <!-- Codificación usada al compilar archivos fuente -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- Codificación usada en los reportes generados por Maven -->
         <spring-boot.version>3.2.0</spring-boot.version>                           <!-- Versión de Spring Boot base para microservicios -->
@@ -45,10 +45,12 @@
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>     <!-- Versión de Hibernate Validator (compatible con Jakarta Validation 3.0+) -->
         <jakarta.el.version>4.0.2</jakarta.el.version>                             <!-- Versión de Jakarta EL requerida por Hibernate Validator -->
         <springdoc-openapi.version>2.1.0</springdoc-openapi.version>               <!-- Versión de SpringDoc OpenAPI para documentación Swagger -->
-        <maven.compiler.source>17</maven.compiler.source>                          <!-- Configuración del compilador de Java (fuente) -->
-        <maven.compiler.target>17</maven.compiler.target>                          <!-- Configuración del compilador de Java (bytecode target) -->
+        <maven.compiler.source>21</maven.compiler.source>                          <!-- Configuración del compilador de Java (fuente) -->
+        <maven.compiler.target>21</maven.compiler.target>                          <!-- Configuración del compilador de Java (bytecode target) -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>      <!-- Versión del compilador de Maven -->
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>             <!-- Versión estable del plugin que limpia el directorio target/ antes de compilar -->
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>       <!-- Versión del plugin Surefire para ejecución de tests y reportes -->
+        <maven-surefire-report-plugin.version>3.2.5</maven-surefire-report-plugin.version> <!-- Versión del plugin Surefire Report para generar informes HTML -->
     </properties>
 
     <!-- 
@@ -427,6 +429,48 @@
             </plugin>
 
             <!-- 
+                Plugin Maven Surefire para ejecución de tests unitarios y generación de reportes.
+                
+                Funcionalidad principal:
+                - Ejecuta automáticamente todos los tests unitarios durante 'mvn test'
+                - Genera reportes en formato XML para integración con CI/CD
+                - Configura el comportamiento en caso de fallos de tests
+                - Permite incluir/excluir patrones específicos de tests
+                
+                Configuración de reportes:
+                - Genera reportes en target/surefire-reports/ para cada módulo
+                - Incluye estadísticas detalladas de éxito/fallo/omitidos
+                - Reportes en formato XML y TXT para análisis automatizado
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <!-- Continuar construcción aunque algunos tests fallen (para ver todos los resultados) -->
+                    <testFailureIgnore>false</testFailureIgnore>
+                    
+                    <!-- Incluir todos los tests que sigan la convención de nombres -->
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/Test*.java</include>
+                    </includes>
+                    
+                    <!-- Configuración de reportes -->
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <reportFormat>xml</reportFormat>
+                    
+                    <!-- Configuración de JVM para tests -->
+                    <argLine>-Xmx2048m --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+                    
+                    <!-- Configuración para tests en paralelo (opcional) -->
+                    <parallel>methods</parallel>
+                    <threadCount>4</threadCount>
+                </configuration>
+            </plugin>
+
+            <!-- 
                 Plugin oficial de Spring Boot para Maven.
 
                 Funcionalidad principal:
@@ -469,5 +513,73 @@
 
         </plugins>
     </build>
+
+    <!-- 
+        Sección de reporting para generar informes de tests y métricas del proyecto.
+        Los reportes se generan con 'mvn site' o 'mvn surefire-report:report'
+    -->
+    <reporting>
+        <plugins>
+            <!-- 
+                Plugin para generar informes HTML de tests unitarios con navegación interactiva.
+                
+                Funcionalidades:
+                - Convierte reportes XML de Surefire en páginas HTML navegables
+                - Genera índice de todos los tests por módulo con enlaces directos
+                - Incluye estadísticas detalladas y gráficos de cobertura
+                - Permite navegación entre módulos padre e hijos
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+                <configuration>
+                    <!-- Generar reportes incluso si hay fallos -->
+                    <showSuccess>true</showSuccess>
+                    
+                    <!-- Incluir enlaces a código fuente -->
+                    <linkXRef>true</linkXRef>
+                    
+                    <!-- Configuración de agregación para proyecto multi-módulo -->
+                    <aggregate>true</aggregate>
+                    
+                    <!-- Formato de salida -->
+                    <outputName>surefire-report</outputName>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                            <report>report-only</report>
+                            <report>failsafe-report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!-- 
+                Plugin para generar información general del proyecto y navegación entre módulos.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.4.5</version>
+                <configuration>
+                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>modules</report>
+                            <report>dependencies</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>
