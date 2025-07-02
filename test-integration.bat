@@ -8,19 +8,19 @@ echo Iniciando microservicios...
 echo.
 
 echo === Paso 1: Iniciar Eureka Server ===
-start "Eureka Server" cmd /k "cd /d 'c:\Users\sebas\Desktop\second wind\eureka' && mvn spring-boot:run"
+start "Eureka Server" cmd /k "cd /d 'C:\Edutech-Classrom-Chiikawa\eureka' && mvn spring-boot:run"
 echo Esperando 30 segundos para que Eureka inicie completamente...
 timeout /t 30 /nobreak > nul
 
 echo.
 echo === Paso 2: Iniciar ms-users ===
-start "MS Users" cmd /k "cd /d 'c:\Users\sebas\Desktop\second wind\ms-users' && mvn spring-boot:run"
+start "MS Users" cmd /k "cd /d 'C:\Edutech-Classrom-Chiikawa\ms-users' && mvn spring-boot:run"
 echo Esperando 20 segundos para que ms-users inicie...
 timeout /t 20 /nobreak > nul
 
 echo.
 echo === Paso 3: Iniciar ms-courses ===
-start "MS Courses" cmd /k "cd /d 'c:\Users\sebas\Desktop\second wind\ms-courses' && mvn spring-boot:run"
+start "MS Courses" cmd /k "cd /d 'C:\Edutech-Classrom-Chiikawa\ms-courses' && mvn spring-boot:run"
 echo Esperando 20 segundos para que ms-courses inicie...
 timeout /t 20 /nobreak > nul
 

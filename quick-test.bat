@@ -4,7 +4,7 @@ echo === VERIFICACION RAPIDA DE PRUEBAS EDUTECH ===
 echo.
 
 echo === MS-GRADES ===
-cd "C:\Users\sebas\Desktop\second wind\ms-grades"
+cd "C:\Edutech-Classrom-Chiikawa\ms-grades"
 mvn test -q -Dtest=*ApplicationTests 2>nul
 if %ERRORLEVEL% == 0 (
     echo [OK] ms-grades: Contexto funcionando
@@ -13,7 +13,7 @@ if %ERRORLEVEL% == 0 (
 )
 
 echo === MS-COURSES ===
-cd "C:\Users\sebas\Desktop\second wind\ms-courses"
+cd "C:\Edutech-Classrom-Chiikawa\ms-courses"
 mvn test -q -Dtest=*ApplicationTests 2>nul
 if %ERRORLEVEL% == 0 (
     echo [OK] ms-courses: Contexto funcionando
@@ -22,7 +22,7 @@ if %ERRORLEVEL% == 0 (
 )
 
 echo === MS-PAYMENTS ===
-cd "C:\Users\sebas\Desktop\second wind\ms-payments"
+cd "C:\Edutech-Classrom-Chiikawa\ms-payments"
 mvn test -q -Dtest=*ApplicationTests 2>nul
 if %ERRORLEVEL% == 0 (
     echo [OK] ms-payments: Contexto funcionando
@@ -31,7 +31,7 @@ if %ERRORLEVEL% == 0 (
 )
 
 echo === MS-SUPPORT ===
-cd "C:\Users\sebas\Desktop\second wind\ms-support"
+cd "C:\Edutech-Classrom-Chiikawa\ms-support"
 mvn test -q -Dtest=*ApplicationTests 2>nul
 if %ERRORLEVEL% == 0 (
     echo [OK] ms-support: Contexto funcionando
@@ -40,7 +40,7 @@ if %ERRORLEVEL% == 0 (
 )
 
 echo === MS-USERS ===
-cd "C:\Users\sebas\Desktop\second wind\ms-users"
+cd "C:\Edutech-Classrom-Chiikawa\ms-users"
 mvn test -q -Dtest=*ApplicationTests 2>nul
 if %ERRORLEVEL% == 0 (
     echo [OK] ms-users: Contexto funcionando
@@ -53,5 +53,5 @@ echo === RESUMEN ===
 echo Para ejecutar todas las pruebas completas, usa: run-all-tests.bat
 echo Para ver errores detallados, navega a cada modulo y ejecuta: mvn test
 echo.
-cd "C:\Users\sebas\Desktop\second wind"
+cd "C:\Edutech-Classrom-Chiikawa"
 pause

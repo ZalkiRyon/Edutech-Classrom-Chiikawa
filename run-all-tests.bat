@@ -11,7 +11,7 @@ set "TOTAL_FAILURES=0"
 set "TOTAL_ERRORS=0"
 
 echo === MS-GRADES ===
-cd "C:\Users\sebas\Desktop\second wind\ms-grades"
+cd "C:\Edutech-Classrom-Chiikawa\ms-grades"
 echo Ejecutando pruebas de ms-grades...
 mvn test -q
 if %ERRORLEVEL% == 0 (
@@ -22,7 +22,7 @@ if %ERRORLEVEL% == 0 (
 echo.
 
 echo === MS-COURSES ===
-cd "C:\Users\sebas\Desktop\second wind\ms-courses"
+cd "C:\Edutech-Classrom-Chiikawa\ms-courses"
 echo Ejecutando pruebas de ms-courses...
 mvn test -q
 if %ERRORLEVEL% == 0 (
@@ -33,7 +33,7 @@ if %ERRORLEVEL% == 0 (
 echo.
 
 echo === MS-PAYMENTS ===
-cd "C:\Users\sebas\Desktop\second wind\ms-payments"
+cd "C:\Edutech-Classrom-Chiikawa\ms-payments"
 echo Ejecutando pruebas de ms-payments...
 mvn test -q
 if %ERRORLEVEL% == 0 (
@@ -44,7 +44,7 @@ if %ERRORLEVEL% == 0 (
 echo.
 
 echo === MS-SUPPORT ===
-cd "C:\Users\sebas\Desktop\second wind\ms-support"
+cd "C:\Edutech-Classrom-Chiikawa\ms-support"
 echo Ejecutando pruebas de ms-support...
 mvn test -q
 if %ERRORLEVEL% == 0 (
@@ -55,7 +55,7 @@ if %ERRORLEVEL% == 0 (
 echo.
 
 echo === MS-USERS ===
-cd "C:\Users\sebas\Desktop\second wind\ms-users"
+cd "C:\Edutech-Classrom-Chiikawa\ms-users"
 echo Ejecutando pruebas de ms-users...
 mvn test -q
 if %ERRORLEVEL% == 0 (
@@ -85,6 +85,6 @@ echo - Pruebas de controladores con MockMvc
 echo - Validación de enlaces hypermedia
 echo.
 
-cd "C:\Users\sebas\Desktop\second wind"
+cd "C:\Edutech-Classrom-Chiikawa"
 echo === EJECUCION COMPLETADA ===
 pause

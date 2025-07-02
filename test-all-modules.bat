@@ -4,7 +4,7 @@ echo === EJECUCION COMPLETA DE PRUEBAS UNITARIAS EDUTECH ===
 echo.
 
 echo Ejecutando pruebas de ms-payments...
-cd "c:\Users\sebas\Desktop\second wind\ms-payments"
+cd "C:\Edutech-Classrom-Chiikawa\ms-payments"
 mvn test
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Fallos en ms-payments
@@ -14,7 +14,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 
 echo Ejecutando pruebas de ms-support...
-cd "c:\Users\sebas\Desktop\second wind\ms-support"
+cd "C:\Edutech-Classrom-Chiikawa\ms-support"
 mvn test
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Fallos en ms-support
@@ -24,7 +24,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 
 echo Ejecutando pruebas de ms-grades...
-cd "c:\Users\sebas\Desktop\second wind\ms-grades"
+cd "C:\Edutech-Classrom-Chiikawa\ms-grades"
 mvn test
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Fallos en ms-grades
@@ -34,7 +34,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 
 echo Ejecutando pruebas de ms-courses...
-cd "c:\Users\sebas\Desktop\second wind\ms-courses"
+cd "C:\Edutech-Classrom-Chiikawa\ms-courses"
 mvn test
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Fallos en ms-courses
@@ -44,7 +44,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 
 echo Ejecutando pruebas de ms-users...
-cd "c:\Users\sebas\Desktop\second wind\ms-users"
+cd "C:\Edutech-Classrom-Chiikawa\ms-users"
 mvn test
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Fallos en ms-users

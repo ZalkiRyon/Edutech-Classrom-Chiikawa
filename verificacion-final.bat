@@ -5,7 +5,7 @@ echo ========================================
 echo.
 
 echo [1/6] Compilando y ejecutando pruebas en ms-users...
-cd /d "c:\Users\sebas\Desktop\second wind\ms-users"
+cd /d "C:\Edutech-Classrom-Chiikawa\ms-users"
 mvn clean test -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en ms-users
@@ -16,7 +16,7 @@ echo ✓ ms-users - PRUEBAS EXITOSAS
 echo.
 
 echo [2/6] Compilando y ejecutando pruebas en ms-grades...
-cd /d "c:\Users\sebas\Desktop\second wind\ms-grades"
+cd /d "C:\Edutech-Classrom-Chiikawa\ms-grades"
 mvn clean test -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en ms-grades
@@ -27,7 +27,7 @@ echo ✓ ms-grades - PRUEBAS EXITOSAS
 echo.
 
 echo [3/6] Compilando y ejecutando pruebas en ms-courses...
-cd /d "c:\Users\sebas\Desktop\second wind\ms-courses"
+cd /d "C:\Edutech-Classrom-Chiikawa\ms-courses"
 mvn clean test -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en ms-courses
@@ -38,7 +38,7 @@ echo ✓ ms-courses - PRUEBAS EXITOSAS
 echo.
 
 echo [4/6] Compilando y ejecutando pruebas en ms-payments...
-cd /d "c:\Users\sebas\Desktop\second wind\ms-payments"
+cd /d "C:\Edutech-Classrom-Chiikawa\ms-payments"
 mvn clean test -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en ms-payments
@@ -49,7 +49,7 @@ echo ✓ ms-payments - PRUEBAS EXITOSAS
 echo.
 
 echo [5/6] Compilando y ejecutando pruebas en ms-support...
-cd /d "c:\Users\sebas\Desktop\second wind\ms-support"
+cd /d "C:\Edutech-Classrom-Chiikawa\ms-support"
 mvn clean test -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en ms-support
@@ -60,7 +60,7 @@ echo ✓ ms-support - PRUEBAS EXITOSAS
 echo.
 
 echo [6/6] Compilando common...
-cd /d "c:\Users\sebas\Desktop\second wind\common"
+cd /d "C:\Edutech-Classrom-Chiikawa\common"
 mvn clean compile -q
 if %ERRORLEVEL% neq 0 (
     echo ERROR: Fallos en common
