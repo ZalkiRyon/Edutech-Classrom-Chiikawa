@@ -74,6 +74,14 @@ class EnrollmentServiceTest {
         course = new Course();
         course.setId(1);
         course.setTitle("Test Course");
+        course.setDescription("Test Description");
+        course.setInstructorId(1);
+        course.setCategoryId(1);
+        course.setManagerId(1);
+        course.setPublishDate(LocalDate.now());
+        course.setPrice(new BigDecimal("99.99"));
+        course.setImage("test.jpg");
+        course.setStatus("ACTIVE");
     }
 
     @Test

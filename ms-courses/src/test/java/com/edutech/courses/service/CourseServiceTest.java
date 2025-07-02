@@ -1,31 +1,35 @@
 package com.edutech.courses.service;
 
-import com.edutech.common.dto.CourseDTO;
-import com.edutech.common.dto.UserDTO;
-import com.edutech.common.exception.ResourceNotFoundException;
-import com.edutech.courses.entity.Course;
-import com.edutech.courses.entity.CourseCategory;
-import com.edutech.courses.mapper.CourseMapper;
-import com.edutech.courses.repository.CourseRepository;
-import com.edutech.courses.repository.CourseCategoryRepository;
-import com.edutech.courses.client.UserClient;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.edutech.common.dto.CourseDTO;
+import com.edutech.common.dto.UserDTO;
+import com.edutech.common.exception.ResourceNotFoundException;
+import com.edutech.courses.client.UserClient;
+import com.edutech.courses.entity.Course;
+import com.edutech.courses.entity.CourseCategory;
+import com.edutech.courses.mapper.CourseMapper;
+import com.edutech.courses.repository.CourseCategoryRepository;
+import com.edutech.courses.repository.CourseRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
@@ -58,6 +62,13 @@ class CourseServiceTest {
         testCourse.setId(1);
         testCourse.setTitle("Java Programming");
         testCourse.setDescription("Learn Java from scratch");
+        testCourse.setInstructorId(1);
+        testCourse.setCategoryId(1);
+        testCourse.setManagerId(2);
+        testCourse.setPublishDate(LocalDate.now());
+        testCourse.setPrice(new BigDecimal("99.99"));
+        testCourse.setImage("java-course.jpg");
+        testCourse.setStatus("ACTIVE");
 
         // Crear DTO Course básico
         testCourseDTO = new CourseDTO();

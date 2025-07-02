@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -87,8 +88,12 @@ class CourseContentIntegrationTest {
         testCourse.setTitle("Test Course");
         testCourse.setDescription("Test Description");
         testCourse.setInstructorId(1);
+        testCourse.setManagerId(1);
         testCourse.setPrice(new BigDecimal("99.99"));
         testCourse.setCategoryId(testCategory.getId());
+        testCourse.setPublishDate(LocalDate.now());
+        testCourse.setImage("https://example.com/image.jpg");
+        testCourse.setStatus("ACTIVE");
         testCourse = courseRepository.save(testCourse);
     }
 
@@ -140,7 +145,8 @@ class CourseContentIntegrationTest {
         content = courseContentRepository.save(content);
 
         CourseContentDTO updateDTO = new CourseContentDTO();
-        updateDTO.setId(content.getId());
+        updateDTO.setId(content.getId()); // Set the ID to satisfy @NotNull validation
+        updateDTO.setCourseId(testCourse.getId());
         updateDTO.setTitle("Updated Content");
         updateDTO.setContentType("TEXT");
         updateDTO.setUrl("http://test.com/text.pdf");
