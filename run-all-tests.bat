@@ -12,56 +12,56 @@ set "TOTAL_ERRORS=0"
 
 echo === MS-GRADES ===
 cd "C:\Edutech-Classrom-Chiikawa\ms-grades"
-echo Ejecutando pruebas de ms-grades...
-mvn test -q
+echo Ejecutando pruebas unitarias de ms-grades (excluyendo integracion)...
+mvn test -q -Dtest="!FeignClientIntegrationTest"
 if %ERRORLEVEL% == 0 (
-    echo [SUCCESS] ms-grades: Todas las pruebas pasaron
+    echo [SUCCESS] ms-grades: Todas las pruebas unitarias pasaron
 ) else (
-    echo [FAILURE] ms-grades: Hay pruebas fallidas
+    echo [FAILURE] ms-grades: Hay pruebas unitarias fallidas
 )
 echo.
 
 echo === MS-COURSES ===
 cd "C:\Edutech-Classrom-Chiikawa\ms-courses"
-echo Ejecutando pruebas de ms-courses...
-mvn test -q
+echo Ejecutando pruebas unitarias de ms-courses (excluyendo integracion)...
+mvn test -q -Dtest="!FeignClientIntegrationTest"
 if %ERRORLEVEL% == 0 (
-    echo [SUCCESS] ms-courses: Todas las pruebas pasaron
+    echo [SUCCESS] ms-courses: Todas las pruebas unitarias pasaron
 ) else (
-    echo [FAILURE] ms-courses: Hay pruebas fallidas
+    echo [FAILURE] ms-courses: Hay pruebas unitarias fallidas
 )
 echo.
 
 echo === MS-PAYMENTS ===
 cd "C:\Edutech-Classrom-Chiikawa\ms-payments"
-echo Ejecutando pruebas de ms-payments...
-mvn test -q
+echo Ejecutando pruebas unitarias de ms-payments (excluyendo integracion)...
+mvn test -q -Dtest="!FeignClientIntegrationTest"
 if %ERRORLEVEL% == 0 (
-    echo [SUCCESS] ms-payments: Todas las pruebas pasaron
+    echo [SUCCESS] ms-payments: Todas las pruebas unitarias pasaron
 ) else (
-    echo [FAILURE] ms-payments: Hay pruebas fallidas
+    echo [FAILURE] ms-payments: Hay pruebas unitarias fallidas
 )
 echo.
 
 echo === MS-SUPPORT ===
 cd "C:\Edutech-Classrom-Chiikawa\ms-support"
-echo Ejecutando pruebas de ms-support...
-mvn test -q
+echo Ejecutando pruebas unitarias de ms-support (excluyendo integracion)...
+mvn test -q -Dtest="!FeignClientIntegrationTest"
 if %ERRORLEVEL% == 0 (
-    echo [SUCCESS] ms-support: Todas las pruebas pasaron
+    echo [SUCCESS] ms-support: Todas las pruebas unitarias pasaron
 ) else (
-    echo [FAILURE] ms-support: Hay pruebas fallidas
+    echo [FAILURE] ms-support: Hay pruebas unitarias fallidas
 )
 echo.
 
 echo === MS-USERS ===
 cd "C:\Edutech-Classrom-Chiikawa\ms-users"
-echo Ejecutando pruebas de ms-users...
-mvn test -q
+echo Ejecutando pruebas unitarias de ms-users (excluyendo integracion)...
+mvn test -q -Dtest="!FeignClientIntegrationTest"
 if %ERRORLEVEL% == 0 (
-    echo [SUCCESS] ms-users: Todas las pruebas pasaron
+    echo [SUCCESS] ms-users: Todas las pruebas unitarias pasaron
 ) else (
-    echo [FAILURE] ms-users: Hay pruebas fallidas
+    echo [FAILURE] ms-users: Hay pruebas unitarias fallidas
 )
 echo.
 

@@ -56,7 +56,12 @@ class CourseContentControllerTest {
         mockMvc.perform(get("/api/course-contents/course/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("Test Content"));
+                .andExpect(jsonPath("$._embedded.courseContentDTOList").exists())
+                .andExpect(jsonPath("$._embedded.courseContentDTOList[0].title").value("Test Content"))
+                .andExpect(jsonPath("$._embedded.courseContentDTOList[0].contentType").value("VIDEO"))
+                .andExpect(jsonPath("$._embedded.courseContentDTOList[0].courseId").value(1))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.course-contents.href").exists());
     }
 
     @Test

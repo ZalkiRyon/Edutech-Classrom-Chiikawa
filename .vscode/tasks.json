@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Test ms-courses only",
+			"type": "shell",
+			"command": "mvn",
+			"args": [
+				"test",
+				"-Dtest=*ControllerTest"
+			],
+			"group": "test",
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			]
+		}
+	]
+}

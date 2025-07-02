@@ -1,7 +1,9 @@
 package com.edutech.courses.controller;
 
 import com.edutech.common.dto.CourseCategoryDTO;
+import com.edutech.common.dto.CourseDTO;
 import com.edutech.courses.service.CourseCategoryService;
+import com.edutech.courses.service.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +32,12 @@ class CourseCategoryControllerTest {
     @MockBean
     private CourseCategoryService courseCategoryService;
 
+    @MockBean
+    private CourseService courseService;
+
     private ObjectMapper objectMapper;
     private CourseCategoryDTO courseCategoryDTO;
+    private CourseDTO courseDTO;
 
     @BeforeEach
     void setUp() {
@@ -41,6 +48,13 @@ class CourseCategoryControllerTest {
         courseCategoryDTO.setId(1);
         courseCategoryDTO.setName("Programación");
         courseCategoryDTO.setDescription("Categoría de cursos de programación");
+
+        courseDTO = new CourseDTO();
+        courseDTO.setId(1);
+        courseDTO.setTitle("Curso de Java");
+        courseDTO.setDescription("Aprende Java desde cero");
+        courseDTO.setPrice(BigDecimal.valueOf(99.99));
+        courseDTO.setCategoryId(1);
     }
 
     @Test
@@ -77,6 +91,27 @@ class CourseCategoryControllerTest {
                 .andExpect(jsonPath("$._links.delete.href").exists());
 
         verify(courseCategoryService).findById(1);
+    }
+
+    @Test
+    void testGetCoursesByCategoryId() throws Exception {
+        // Arrange
+        List<CourseDTO> courses = Arrays.asList(courseDTO);
+        when(courseService.findByCategoryId(1)).thenReturn(courses);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/course-categories/1/courses")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.courseDTOList").exists())
+                .andExpect(jsonPath("$._embedded.courseDTOList[0].title").value("Curso de Java"))
+                .andExpect(jsonPath("$._embedded.courseDTOList[0].description").value("Aprende Java desde cero"))
+                .andExpect(jsonPath("$._embedded.courseDTOList[0].price").value(99.99))
+                .andExpect(jsonPath("$._embedded.courseDTOList[0].categoryId").value(1))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.category.href").exists());
+
+        verify(courseService).findByCategoryId(1);
     }
 
     @Test

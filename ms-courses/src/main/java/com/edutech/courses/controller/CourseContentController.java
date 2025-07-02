@@ -64,7 +64,7 @@ public class CourseContentController {
      */
     @GetMapping("/course/{courseId}")
     @Operation(summary = "Obtener contenido por curso", description = "Retorna todo el contenido de un curso específico con enlaces HATEOAS")
-    public ResponseEntity<List<EntityModel<CourseContentDTO>>> getCourseContentsByCourseId(
+    public ResponseEntity<CollectionModel<EntityModel<CourseContentDTO>>> getCourseContentsByCourseId(
             @Parameter(description = "ID del curso") @PathVariable Integer courseId) {
         List<CourseContentDTO> courseContents = courseContentService.findByCourseId(courseId);
         
@@ -72,7 +72,11 @@ public class CourseContentController {
                 .map(this::addLinksToDto)
                 .collect(Collectors.toList());
         
-        return ResponseEntity.ok(contentModels);
+        CollectionModel<EntityModel<CourseContentDTO>> collectionModel = CollectionModel.of(contentModels);
+        collectionModel.add(linkTo(methodOn(CourseContentController.class).getCourseContentsByCourseId(courseId)).withSelfRel());
+        collectionModel.add(linkTo(CourseContentController.class).withRel("course-contents"));
+        
+        return ResponseEntity.ok(collectionModel);
     }
 
     /**

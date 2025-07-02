@@ -75,4 +75,12 @@ public class CourseService {
         if (id != null) entity.setId(id);
         return courseMapper.toDTO(courseRepo.save(entity));
     }
+
+    public List<CourseDTO> findByCategoryId(Integer categoryId) {
+        // Validar que la categoría existe
+        orThrow(categRepo.findById(categoryId), "Categoría");
+        return courseRepo.findByCategoryId(categoryId).stream()
+                .map(courseMapper::toDTO)
+                .toList();
+    }
 }

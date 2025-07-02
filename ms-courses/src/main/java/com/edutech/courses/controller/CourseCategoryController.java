@@ -1,7 +1,9 @@
 package com.edutech.courses.controller;
 
 import com.edutech.common.dto.CourseCategoryDTO;
+import com.edutech.common.dto.CourseDTO;
 import com.edutech.courses.service.CourseCategoryService;
+import com.edutech.courses.service.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +24,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class CourseCategoryController {
 
     private final CourseCategoryService categService;
+    private final CourseService courseService;
 
-    public CourseCategoryController(CourseCategoryService categService) {
+    public CourseCategoryController(CourseCategoryService categService, CourseService courseService) {
         this.categService = categService;
+        this.courseService = courseService;
     }
 
     @GetMapping
@@ -73,6 +77,23 @@ public class CourseCategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{categoryId}/courses")
+    @Operation(summary = "Obtener cursos por categoría", description = "Retorna todos los cursos de una categoría específica con enlaces HATEOAS")
+    public ResponseEntity<CollectionModel<EntityModel<CourseDTO>>> getCoursesByCategory(@PathVariable Integer categoryId) {
+        List<CourseDTO> courses = courseService.findByCategoryId(categoryId);
+        
+        List<EntityModel<CourseDTO>> courseModels = courses.stream()
+                .map(this::addLinksToCourseDto)
+                .collect(Collectors.toList());
+        
+        CollectionModel<EntityModel<CourseDTO>> collectionModel = CollectionModel.of(courseModels);
+        collectionModel.add(linkTo(methodOn(CourseCategoryController.class).getCoursesByCategory(categoryId)).withSelfRel());
+        collectionModel.add(linkTo(methodOn(CourseCategoryController.class).findById(categoryId)).withRel("category"));
+        collectionModel.add(linkTo(CourseCategoryController.class).withRel("course-categories"));
+        
+        return ResponseEntity.ok(collectionModel);
+    }
+
     private EntityModel<CourseCategoryDTO> addLinksToDto(CourseCategoryDTO category) {
         EntityModel<CourseCategoryDTO> categoryModel = EntityModel.of(category);
         
@@ -82,5 +103,19 @@ public class CourseCategoryController {
         categoryModel.add(linkTo(methodOn(CourseCategoryController.class).delete(category.getId())).withRel("delete"));
         
         return categoryModel;
+    }
+
+    private EntityModel<CourseDTO> addLinksToCourseDto(CourseDTO course) {
+        EntityModel<CourseDTO> courseModel = EntityModel.of(course);
+        
+        // Agregar enlaces básicos para el curso (necesitaremos importar CourseController si existe)
+        // courseModel.add(linkTo(methodOn(CourseController.class).findById(course.getId())).withSelfRel());
+        // courseModel.add(linkTo(CourseController.class).withRel("courses"));
+        
+        // Por ahora, agregamos enlaces básicos
+        courseModel.add(linkTo(methodOn(CourseCategoryController.class).getCoursesByCategory(course.getCategoryId())).withRel("category-courses"));
+        courseModel.add(linkTo(methodOn(CourseCategoryController.class).findById(course.getCategoryId())).withRel("category"));
+        
+        return courseModel;
     }
 }
