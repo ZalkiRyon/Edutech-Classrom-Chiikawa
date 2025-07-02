@@ -15,5 +15,10 @@ echo GET /api/course-contents/course/1
 curl -X GET "http://localhost:9002/api/course-contents/course/1" -H "Accept: application/json" -s | jq . || echo "Error: Verificar que el servicio este ejecutandose y jq este instalado"
 echo.
 
+echo === ENDPOINT 3: Obtener contenido especifico por ID ===
+echo GET /api/course-contents/1
+curl -X GET "http://localhost:9002/api/course-contents/1" -H "Accept: application/json" -s | jq . || echo "Error: Verificar que el servicio este ejecutandose y jq este instalado"
+echo.
+
 echo === PRUEBAS COMPLETADAS ===
 pause

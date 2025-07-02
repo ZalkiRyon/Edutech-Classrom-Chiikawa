@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,6 +48,30 @@ class CourseContentControllerTest {
     }
 
     @Test
+    void testGetCourseContentById() throws Exception {
+        // Arrange
+        when(courseContentService.findById(eq(1))).thenReturn(courseContentDTO);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/course-contents/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Test Content"))
+                .andExpect(jsonPath("$.contentType").value("VIDEO"))
+                .andExpect(jsonPath("$.courseId").value(1))
+                .andExpect(jsonPath("$.url").value("http://test.com/video.mp4"))
+                .andExpect(jsonPath("$.orderIndex").value(1))
+                .andExpect(jsonPath("$._links.self.href").exists())
+                .andExpect(jsonPath("$._links.all-contents.href").exists())
+                .andExpect(jsonPath("$._links.course-contents.href").exists())
+                .andExpect(jsonPath("$._links.update.href").exists())
+                .andExpect(jsonPath("$._links.delete.href").exists());
+
+        verify(courseContentService).findById(1);
+    }
+
+    @Test
     void testGetCourseContentsByCourseId() throws Exception {
         // Arrange
         List<CourseContentDTO> contents = Arrays.asList(courseContentDTO);
@@ -62,6 +87,8 @@ class CourseContentControllerTest {
                 .andExpect(jsonPath("$._embedded.courseContentDTOList[0].courseId").value(1))
                 .andExpect(jsonPath("$._links.self.href").exists())
                 .andExpect(jsonPath("$._links.course-contents.href").exists());
+
+        verify(courseContentService).findByCourseId(1);
     }
 
     @Test
@@ -75,6 +102,8 @@ class CourseContentControllerTest {
                 .content(objectMapper.writeValueAsString(courseContentDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("Test Content"));
+
+        verify(courseContentService).create(any(CourseContentDTO.class));
     }
 
     @Test
@@ -96,6 +125,8 @@ class CourseContentControllerTest {
                 .content(objectMapper.writeValueAsString(updatedDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Updated Content"));
+
+        verify(courseContentService).update(eq(1), any(CourseContentDTO.class));
     }
 
     @Test
@@ -107,5 +138,7 @@ class CourseContentControllerTest {
         mockMvc.perform(delete("/api/course-contents/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        verify(courseContentService).delete(1);
     }
 }
