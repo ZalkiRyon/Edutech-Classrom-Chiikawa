@@ -1,7 +1,9 @@
 package com.edutech.grades.service;
 
+import com.edutech.common.dto.CourseDTO;
 import com.edutech.common.dto.CourseQuizDTO;
 import com.edutech.common.exception.ResourceNotFoundException;
+import com.edutech.grades.client.CourseClient;
 import com.edutech.grades.entity.CourseQuiz;
 import com.edutech.grades.mapper.CourseQuizMapperManual;
 import com.edutech.grades.repository.CourseQuizRepository;
@@ -30,11 +32,15 @@ class CourseQuizServiceTest {
     @Mock
     private CourseQuizMapperManual courseQuizMapper;
 
+    @Mock
+    private CourseClient courseClient;
+
     @InjectMocks
     private CourseQuizService courseQuizService;
 
     private CourseQuiz courseQuiz;
     private CourseQuizDTO courseQuizDTO;
+    private CourseDTO courseDTO;
 
     @BeforeEach
     void setUp() {
@@ -52,54 +58,67 @@ class CourseQuizServiceTest {
         courseQuizDTO.setTitle("Quiz de Prueba");
         courseQuizDTO.setDescription("Descripción del quiz de prueba");
         courseQuizDTO.setQuizType("Multiple Choice");
+
+        // Configurar mock del CourseDTO para validaciones
+        courseDTO = new CourseDTO();
+        courseDTO.setId(1);
+        courseDTO.setTitle("Curso de Prueba");
+        courseDTO.setDescription("Descripción del curso de prueba");
     }
 
     @Test
-    void testFindAll() {
-        // Arrange
-        List<CourseQuiz> courseQuizzes = Arrays.asList(courseQuiz);
-        List<CourseQuizDTO> expectedDTOs = Arrays.asList(courseQuizDTO);
+    void deberiaObtenerTodosLosQuizzesDeCurso() {
+        // Dado - Preparación de datos de prueba
+        List<CourseQuiz> quizzesEsperados = Arrays.asList(courseQuiz);
+        List<CourseQuizDTO> dtoEsperados = Arrays.asList(courseQuizDTO);
 
-        when(courseQuizRepository.findAll()).thenReturn(courseQuizzes);
+        when(courseQuizRepository.findAll()).thenReturn(quizzesEsperados);
         when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
-        // Act
-        List<CourseQuizDTO> result = courseQuizService.findAll();
+        // Cuando - Ejecución del método a probar
+        List<CourseQuizDTO> resultado = courseQuizService.findAll();
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(expectedDTOs.get(0).getTitle(), result.get(0).getTitle());
+        // Entonces - Verificación de resultados
+        assertNotNull(resultado, "La lista de quizzes no debería ser null");
+        assertEquals(1, resultado.size(), "Debería retornar exactamente un quiz");
+        assertEquals(dtoEsperados.get(0).getTitle(), resultado.get(0).getTitle(), 
+                    "El título del quiz debería coincidir");
         verify(courseQuizRepository).findAll();
         verify(courseQuizMapper).toDTO(courseQuiz);
     }
 
     @Test
-    void testFindById() {
-        // Arrange
+    void deberiaObtenerQuizPorIdExistente() {
+        // Dado - Configuración de mocks para ID existente
         when(courseQuizRepository.findById(1)).thenReturn(Optional.of(courseQuiz));
         when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
-        // Act
-        CourseQuizDTO result = courseQuizService.findById(1);
+        // Cuando - Búsqueda por ID existente
+        CourseQuizDTO resultado = courseQuizService.findById(1);
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(courseQuizDTO.getTitle(), result.getTitle());
-        assertEquals(courseQuizDTO.getCourseId(), result.getCourseId());
+        // Entonces - Verificación de datos obtenidos
+        assertNotNull(resultado, "El quiz obtenido no debería ser null");
+        assertEquals(courseQuizDTO.getTitle(), resultado.getTitle(), 
+                    "El título del quiz debería coincidir");
+        assertEquals(courseQuizDTO.getCourseId(), resultado.getCourseId(), 
+                    "El ID del curso debería coincidir");
         verify(courseQuizRepository).findById(1);
         verify(courseQuizMapper).toDTO(courseQuiz);
     }
 
     @Test
-    void testFindById_NotFound() {
-        // Arrange
+    void deberiaLanzarExcepcionParaQuizInexistente() {
+        // Dado - Configuración para ID inexistente
         when(courseQuizRepository.findById(1)).thenReturn(Optional.empty());
 
-        // Act & Assert
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, 
-                () -> courseQuizService.findById(1));
-        assertNotNull(exception);
+        // Cuando y Entonces - Verificación de excepción esperada
+        ResourceNotFoundException excepcion = assertThrows(ResourceNotFoundException.class, 
+                () -> courseQuizService.findById(1), 
+                "Debería lanzar ResourceNotFoundException para quiz inexistente");
+        
+        assertNotNull(excepcion, "La excepción lanzada no debería ser null");
+        assertTrue(excepcion.getMessage().contains("Course quiz not found"), 
+                  "El mensaje de excepción debería indicar que el quiz no fue encontrado");
         verify(courseQuizRepository).findById(1);
     }
 
@@ -146,17 +165,19 @@ class CourseQuizServiceTest {
 
     @Test
     void testCreate() {
-        // Arrange
+        // Arrange - Dado: Configurar mocks necesarios
+        when(courseClient.findById(any(Integer.class))).thenReturn(courseDTO);
         when(courseQuizMapper.toEntity(courseQuizDTO)).thenReturn(courseQuiz);
         when(courseQuizRepository.save(courseQuiz)).thenReturn(courseQuiz);
         when(courseQuizMapper.toDTO(courseQuiz)).thenReturn(courseQuizDTO);
 
-        // Act
+        // Act - Cuando: Se crea el quiz
         CourseQuizDTO result = courseQuizService.create(courseQuizDTO);
 
-        // Assert
+        // Assert - Entonces: Se valida el resultado
         assertNotNull(result);
         assertEquals(courseQuizDTO.getTitle(), result.getTitle());
+        verify(courseClient).findById(eq(1));
         verify(courseQuizRepository).save(courseQuiz);
         verify(courseQuizMapper).toEntity(courseQuizDTO);
         verify(courseQuizMapper).toDTO(courseQuiz);

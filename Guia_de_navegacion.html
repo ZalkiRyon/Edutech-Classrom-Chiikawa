@@ -663,6 +663,12 @@
                             <span class="link-description">Tickets de soporte</span>
                             <div class="status-indicator"></div>
                         </div>
+                        <div class="link-item">
+                            <span class="link-icon">💬</span>
+                            <a href="http://localhost:9005/api/ticket-responses" target="_blank">GET Ticket Responses</a>
+                            <span class="link-description">Respuestas a tickets</span>
+                            <div class="status-indicator"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -686,6 +692,48 @@
                         <a href="test-reports-index.html" target="_blank">Dashboard Tests</a>
                         <span class="link-description">Reportes de todas las pruebas</span>
                         <div class="status-indicator"></div>
+                    </div>
+                    <div class="link-item">
+                        <span class="link-icon">📈</span>
+                        <a href="target/site/surefire-report.html" target="_blank">Reporte Agregado</a>
+                        <span class="link-description">Consolidado de todos los módulos</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="link-section">
+                <h4>📁 Reportes por Módulo</h4>
+                <div class="links-grid">
+                    <div class="link-item">
+                        <span class="link-icon">👥</span>
+                        <a href="ms-users/target/site/users-surefire-report.html" target="_blank">Users Tests</a>
+                        <span class="link-description">Tests del módulo de usuarios</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="link-item">
+                        <span class="link-icon">📊</span>
+                        <a href="ms-grades/target/site/grades-surefire-report.html" target="_blank">Grades Tests</a>
+                        <span class="link-description">Tests del módulo de calificaciones</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="link-item">
+                        <span class="link-icon">💳</span>
+                        <a href="ms-payments/target/site/payments-surefire-report.html" target="_blank">Payments Tests</a>
+                        <span class="link-description">Tests del módulo de pagos</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="link-item">
+                        <span class="link-icon">🎧</span>
+                        <a href="ms-support/target/site/support-surefire-report.html" target="_blank">Support Tests</a>
+                        <span class="link-description">Tests del módulo de soporte</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="link-item">
+                        <span class="link-icon">📚</span>
+                        <a href="ms-courses/target/site/courses-surefire-report.html" target="_blank">Courses Tests</a>
+                        <span class="link-description">⚠️ En desarrollo - Ver troubleshooting</span>
+                        <div class="status-indicator" style="background: #ff9800;"></div>
                     </div>
                 </div>
             </div>
@@ -718,6 +766,21 @@
                 <h4>🔌 Verificar Servicios Activos:</h4>
                 <div class="command">netstat -an | findstr :900</div>
                 <div class="command">netstat -an | findstr :8761</div>
+            </div>
+            
+            <div class="command-group">
+                <h4>🧪 Comandos de Testing:</h4>
+                <div class="command">generate-test-reports.bat</div>
+                <div class="command">mvn clean test</div>
+                <div class="command">mvn surefire-report:report</div>
+                <div class="command">test-courses-only.bat</div>
+            </div>
+            
+            <div class="command-group">
+                <h4>⚠️ Troubleshooting MS-COURSES:</h4>
+                <div class="command">cd ms-courses && mvn clean compile test-compile</div>
+                <div class="command">cd ms-courses && mvn test -Dtest=ClassroomCoursesModuleApplicationTests</div>
+                <div class="command">cd ms-courses && mvn surefire-report:report</div>
             </div>
         </div>
         

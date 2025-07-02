@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.edutech.common.dto.CourseQuizDTO;
 import com.edutech.common.exception.ResourceNotFoundException;
+import com.edutech.grades.client.CourseClient;
 import com.edutech.grades.entity.CourseQuiz;
 import com.edutech.grades.mapper.CourseQuizMapperManual;
 import com.edutech.grades.repository.CourseQuizRepository;
+
+import static com.edutech.common.exception.ExceptionUtils.orThrowFeign;
 
 /**
  * Service for managing course quizzes
@@ -25,6 +28,9 @@ public class CourseQuizService {
 
     @Autowired
     private CourseQuizMapperManual courseQuizMapper;
+    
+    @Autowired
+    private CourseClient courseClient;
 
     /**
      * Get all course quizzes
@@ -79,6 +85,9 @@ public class CourseQuizService {
      * Create new course quiz
      */
     public CourseQuizDTO create(CourseQuizDTO courseQuizDTO) {
+        // Validar que el curso exista usando FeignClient
+        orThrowFeign(courseQuizDTO.getCourseId(), courseClient::findById, "Curso");
+        
         CourseQuiz courseQuiz = courseQuizMapper.toEntity(courseQuizDTO);
         
         // Set creation timestamp if not provided

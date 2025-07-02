@@ -1,34 +1,47 @@
-# Chiikawa SPA - Microservicios EduTech Classrom
+# EduTech Classroom - Arquitectura de Microservicios
 
 ## 🎯 Descripción del Proyecto
 
-**Chiikawa SPA** realizó la migración exitosa del monolito "Edutech-Classrom" hacia una arquitectura de microservicios moderna, escalable y mantenible. El proyecto implementa un sistema educativo completo con separación de responsabilidades, comunicación entre servicios, validaciones cruzadas y documentación interactiva.
+**EduTech Classroom** es una plataforma educativa moderna basada en **arquitectura de microservicios**, desarrollada por Chiikawa SPA. El proyecto implementa un sistema educativo completo con separación de responsabilidades, comunicación entre servicios mediante **FeignClients**, validaciones cruzadas, **HATEOAS para navegabilidad hipermedia** y documentación interactiva con **Swagger/OpenAPI**.
 
-## 🏗️ Arquitectura de Microservicios
+## 📋 Estado Actual del Proyecto (Diciembre 2024)
+
+### ✅ Completado y Funcional
+
+- **✅ Arquitectura de microservicios** con 5 servicios principales + Eureka
+- **✅ FeignClients implementados** para comunicación inter-servicios (9 clientes totales)
+- **✅ Validaciones cruzadas** en tiempo real entre microservicios
+- **✅ HATEOAS completo** con navegabilidad hipermedia (JSON HAL)
+- **✅ Swagger/OpenAPI 3.0** documentación interactiva en todos los servicios
+- **✅ Spring Boot 3.2.0** con Java 21 compatible
+- **✅ Compilación exitosa** del proyecto completo y pruebas
+- **✅ Base de datos MySQL** configurada y funcional
+- **✅ Scripts de automatización** para ejecución y testing
 
 ### Servicios Implementados
 
-| Microservicio | Puerto | Responsabilidad | Validaciones Cruzadas |
-|---------------|--------|-----------------|----------------------|
-| **ms-users**    | 9001   | Gestión de usuarios y roles | - |
-| **ms-courses**  | 9002   | Gestión de cursos y categorías | ✅ Usuarios |
-| **ms-grades**   | 9003   | Gestión de inscripciones y calificaciones | ✅ Usuarios + Cursos |
-| **ms-payments** | 9004   | Gestión de pagos y cupones de descuento | ✅ Usuarios |
-| **ms-support**  | 9005   | Gestión de tickets de soporte técnico | ✅ Usuarios |
-| **eureka**       | 8761   | Servidor de descubrimiento de servicios | - |
+| Microservicio | Puerto | Responsabilidad | Validaciones Cruzadas | FeignClients |
+|---------------|--------|-----------------|----------------------|--------------|
+| **ms-users**    | 9001   | Gestión de usuarios y roles | - | - |
+| **ms-courses**  | 9002   | Gestión de cursos, categorías, contenidos e inscripciones | ✅ Usuarios | UserClient |
+| **ms-grades**   | 9003   | Gestión de calificaciones, quizzes y respuestas | ✅ Usuarios + Cursos | UserClient, CourseClient |
+| **ms-payments** | 9004   | Gestión de pagos y cupones de descuento | ✅ Usuarios + Cursos | UserClient, CourseClient, EnrollmentClient |
+| **ms-support**  | 9005   | Gestión de tickets de soporte técnico | ✅ Usuarios + Cursos + Calificaciones | UserClient, CourseClient, GradeClient |
+| **eureka**       | 8761   | Servidor de descubrimiento de servicios | - | - |
+
+## 🏗️ Arquitectura de Microservicios
 
 ### Características Técnicas
 
-- ✅ **Arquitectura de Microservicios** independientes
-- ✅ **Spring Boot 3.2.0** con Java 17+
-- ✅ **MySQL** como base de datos compartida (levantada localmente con Laragon y gestionada con HeidiSQL)
-- ✅ **Feign Client** para comunicación entre servicios (con Eureka)
-- ✅ **Validaciones cruzadas** en tiempo real
-- ✅ **HATEOAS** para navegabilidad de APIs
-- ✅ **Swagger/OpenAPI** para documentación interactiva
-- ✅ **POJOs manuales** para máxima compatibilidad
-- ✅ **Mappers manuales** sin dependencias externas
-- ✅ **Pruebas unitarias** con JUnit y Mockito
+- ✅ **Arquitectura de Microservicios** independientes y escalables
+- ✅ **Spring Boot 3.2.0** con **Java 21** compatible
+- ✅ **MySQL** como base de datos (compartida para desarrollo)
+- ✅ **FeignClient** para comunicación entre servicios (9 clientes totales)
+- ✅ **Validaciones cruzadas** en tiempo real entre microservicios
+- ✅ **HATEOAS completo** para navegabilidad hipermedia (JSON HAL)
+- ✅ **Swagger/OpenAPI 3.0** para documentación interactiva
+- ✅ **Pruebas unitarias completas** con JUnit 5 y Mockito
+- ✅ **Manejo de excepciones** centralizado
 
 ## 🚀 Ejecución del Proyecto
 
@@ -224,13 +237,54 @@ curl -X POST http://localhost:9005/api/support-tickets \
   -d '{"userId": 20, "supportUserId": 16, "subject": "Test Ticket", "description": "Test description", "status": "Open", "createdAt": "2024-01-15T10:00:00Z"}'
 ```
 
-## 🧪 Pruebas
+## 🧪 Testing y Calidad de Código
 
-### Ejecutar Pruebas Unitarias
+### Framework de Testing
+- ✅ **JUnit 5 (Jupiter)** - Framework principal de testing
+- ✅ **Mockito** - Para mocking y testing unitario
+- ✅ **Spring Boot Test** - Integración con Spring Boot
+- ✅ **MockMvc** - Para testing de controladores REST
+- ✅ **AssertJ** - Assertions fluidas
+
+### Tipos de Pruebas Implementadas
+
+#### 1. Pruebas Unitarias (Español)
+- **Servicios**: Lógica de negocio con mocks
+- **Controladores**: Endpoints REST con MockMvc
+- **Mappers**: Conversiones Entity ↔ DTO
+- **Nomenclatura**: Métodos con nombres descriptivos en español
+- **Comentarios**: Given/Dado, When/Cuando, Then/Entonces
+
+#### 2. Pruebas de Integración FeignClient (NUEVO) ✨
+- **ms-grades**: `FeignClientIntegrationTest` - UserClient, CourseClient (7 pruebas)
+- **ms-payments**: `PaymentsFeignClientIntegrationTest` - UserClient, CourseClient, EnrollmentClient (7 pruebas)  
+- **ms-support**: `SupportFeignClientIntegrationTest` - UserClient, CourseClient, GradeClient (7 pruebas)
+- **ms-courses**: `CoursesFeignClientIntegrationTest` - UserClient (7 pruebas)
+- **Total**: 28 pruebas de integración con servicios reales
+- **Requisito**: Microservicios ejecutándose en puertos 9001-9005
+- **Validaciones**: Comunicación real, performance < 5s, manejo de errores
+- **Textos**: Completamente en español (Given/Dado, When/Cuando, Then/Entonces)
+
+### Ejecutar Pruebas
 
 ```bash
-# Pruebas de todos los módulos
+# Compilar proyecto completo
+mvn clean compile -T 4
+
+# Compilar pruebas
+mvn test-compile -T 4
+
+# Ejecutar todas las pruebas unitarias
 mvn test
+
+# Levantar servicios
+run-all.bat
+
+# Ejecutar pruebas de integración FeignClient (requiere servicios activos)
+test-feign-integration.bat
+
+# Verificar que servicios estén activos antes de integración
+netstat -an | findstr :900
 
 # Pruebas de un módulo específico
 cd ms-users && mvn test
@@ -239,7 +293,8 @@ cd ms-grades && mvn test
 cd ms-payments && mvn test
 cd ms-support && mvn test
 
-# Ejecutar script de pruebas de integración
+# Scripts de pruebas automatizadas
+test-runner.bat
 test-integration.bat
 ```
 
@@ -247,100 +302,11 @@ test-integration.bat
 
 - **Mappers manuales**: Conversión bidireccional Entity ↔ DTO
 - **Servicios**: Lógica de negocio y validaciones
-- **Repositorios**: Operaciones CRUD en base de datos
+- **Repositorios**: Operaciones CRUD en base de datos  
 - **Controladores**: Endpoints REST y respuestas HATEOAS
-- **Clientes Feign**: Comunicación entre microservicios
+- **Clientes Feign**: Comunicación entre microservicios (integración real)
 - **Validaciones cruzadas**: Integridad referencial distribuida
-
-## 🧪 Pruebas Unitarias y Testing
-
-### Framework de Testing
-El proyecto utiliza **JUnit 5** con **Mockito** y **Spring Boot Test** para asegurar la calidad del código:
-
-- ✅ **JUnit 5 (Jupiter)** - Framework principal de testing
-- ✅ **Mockito** - Para mocking y testing unitario
-- ✅ **Spring Boot Test** - Integración con Spring Boot
-- ✅ **MockMvc** - Para testing de controladores REST
-- ✅ **AssertJ** - Assertions fluidas
-
-### Cobertura de Pruebas por Microservicio
-
-#### MS-Grades (100% - 80/80 tests)
-```
-src/test/java/com/edutech/grades/
-├── ClassroomGradesModuleApplicationTests.java
-├── controller/
-│   ├── CourseQuizControllerTest.java
-│   ├── CourseQuizQuestionControllerTest.java  
-│   ├── QuizResponseControllerTest.java
-│   └── StudentMarkControllerTest.java
-└── service/
-    ├── CourseQuizServiceTest.java
-    ├── CourseQuizQuestionServiceTest.java
-    ├── EnrollmentServiceTest.java
-    ├── QuizResponseServiceTest.java
-    └── StudentMarkServiceTest.java
-```
-
-#### MS-Users
-```
-src/test/java/com/edutech/users/
-├── ClassroomUsersModuleApplicationTests.java
-├── controller/
-│   └── UserControllerTest.java  
-└── service/
-    ├── UserServiceTest.java
-    └── BasicUserServiceTest.java
-```
-
-#### MS-Courses
-```
-src/test/java/com/edutech/courses/
-├── ClassroomCoursesModuleApplicationTests.java
-├── integration/
-│   └── CourseIntegrationTest.java
-└── service/
-    └── CourseServiceTest.java
-```
-
-### Tipos de Pruebas Implementadas
-
-#### 1. Pruebas Unitarias de Servicios
-- **Características**: Usan `@ExtendWith(MockitoExtension.class)`
-- **Mockean**: Repositories, Mappers, Clients Feign
-- **Prueban**: Lógica de negocio aislada
-
-#### 2. Pruebas de Controladores REST
-- **Características**: Usan `@WebMvcTest` y `MockMvc`
-- **Verifican**: Endpoints HTTP, respuestas JSON, códigos de estado
-- **Incluyen**: Testing de HATEOAS y Swagger
-
-#### 3. Pruebas de Integración
-- **Características**: Usan `@SpringBootTest`
-- **Verifican**: Comunicación entre servicios via Feign Client
-- **Incluyen**: Validaciones cruzadas
-
-### Ejecutar Pruebas
-
-```bash
-# Todas las pruebas de todos los microservicios
-test-runner.bat
-
-# Pruebas de un microservicio específico
-cd ms-grades && mvn test
-
-# Pruebas con reportes detallados
-mvn test surefire-report:report
-
-# Solo tests de controladores
-mvn test -Dtest="*ControllerTest"
-
-# Solo tests de servicios  
-mvn test -Dtest="*ServiceTest"
-
-# Test específico
-mvn test -Dtest=CourseQuizServiceTest#testFindById_Success
-```
+- **Performance**: Tiempos de respuesta aceptables
 
 ## 📖 Documentación API con Swagger/OpenAPI
 
@@ -428,85 +394,4 @@ curl http://localhost:9002/api/courses
 curl -X PUT http://localhost:9002/api/courses/1 -d '{...}'
 ```
 
-## 🎯 **ESTADO FINAL DEL PROYECTO - COMPLETADO** ✅
-
-### **Alineación con Buenas Prácticas Completada (Diciembre 2025)**
-
-#### ✅ **Pruebas Unitarias (JUnit 5 + Mockito)**
-- **ms-users**: Tests completos para servicios y controladores
-- **ms-courses**: Tests completos para servicios y controladores  
-- **ms-grades**: Tests completos para servicios y controladores
-- **ms-payments**: Tests completos para servicios y controladores
-- **ms-support**: Tests completos para servicios y controladores
-- **Cobertura**: 100% en servicios principales y controladores REST
-- **Validación**: Todos los mocks configurados correctamente
-
-#### ✅ **Documentación Swagger/OpenAPI**
-- **Implementación completa** en todos los controladores
-- **Anotaciones @Operation, @ApiResponse, @Parameter** documentadas
-- **URLs Swagger UI** activas en todos los microservicios
-- **Esquemas de datos** documentados con ejemplos
-
-#### ✅ **HATEOAS (Hypermedia)**
-- **ResponseEntity<EntityModel>** implementado en todos los endpoints
-- **Enlaces de navegación** (_self, _all) en todas las respuestas
-- **Content-Type**: `application/hal+json` configurado
-- **Validación en tests** de content-type correcto
-
-#### ✅ **Validaciones Cruzadas (Feign Client)**
-- **ms-grades** ↔ **ms-users**: Validación de Student ID
-- **ms-grades** ↔ **ms-courses**: Validación de Course ID  
-- **ms-courses** ↔ **ms-users**: Validación de Instructor ID
-- **ms-payments** ↔ **ms-users**: Validación de User ID
-- **ms-support** ↔ **ms-users**: Validación de User ID y Support User ID
-
-#### ✅ **Configuración Jackson/JSR310**
-- **jackson-datatype-jsr310** agregado a todos los módulos
-- **Configuración explícita** de ObjectMapper en ms-grades
-- **Serialización de fechas** ISO-8601 estándar
-- **Problemas de JavaTimeModule** resueltos
-
-#### ✅ **Scripts de Automatización**
-- **verificacion-final.bat**: Ejecuta todas las pruebas unitarias
-- **run-all-tests.bat**: Ejecución completa con reportes
-- **quick-test.bat**: Verificación rápida de contextos
-- **test-users.bat**: Pruebas específicas de ms-users
-
-#### ✅ **Documentación Técnica**
-- **README.md**: Actualizado con secciones completas
-- **INFORME_PRUEBAS_UNITARIAS.md**: Documentación técnica detallada
-- **.gitignore**: Configurado para evitar archivos innecesarios
-
-### **Comandos de Verificación Final**
-
-```bash
-# Verificar todas las pruebas unitarias
-verificacion-final.bat
-
-# Verificar contextos de aplicación
-quick-test.bat
-
-# Ejecutar suite completa con reportes
-run-all-tests.bat
-```
-
-### **URLs de Validación (Servicios Activos)**
-
-- **Swagger ms-users**: http://localhost:9001/swagger-ui/index.html
-- **Swagger ms-courses**: http://localhost:9002/swagger-ui/index.html
-- **Swagger ms-grades**: http://localhost:9003/swagger-ui/index.html
-- **Swagger ms-payments**: http://localhost:9004/swagger-ui/index.html
-- **Swagger ms-support**: http://localhost:9005/swagger-ui/index.html
-- **Eureka Dashboard**: http://localhost:8761
-
-### **Estado de Calidad del Código**
-
-| Microservicio | Pruebas | Swagger | HATEOAS | Feign Client | Estado |
-|---------------|---------|---------|---------|--------------|--------|
-| ms-users      | ✅      | ✅      | ✅      | N/A          | ✅ COMPLETO |
-| ms-courses    | ✅      | ✅      | ✅      | ✅           | ✅ COMPLETO |
-| ms-grades     | ✅      | ✅      | ✅      | ✅           | ✅ COMPLETO |
-| ms-payments   | ✅      | ✅      | ✅      | ✅           | ✅ COMPLETO |
-| ms-support    | ✅      | ✅      | ✅      | ✅           | ✅ COMPLETO |
-
-**🚀 El proyecto EduTech está completamente alineado con buenas prácticas de desarrollo y listo para producción.**
+**� El proyecto está operacional con arquitectura de microservicios completa y listo para desarrollo continuo.**
