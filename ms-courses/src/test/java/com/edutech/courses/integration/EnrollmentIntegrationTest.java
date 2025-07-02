@@ -1,13 +1,15 @@
 package com.edutech.courses.integration;
 
-import com.edutech.common.dto.CourseDTO;
+import com.edutech.common.dto.EnrollmentDTO;
 import com.edutech.common.dto.UserDTO;
 import com.edutech.courses.ClassroomCoursesModuleApplication;
 import com.edutech.courses.client.UserClient;
 import com.edutech.courses.entity.Course;
 import com.edutech.courses.entity.CourseCategory;
+import com.edutech.courses.entity.Enrollment;
 import com.edutech.courses.repository.CourseCategoryRepository;
 import com.edutech.courses.repository.CourseRepository;
+import com.edutech.courses.repository.EnrollmentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     "spring.jpa.show-sql=false"
 })
 @Transactional
-class CourseIntegrationTest {
+class EnrollmentIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,16 +58,20 @@ class CourseIntegrationTest {
     private UserClient userClient;
 
     @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
     private CourseRepository courseRepository;
 
     @Autowired
     private CourseCategoryRepository categoryRepository;
 
-    private CourseCategory testCategory;  // Store the test category
+    private Course testCourse;
 
     @BeforeEach
     void setUp() {
         // Clean up database
+        enrollmentRepository.deleteAll();
         courseRepository.deleteAll();
         categoryRepository.deleteAll();
         
@@ -73,8 +79,20 @@ class CourseIntegrationTest {
         CourseCategory category = new CourseCategory();
         category.setName("Test Category");
         category.setDescription("Category for testing");
-        testCategory = categoryRepository.save(category);
-        testCategory = category; // Assign to the testCategory field
+        category = categoryRepository.save(category);
+        
+        // Create a test course
+        testCourse = new Course();
+        testCourse.setTitle("Test Course");
+        testCourse.setDescription("Test Description");
+        testCourse.setInstructorId(1);
+        testCourse.setCategoryId(category.getId());
+        testCourse.setManagerId(1);
+        testCourse.setPublishDate(LocalDate.now());
+        testCourse.setPrice(new BigDecimal("99.99"));
+        testCourse.setImage("test.jpg");
+        testCourse.setStatus("ACTIVE");
+        testCourse = courseRepository.save(testCourse);
         
         // Mock the UserClient to return a valid user for any ID
         UserDTO mockUser = new UserDTO();
@@ -91,92 +109,77 @@ class CourseIntegrationTest {
     }
 
     @Test
-    void getAllCourses_ShouldReturnHateoasCollectionResponse() throws Exception {
-        // When & Then - should return empty collection when no courses exist
-        mockMvc.perform(get("/api/courses")
+    void getAllEnrollments_ShouldReturnHateoasCollectionResponse() throws Exception {
+        mockMvc.perform(get("/api/enrollments")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._links.self").exists());
     }
 
     @Test
-    void createCourse_ShouldReturnHateoasResponse() throws Exception {
-        // Given
-        CourseDTO courseDTO = new CourseDTO();
-        courseDTO.setTitle("Integration Test Course");
-        courseDTO.setDescription("A course for integration testing");
-        courseDTO.setInstructorId(1);
-        courseDTO.setCategoryId(testCategory.getId());  // Use actual category ID
-        courseDTO.setManagerId(1);
-        courseDTO.setPublishDate(LocalDate.now());
-        courseDTO.setPrice(new BigDecimal("99.99"));
-        courseDTO.setImage("test-course.jpg");
-        courseDTO.setStatus("ACTIVE");
+    void createEnrollment_ShouldReturnHateoasResponse() throws Exception {
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO();
+        enrollmentDTO.setStudentId(15);
+        enrollmentDTO.setCourseId(testCourse.getId());
+        enrollmentDTO.setEnrolledAt(Instant.now());
+        enrollmentDTO.setStatus("ACTIVE");
 
-        // When & Then
-        mockMvc.perform(post("/api/courses")
+        mockMvc.perform(post("/api/enrollments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(courseDTO)))
+                .content(objectMapper.writeValueAsString(enrollmentDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Integration Test Course"))
+                .andExpect(jsonPath("$.studentId").value(15))
                 .andExpect(jsonPath("$._links.self").exists());
     }
 
     @Test
-    void getCourseById_ShouldReturnHateoasResponse() throws Exception {
-        // Given - Create a course first
-        Course course = new Course();
-        course.setTitle("Test Course");
-        course.setDescription("Test Description");
-        course.setInstructorId(1);
-        course.setCategoryId(1);
-        course.setManagerId(1);
-        course.setPublishDate(LocalDate.now());
-        course.setPrice(new BigDecimal("99.99"));
-        course.setImage("test.jpg");
-        course.setStatus("ACTIVE");
-        course = courseRepository.save(course);
+    void getEnrollmentById_ShouldReturnHateoasResponse() throws Exception {
+        // Given - Create an enrollment first
+        Enrollment enrollment = new Enrollment();
+        enrollment.setStudentId(15);
+        enrollment.setCourseId(testCourse.getId());
+        enrollment.setEnrolledAt(Instant.now());
+        enrollment.setStatus("ACTIVE");
+        enrollment = enrollmentRepository.save(enrollment);
 
-        // When & Then
-        mockMvc.perform(get("/api/courses/" + course.getId())
+        mockMvc.perform(get("/api/enrollments/" + enrollment.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Test Course"))
+                .andExpect(jsonPath("$.studentId").value(15))
                 .andExpect(jsonPath("$._links.self").exists());
     }
 
     @Test
-    void updateCourse_ShouldReturnUpdatedHateoasResponse() throws Exception {
-        // Given - Create a course first
-        Course course = new Course();
-        course.setTitle("Original Title");
-        course.setDescription("Original Description");
-        course.setInstructorId(1);
-        course.setCategoryId(1);
-        course.setManagerId(1);
-        course.setPublishDate(LocalDate.now());
-        course.setPrice(new BigDecimal("99.99"));
-        course.setImage("original.jpg");
-        course.setStatus("ACTIVE");
-        course = courseRepository.save(course);
+    void getEnrollmentsByStudent_ShouldReturnHateoasResponse() throws Exception {
+        // Given - Create an enrollment first
+        Enrollment enrollment = new Enrollment();
+        enrollment.setStudentId(15);
+        enrollment.setCourseId(testCourse.getId());
+        enrollment.setEnrolledAt(Instant.now());
+        enrollment.setStatus("ACTIVE");
+        enrollmentRepository.save(enrollment);
 
-        CourseDTO updateDTO = new CourseDTO();
-        updateDTO.setTitle("Updated Integration Test Course");
-        updateDTO.setDescription("Updated description");
-        updateDTO.setInstructorId(1);
-        updateDTO.setCategoryId(1);
-        updateDTO.setManagerId(1);
-        updateDTO.setPublishDate(LocalDate.now());
-        updateDTO.setPrice(new BigDecimal("149.99"));
-        updateDTO.setImage("updated-course.jpg");
-        updateDTO.setStatus("ACTIVE");
-
-        // When & Then
-        mockMvc.perform(put("/api/courses/" + course.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateDTO)))
+        mockMvc.perform(get("/api/enrollments/student/15")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Updated Integration Test Course"))
+                .andExpect(jsonPath("$._embedded").exists())
+                .andExpect(jsonPath("$._links.self").exists());
+    }
+
+    @Test
+    void getEnrollmentsByCourse_ShouldReturnHateoasResponse() throws Exception {
+        // Given - Create an enrollment first
+        Enrollment enrollment = new Enrollment();
+        enrollment.setStudentId(15);
+        enrollment.setCourseId(testCourse.getId());
+        enrollment.setEnrolledAt(Instant.now());
+        enrollment.setStatus("ACTIVE");
+        enrollmentRepository.save(enrollment);
+
+        mockMvc.perform(get("/api/enrollments/course/" + testCourse.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded").exists())
                 .andExpect(jsonPath("$._links.self").exists());
     }
 }
