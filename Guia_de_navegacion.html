@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech Classroom - Guía de Navegación</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)" /></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            font-weight: 300;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        
+        .header h1::before {
+            content: '🧭';
+            margin-right: 15px;
+            font-size: 0.8em;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .service-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
+        }
+        
+        .service-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .service-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .service-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.2;
+        }
+        
+        .service-subtitle {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .link-section {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .link-section h4 {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+        }
+        
+        .link-section h4::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .links-grid {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .link-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-left-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .link-item a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 500;
+            flex: 1;
+            transition: color 0.3s ease;
+        }
+        
+        .link-item:hover a {
+            color: #667eea;
+        }
+        
+        .link-icon {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+        
+        .link-description {
+            font-size: 0.85em;
+            color: #777;
+            margin-left: auto;
+            margin-right: 10px;
+            max-width: 200px;
+            text-align: right;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .special-section {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(139, 195, 74, 0.1) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.15);
+        }
+        
+        .commands-section {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .commands-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 1.3em;
+        }
+        
+        .commands-section h3::before {
+            content: '💻';
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        
+        .command-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .command-group h4 {
+            color: #444;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .command {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+            font-size: 0.9em;
+            word-break: break-all;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .footer p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .footer .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            color: #444;
+            font-weight: 500;
+        }
+        
+        .feature::before {
+            content: '✅';
+            margin-right: 8px;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(100px);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .footer .features {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Guía de Navegación</h1>
+            <p>EduTech Classroom - Arquitectura de Microservicios con HATEOAS</p>
+            <p style="font-size: 0.9em; color: #888;">Acceso completo a documentación, APIs y endpoints con hipermedia</p>
+        </div>
+        
+        <div class="nav-grid">
+            <!-- Eureka Server -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">🌟</div>
+                    <div>
+                        <div class="service-title">EUREKA SERVER</div>
+                        <div class="service-subtitle">Descubrimiento de Servicios</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🏠 Dashboard Principal</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">🏠</span>
+                            <a href="http://localhost:8761" target="_blank">Panel de Control Eureka</a>
+                            <span class="link-description">Dashboard de servicios</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MS-Users -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">👥</div>
+                    <div>
+                        <div class="service-title">MS-USERS</div>
+                        <div class="service-subtitle">Puerto 9001 - Gestión de Usuarios</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>📖 Documentación y APIs</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📋</span>
+                            <a href="http://localhost:9001/v3/api-docs" target="_blank">OpenAPI Docs</a>
+                            <span class="link-description">Especificación JSON</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔍</span>
+                            <a href="http://localhost:9001/swagger-ui/index.html" target="_blank">Swagger UI</a>
+                            <span class="link-description">Interfaz interactiva</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🔗 Endpoints HATEOAS</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">👥</span>
+                            <a href="http://localhost:9001/api/users" target="_blank">GET Users</a>
+                            <span class="link-description">Lista con enlaces</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">👤</span>
+                            <a href="http://localhost:9001/api/users/1" target="_blank">GET User</a>
+                            <span class="link-description">Usuario específico</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔐</span>
+                            <a href="http://localhost:9001/api/roles" target="_blank">GET Roles</a>
+                            <span class="link-description">Lista de roles</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MS-Courses -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">📚</div>
+                    <div>
+                        <div class="service-title">MS-COURSES</div>
+                        <div class="service-subtitle">Puerto 9002 - Gestión de Cursos</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>📖 Documentación y APIs</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📋</span>
+                            <a href="http://localhost:9002/v3/api-docs" target="_blank">OpenAPI Docs</a>
+                            <span class="link-description">Especificación JSON</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔍</span>
+                            <a href="http://localhost:9002/swagger-ui/index.html" target="_blank">Swagger UI</a>
+                            <span class="link-description">Interfaz interactiva</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🔗 Endpoints HATEOAS</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📚</span>
+                            <a href="http://localhost:9002/api/courses" target="_blank">GET Courses</a>
+                            <span class="link-description">Lista con enlaces</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">📖</span>
+                            <a href="http://localhost:9002/api/courses/1" target="_blank">GET Course</a>
+                            <span class="link-description">Curso específico</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🏷️</span>
+                            <a href="http://localhost:9002/api/course-categories" target="_blank">GET Categories</a>
+                            <span class="link-description">Categorías</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">📄</span>
+                            <a href="http://localhost:9002/api/course-contents" target="_blank">GET Contents</a>
+                            <span class="link-description">Contenidos</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">📝</span>
+                            <a href="http://localhost:9002/api/enrollments" target="_blank">GET Enrollments</a>
+                            <span class="link-description">Inscripciones</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">💬</span>
+                            <a href="http://localhost:9002/api/course-comments" target="_blank">GET Comments</a>
+                            <span class="link-description">Comentarios</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MS-Grades -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">📊</div>
+                    <div>
+                        <div class="service-title">MS-GRADES</div>
+                        <div class="service-subtitle">Puerto 9003 - Gestión de Calificaciones</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>📖 Documentación y APIs</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📋</span>
+                            <a href="http://localhost:9003/v3/api-docs" target="_blank">OpenAPI Docs</a>
+                            <span class="link-description">Especificación JSON</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔍</span>
+                            <a href="http://localhost:9003/swagger-ui/index.html" target="_blank">Swagger UI</a>
+                            <span class="link-description">Interfaz interactiva</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🔗 Endpoints HATEOAS</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📊</span>
+                            <a href="http://localhost:9003/api/student-marks" target="_blank">GET Student Marks</a>
+                            <span class="link-description">Calificaciones</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">📝</span>
+                            <a href="http://localhost:9003/api/course-quiz" target="_blank">GET Course Quizzes</a>
+                            <span class="link-description">Quizzes</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">❓</span>
+                            <a href="http://localhost:9003/api/course-quiz-question" target="_blank">GET Quiz Questions</a>
+                            <span class="link-description">Preguntas</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">✍️</span>
+                            <a href="http://localhost:9003/api/quiz-response" target="_blank">GET Quiz Responses</a>
+                            <span class="link-description">Respuestas</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MS-Payments -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">💳</div>
+                    <div>
+                        <div class="service-title">MS-PAYMENTS</div>
+                        <div class="service-subtitle">Puerto 9004 - Gestión de Pagos</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>📖 Documentación y APIs</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📋</span>
+                            <a href="http://localhost:9004/v3/api-docs" target="_blank">OpenAPI Docs</a>
+                            <span class="link-description">Especificación JSON</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔍</span>
+                            <a href="http://localhost:9004/swagger-ui/index.html" target="_blank">Swagger UI</a>
+                            <span class="link-description">Interfaz interactiva</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🔗 Endpoints HATEOAS</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">💳</span>
+                            <a href="http://localhost:9004/api/payments" target="_blank">GET Payments</a>
+                            <span class="link-description">Lista de pagos</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🎫</span>
+                            <a href="http://localhost:9004/api/discount-coupons" target="_blank">GET Discount Coupons</a>
+                            <span class="link-description">Cupones de descuento</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MS-Support -->
+            <div class="service-card">
+                <div class="service-header">
+                    <div class="service-icon">🎧</div>
+                    <div>
+                        <div class="service-title">MS-SUPPORT</div>
+                        <div class="service-subtitle">Puerto 9005 - Gestión de Soporte</div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>📖 Documentación y APIs</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">📋</span>
+                            <a href="http://localhost:9005/v3/api-docs" target="_blank">OpenAPI Docs</a>
+                            <span class="link-description">Especificación JSON</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="link-item">
+                            <span class="link-icon">🔍</span>
+                            <a href="http://localhost:9005/swagger-ui/index.html" target="_blank">Swagger UI</a>
+                            <span class="link-description">Interfaz interactiva</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="link-section">
+                    <h4>🔗 Endpoints HATEOAS</h4>
+                    <div class="links-grid">
+                        <div class="link-item">
+                            <span class="link-icon">🎧</span>
+                            <a href="http://localhost:9005/api/support-tickets" target="_blank">GET Support Tickets</a>
+                            <span class="link-description">Tickets de soporte</span>
+                            <div class="status-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testing y Reportes -->
+        <div class="special-section">
+            <div class="service-header">
+                <div class="service-icon">🧪</div>
+                <div>
+                    <div class="service-title">TESTING Y REPORTES</div>
+                    <div class="service-subtitle">Dashboard de Pruebas Unitarias</div>
+                </div>
+            </div>
+            
+            <div class="link-section">
+                <h4>📊 Dashboard Principal</h4>
+                <div class="links-grid">
+                    <div class="link-item">
+                        <span class="link-icon">📊</span>
+                        <a href="test-reports-index.html" target="_blank">Dashboard Tests</a>
+                        <span class="link-description">Reportes de todas las pruebas</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comandos Útiles -->
+        <div class="commands-section">
+            <h3>Comandos Útiles para Testing HATEOAS</h3>
+            
+            <div class="command-group">
+                <h4>🔍 Verificar Respuestas HATEOAS:</h4>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9002/api/courses"</div>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9002/api/courses/1"</div>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9001/api/users"</div>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9003/api/student-marks"</div>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9004/api/payments"</div>
+                <div class="command">curl -H "Accept: application/hal+json" "http://localhost:9005/api/support-tickets"</div>
+            </div>
+            
+            <div class="command-group">
+                <h4>📋 Verificar OpenAPI Docs:</h4>
+                <div class="command">curl "http://localhost:9001/v3/api-docs"</div>
+                <div class="command">curl "http://localhost:9002/v3/api-docs"</div>
+                <div class="command">curl "http://localhost:9003/v3/api-docs"</div>
+                <div class="command">curl "http://localhost:9004/v3/api-docs"</div>
+                <div class="command">curl "http://localhost:9005/v3/api-docs"</div>
+            </div>
+            
+            <div class="command-group">
+                <h4>🔌 Verificar Servicios Activos:</h4>
+                <div class="command">netstat -an | findstr :900</div>
+                <div class="command">netstat -an | findstr :8761</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>EduTech Classroom</strong> - Arquitectura de Microservicios</p>
+            <p>Sistema completo con HATEOAS, OpenAPI, Swagger UI y navegación hipermedia</p>
+            
+            <div class="features">
+                <div class="feature">HATEOAS JSON HAL</div>
+                <div class="feature">OpenAPI 3.0</div>
+                <div class="feature">Swagger UI</div>
+                <div class="feature">Navegación Hipermedia</div>
+                <div class="feature">Content-Type HAL+JSON</div>
+                <div class="feature">Enlaces Relacionales</div>
+                <div class="feature">Richardson Nivel 3</div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+    
+    <script>
+        // Back to top functionality
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+        
+        // Add click animation to service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // Add status check for links
+        document.querySelectorAll('.link-item a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const serviceName = this.textContent;
+                console.log(`Navegando a: ${serviceName}`);
+                
+                // Show loading state
+                const indicator = this.parentElement.querySelector('.status-indicator');
+                if (indicator) {
+                    indicator.style.background = '#ff9800';
+                    setTimeout(() => {
+                        indicator.style.background = '#4caf50';
+                    }, 2000);
+                }
+            });
+        });
+        
+        // Animate cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Initial setup for animations
+        document.querySelectorAll('.service-card, .special-section, .commands-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // Header animation
+        setTimeout(() => {
+            document.querySelector('.header').style.opacity = '1';
+            document.querySelector('.header').style.transform = 'translateY(0)';
+        }, 200);
+        
+        document.querySelector('.header').style.opacity = '0';
+        document.querySelector('.header').style.transform = 'translateY(-30px)';
+        document.querySelector('.header').style.transition = 'all 0.8s ease';
+        
+        // Console welcome message
+        console.log(`
+🎓 EduTech Classroom - Guía de Navegación
+🔗 HATEOAS completamente implementado
+📊 Todos los servicios activos y documentados
+💻 Comandos de testing disponibles
+✅ JSON HAL como estándar de hipermedia
+        `);
+    </script>
+</body>
+</html>
