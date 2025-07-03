@@ -190,7 +190,12 @@ class CourseContentIntegrationTest {
         mockMvc.perform(get("/api/course-contents/course/" + testCourse.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].title").value("Test Content"));
+                // Corregir expectativas para HATEOAS CollectionModel
+                .andExpect(jsonPath("$._embedded").exists())
+                .andExpect(jsonPath("$._embedded.courseContentDTOList").isArray())
+                .andExpect(jsonPath("$._embedded.courseContentDTOList[0].title").value("Test Content"))
+                .andExpect(jsonPath("$._embedded.courseContentDTOList[0]._links").exists())
+                .andExpect(jsonPath("$._links").exists())
+                .andExpect(jsonPath("$._links.self").exists());
     }
 }

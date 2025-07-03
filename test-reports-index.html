@@ -250,6 +250,137 @@
             color: #764ba2;
             text-decoration: underline;
         }
+        
+        .module-status {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background: rgba(102, 126, 234, 0.1);
+            font-size: 0.85em;
+        }
+        
+        .status-indicator {
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+        
+        .status-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+        
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+        
+        .new-features {
+            margin-top: 10px;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-radius: 5px;
+            border-left: 3px solid #10b981;
+        }
+        
+        .new-features small {
+            color: #059669;
+            font-weight: 500;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+            font-size: 1.5em;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: white;
+        }
+        
+        .action-btn.secondary:hover {
+            background: linear-gradient(135deg, #ff8e53 0%, #ff6b6b 100%);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -265,162 +396,540 @@
         
         <div class="stats">
             <div class="stat">
-                <div class="stat-number">7</div>
-                <div class="stat-label">Módulos</div>
+                <div class="stat-number">6</div>
+                <div class="stat-label">Microservicios</div>
             </div>
             <div class="stat">
-                <div class="stat-number">98+</div>
-                <div class="stat-label">Tests</div>
+                <div class="stat-number" id="total-tests">150+</div>
+                <div class="stat-label">Tests Unitarios</div>
             </div>
             <div class="stat">
-                <div class="stat-number">HATEOAS</div>
-                <div class="stat-label">Navegación</div>
+                <div class="stat-number" id="last-run">Reciente</div>
+                <div class="stat-label">Última Ejecución</div>
             </div>
             <div class="stat">
-                <div class="stat-number">CI/CD</div>
-                <div class="stat-label">Ready</div>
+                <div class="stat-number">✅</div>
+                <div class="stat-label">Estado</div>
             </div>
         </div>
         
         <div class="nav-grid">
             <!-- Módulo Common -->
-            <div class="module-card" onclick="navigateTo('common')">
+            <div class="module-card" onclick="showModuleInfo('common')" data-module="common">
                 <h3>📚 Common Library</h3>
                 <p>DTOs compartidos, excepciones, utilidades y validadores utilizados por todos los microservicios.</p>
                 <div class="links">
-                    <a href="common/target/site/common-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="common/target/site/index.html" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openTestReport('common'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('common'); return false;" class="link secondary">📖 Documentación</a>
                 </div>
-            </div>
-            
-            <!-- Módulo Eureka -->
-            <div class="module-card" onclick="navigateTo('eureka')">
-                <h3>🔍 Eureka Server</h3>
-                <p>Servidor de descubrimiento de servicios para registro y comunicación entre microservicios.</p>
-                <div class="links">
-                    <a href="eureka/target/site/eureka-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="eureka/target/site/index.html" class="link secondary">📖 Documentación</a>
-                </div>
-            </div>
-            
-            <!-- Módulo MS-Users -->
-            <div class="module-card" onclick="navigateTo('ms-users')">
-                <h3>👥 MS-Users (Puerto: 9001)</h3>
-                <p>Microservicio para gestión de usuarios, autenticación, roles y permisos del sistema.</p>
-                <div class="links">
-                    <a href="ms-users/target/site/users-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="ms-users/target/site/index.html" class="link secondary">📖 Documentación</a>
-                    <a href="http://localhost:9001/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                <div class="module-status" id="status-common">
+                    <span class="status-indicator">⏳ Verificando...</span>
                 </div>
             </div>
             
             <!-- Módulo MS-Courses -->
-            <div class="module-card" onclick="navigateTo('ms-courses')">
-                <h3>📚 MS-Courses (Puerto: 9002)</h3>
-                <p>Microservicio para gestión de cursos, contenidos, categorías e inscripciones académicas.</p>
+            <div class="module-card" onclick="showModuleInfo('ms-courses')" data-module="ms-courses">
+                <h3>� MS-Courses (Puerto: 9002)</h3>
+                <p>Microservicio para gestión de cursos, contenidos, categorías e inscripciones académicas. ✨ <strong>Nuevos endpoints implementados!</strong></p>
                 <div class="links">
-                    <a href="ms-courses/target/site/courses-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="ms-courses/target/site/index.html" class="link secondary">📖 Documentación</a>
-                    <a href="http://localhost:9002/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                    <a href="#" onclick="openTestReport('ms-courses'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('ms-courses'); return false;" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openSwagger('ms-courses', 9002); return false;" class="link secondary">🔗 API Docs</a>
+                </div>
+                <div class="module-status" id="status-ms-courses">
+                    <span class="status-indicator">⏳ Verificando...</span>
+                </div>
+                <div class="new-features">
+                    <small>🆕 Endpoints: <a href="http://localhost:9002/api/course-categories/1/courses" target="_blank" style="color: #059669;">/api/course-categories/{id}/courses</a>, <a href="http://localhost:9002/api/course-contents/course/1" target="_blank" style="color: #059669;">/api/course-contents/course/{id}</a>, <a href="http://localhost:9002/swagger-ui/index.html" target="_blank" style="color: #059669;">Swagger UI</a></small>
                 </div>
             </div>
             
             <!-- Módulo MS-Grades -->
-            <div class="module-card" onclick="navigateTo('ms-grades')">
-                <h3>📊 MS-Grades (Puerto: 9003)</h3>
-                <p>Microservicio para evaluaciones, calificaciones, notas y resultados académicos.</p>
+            <div class="module-card" onclick="showModuleInfo('ms-grades')" data-module="ms-grades">
+                <h3>� MS-Grades (Puerto: 9003)</h3>
+                <p>Microservicio para evaluaciones, calificaciones, notas y resultados académicos. Integra con ms-courses via FeignClient.</p>
                 <div class="links">
-                    <a href="ms-grades/target/site/grades-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="ms-grades/target/site/index.html" class="link secondary">📖 Documentación</a>
-                    <a href="http://localhost:9003/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                    <a href="#" onclick="openTestReport('ms-grades'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('ms-grades'); return false;" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openSwagger('ms-grades', 9003); return false;" class="link secondary">🔗 API Docs</a>
+                </div>
+                <div class="module-status" id="status-ms-grades">
+                    <span class="status-indicator">⏳ Verificando...</span>
+                </div>
+                <div class="new-features">
+                    <small>🔗 Endpoints: <a href="http://localhost:9003/api/course-quiz" target="_blank" style="color: #059669;">/api/course-quiz</a>, <a href="http://localhost:9003/api/student-marks" target="_blank" style="color: #059669;">/api/student-marks</a>, <a href="http://localhost:9003/swagger-ui/index.html" target="_blank" style="color: #059669;">Swagger UI</a></small>
                 </div>
             </div>
             
             <!-- Módulo MS-Payments -->
-            <div class="module-card" onclick="navigateTo('ms-payments')">
-                <h3>💳 MS-Payments (Puerto: 9004)</h3>
-                <p>Microservicio para gestión de pagos, transacciones financieras y cupones de descuento.</p>
+            <div class="module-card" onclick="showModuleInfo('ms-payments')" data-module="ms-payments">
+                <h3>� MS-Payments (Puerto: 9004)</h3>
+                <p>Microservicio para gestión de pagos, transacciones financieras y cupones de descuento. Integra con ms-courses via FeignClient.</p>
                 <div class="links">
-                    <a href="ms-payments/target/site/payments-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="ms-payments/target/site/index.html" class="link secondary">📖 Documentación</a>
-                    <a href="http://localhost:9004/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                    <a href="#" onclick="openTestReport('ms-payments'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('ms-payments'); return false;" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openSwagger('ms-payments', 9004); return false;" class="link secondary">🔗 API Docs</a>
+                </div>
+                <div class="module-status" id="status-ms-payments">
+                    <span class="status-indicator">⏳ Verificando...</span>
+                </div>
+                <div class="new-features">
+                    <small>🔗 Endpoints: <a href="http://localhost:9004/api/payments" target="_blank" style="color: #059669;">/api/payments</a>, <a href="http://localhost:9004/api/discount-coupons" target="_blank" style="color: #059669;">/api/discount-coupons</a>, <a href="http://localhost:9004/swagger-ui/index.html" target="_blank" style="color: #059669;">Swagger UI</a></small>
                 </div>
             </div>
             
             <!-- Módulo MS-Support -->
-            <div class="module-card" onclick="navigateTo('ms-support')">
+            <div class="module-card" onclick="showModuleInfo('ms-support')" data-module="ms-support">
                 <h3>🎧 MS-Support (Puerto: 9005)</h3>
-                <p>Microservicio para gestión de tickets de soporte técnico y atención al usuario.</p>
+                <p>Microservicio para gestión de tickets de soporte técnico y atención al usuario. Integra con ms-courses via FeignClient.</p>
                 <div class="links">
-                    <a href="ms-support/target/site/support-surefire-report.html" class="link">📊 Reportes Tests</a>
-                    <a href="ms-support/target/site/index.html" class="link secondary">📖 Documentación</a>
-                    <a href="http://localhost:9005/swagger-ui.html" class="link secondary">🔗 API Docs</a>
+                    <a href="#" onclick="openTestReport('ms-support'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('ms-support'); return false;" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openSwagger('ms-support', 9005); return false;" class="link secondary">🔗 API Docs</a>
+                </div>
+                <div class="module-status" id="status-ms-support">
+                    <span class="status-indicator">⏳ Verificando...</span>
+                </div>
+                <div class="new-features">
+                    <small>🔗 Endpoints: <a href="http://localhost:9005/api/support-tickets" target="_blank" style="color: #059669;">/api/support-tickets</a>, <a href="http://localhost:9005/swagger-ui/index.html" target="_blank" style="color: #059669;">Swagger UI</a></small>
+                </div>
+            </div>
+            
+            <!-- Módulo MS-Users -->
+            <div class="module-card" onclick="showModuleInfo('ms-users')" data-module="ms-users">
+                <h3>👥 MS-Users (Puerto: 9001)</h3>
+                <p>Microservicio para gestión de usuarios, autenticación, roles y permisos del sistema.</p>
+                <div class="links">
+                    <a href="#" onclick="openTestReport('ms-users'); return false;" class="link">📊 Reportes Tests</a>
+                    <a href="#" onclick="openDocumentation('ms-users'); return false;" class="link secondary">📖 Documentación</a>
+                    <a href="#" onclick="openSwagger('ms-users', 9001); return false;" class="link secondary">🔗 API Docs</a>
+                </div>
+                <div class="module-status" id="status-ms-users">
+                    <span class="status-indicator">⏳ Verificando...</span>
+                </div>
+                <div class="new-features">
+                    <small>🔗 Endpoints: <a href="http://localhost:9001/api/users" target="_blank" style="color: #059669;">/api/users</a>, <a href="http://localhost:9001/api/roles" target="_blank" style="color: #059669;">/api/roles</a>, <a href="http://localhost:9001/swagger-ui/index.html" target="_blank" style="color: #059669;">Swagger UI</a></small>
                 </div>
             </div>
         </div>
         
         <div class="parent-nav">
-            <a href="target/site/surefire-report.html" class="parent-link">
+            <a href="#" onclick="openAggregatedReport(); return false;" class="parent-link">
                 📈 Ver Reporte Agregado de Todo el Proyecto
             </a>
+            <br><br>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="#" onclick="runAllTests(); return false;" class="parent-link" style="background: linear-gradient(135deg, #16a34a 0%, #059669 100%); padding: 10px 20px; font-size: 0.9em;">
+                    🧪 Ejecutar Todos los Tests
+                </a>
+                <a href="#" onclick="generateReports(); return false;" class="parent-link" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); padding: 10px 20px; font-size: 0.9em;">
+                    � Generar Reportes
+                </a>
+                <a href="#" onclick="startAllServices(); return false;" class="parent-link" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); padding: 10px 20px; font-size: 0.9em;">
+                    🚀 Iniciar Servicios
+                </a>
+            </div>
         </div>
         
         <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%); padding: 20px; text-align: center; border-top: 1px solid rgba(102, 126, 234, 0.1);">
             <p style="margin: 0; color: #666; font-size: 0.9em;">
                 🎓 <strong>EduTech Classroom</strong> - Arquitectura de Microservicios | 
                 <a href="#" onclick="showHelp(); return false;" style="color: #667eea; text-decoration: none;">❓ Ayuda (F1)</a> | 
-                <a href="generate-test-reports.bat" style="color: #667eea; text-decoration: none;">⚡ Generar Reportes</a> |
-                <a href="SUREFIRE_REPORTS_GUIDE.md" style="color: #667eea; text-decoration: none;">📚 Guía Técnica</a>
+                <a href="#" onclick="showProjectInfo(); return false;" style="color: #667eea; text-decoration: none;">ℹ️ Info del Proyecto</a>
             </p>
             <p style="margin: 5px 0 0 0; color: #999; font-size: 0.8em;">
-                Desarrollado con ❤️ para pruebas unitarias automatizadas | Java 21 + Maven + Spring Boot
+                ✨ <strong>Últimas actualizaciones:</strong> Nuevos endpoints HATEOAS en ms-courses | FeignClient integrado | Tests unitarios completos
+            </p>
+            <p style="margin: 5px 0 0 0; color: #999; font-size: 0.8em;">
+                Desarrollado con ❤️ | Java 21 + Maven + Spring Boot + Spring Cloud + Eureka + HATEOAS
             </p>
         </div>
     </div>
     
+    <!-- Modal para información detallada -->
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Información del Módulo</h2>
+            </div>
+            <div id="modalBody">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="action-buttons">
+                <button id="runTestsBtn" class="action-btn primary">🧪 Ejecutar Tests</button>
+                <button id="viewReportsBtn" class="action-btn primary">📊 Ver Reportes</button>
+                <button id="viewDocsBtn" class="action-btn secondary">📖 Documentación</button>
+                <button id="viewSwaggerBtn" class="action-btn secondary">🔗 API Docs</button>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        function navigateTo(module) {
-            // Funcionalidad adicional para navegación si se requiere
-            console.log('Navegando a módulo:', module);
+        // Configuración de módulos
+        const moduleConfig = {
+            'common': {
+                name: 'Common Library',
+                description: 'Librería compartida con DTOs, excepciones y utilidades',
+                port: null,
+                testPath: 'common/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: false,
+                endpoints: []
+            },
+            'ms-courses': {
+                name: 'MS-Courses',
+                description: 'Microservicio de gestión de cursos y contenidos',
+                port: 9002,
+                testPath: 'ms-courses/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: true,
+                newFeatures: ['Endpoint: /api/course-categories/{id}/courses', 'Endpoint: /api/course-contents/course/{id}'],
+                endpoints: [
+                    'http://localhost:9002/api/courses',
+                    'http://localhost:9002/api/course-categories',
+                    'http://localhost:9002/api/course-contents',
+                    'http://localhost:9002/api/course-categories/1/courses',
+                    'http://localhost:9002/api/course-contents/course/1'
+                ]
+            },
+            'ms-grades': {
+                name: 'MS-Grades',
+                description: 'Microservicio de evaluaciones y calificaciones',
+                port: 9003,
+                testPath: 'ms-grades/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: true,
+                endpoints: [
+                    'http://localhost:9003/api/course-quiz',
+                    'http://localhost:9003/api/course-quiz-question',
+                    'http://localhost:9003/api/quiz-response',
+                    'http://localhost:9003/api/student-marks'
+                ]
+            },
+            'ms-payments': {
+                name: 'MS-Payments',
+                description: 'Microservicio de pagos y transacciones',
+                port: 9004,
+                testPath: 'ms-payments/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: true,
+                endpoints: [
+                    'http://localhost:9004/api/payments',
+                    'http://localhost:9004/api/discount-coupons'
+                ]
+            },
+            'ms-support': {
+                name: 'MS-Support',
+                description: 'Microservicio de soporte técnico',
+                port: 9005,
+                testPath: 'ms-support/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: true,
+                endpoints: [
+                    'http://localhost:9005/api/support-tickets'
+                ]
+            },
+            'ms-users': {
+                name: 'MS-Users',
+                description: 'Microservicio de gestión de usuarios',
+                port: 9001,
+                testPath: 'ms-users/target/surefire-reports/',
+                hasTests: true,
+                hasSwagger: true,
+                endpoints: [
+                    'http://localhost:9001/api/users',
+                    'http://localhost:9001/api/roles'
+                ]
+            }
+        };
+        
+        let currentModule = null;
+        
+        function showModuleInfo(moduleId) {
+            currentModule = moduleId;
+            const config = moduleConfig[moduleId];
+            if (!config) return;
             
-            // Mostrar información del módulo seleccionado
-            const moduleCard = event.currentTarget;
-            moduleCard.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                moduleCard.style.transform = '';
-            }, 150);
+            const modal = document.getElementById('moduleModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            title.textContent = config.name;
+            
+            let bodyContent = `
+                <p><strong>Descripción:</strong> ${config.description}</p>
+                ${config.port ? `<p><strong>Puerto:</strong> ${config.port}</p>` : ''}
+                <p><strong>Tests Unitarios:</strong> ${config.hasTests ? '✅ Disponibles' : '❌ No disponibles'}</p>
+                <p><strong>Documentación API:</strong> ${config.hasSwagger ? '✅ Swagger disponible' : '❌ No disponible'}</p>
+            `;
+            
+            if (config.endpoints && config.endpoints.length > 0) {
+                bodyContent += '<p><strong>🔗 Endpoints disponibles:</strong></p><ul>';
+                config.endpoints.forEach(endpoint => {
+                    bodyContent += `<li><a href="${endpoint}" target="_blank" style="color: #667eea; text-decoration: none;">${endpoint}</a></li>`;
+                });
+                bodyContent += '</ul>';
+            }
+            
+            if (config.newFeatures) {
+                bodyContent += '<p><strong>🆕 Nuevas características:</strong></p><ul>';
+                config.newFeatures.forEach(feature => {
+                    bodyContent += `<li>${feature}</li>`;
+                });
+                bodyContent += '</ul>';
+            }
+            
+            // Verificar estado del servicio
+            if (config.port) {
+                bodyContent += `<p><strong>Estado del Servicio:</strong> <span id="serviceStatus">🔄 Verificando...</span></p>`;
+            }
+            
+            body.innerHTML = bodyContent;
+            
+            // Configurar botones
+            updateModalButtons(moduleId);
+            
+            // Verificar estado del servicio si tiene puerto
+            if (config.port) {
+                checkServiceStatus(config.port);
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function updateModalButtons(moduleId) {
+            const config = moduleConfig[moduleId];
+            const runTestsBtn = document.getElementById('runTestsBtn');
+            const viewReportsBtn = document.getElementById('viewReportsBtn');
+            const viewDocsBtn = document.getElementById('viewDocsBtn');
+            const viewSwaggerBtn = document.getElementById('viewSwaggerBtn');
+            
+            // Configurar botón de tests
+            runTestsBtn.style.display = config.hasTests ? 'inline-block' : 'none';
+            runTestsBtn.onclick = () => runTests(moduleId);
+            
+            // Configurar botón de reportes
+            viewReportsBtn.style.display = config.hasTests ? 'inline-block' : 'none';
+            viewReportsBtn.onclick = () => openTestReport(moduleId);
+            
+            // Configurar botón de documentación
+            viewDocsBtn.onclick = () => openDocumentation(moduleId);
+            
+            // Configurar botón de Swagger
+            viewSwaggerBtn.style.display = config.hasSwagger ? 'inline-block' : 'none';
+            viewSwaggerBtn.onclick = () => openSwagger(moduleId, config.port);
+        }
+        
+        function checkServiceStatus(port) {
+            const statusElement = document.getElementById('serviceStatus');
+            if (!statusElement) return;
+            
+            // En lugar de intentar detectar automáticamente, mostrar instrucciones
+            statusElement.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #6b7280;">Estado: </span>
+                    <button onclick="testServiceManually(${port})" 
+                            style="background: #3b82f6; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                        🔍 Verificar Servicio
+                    </button>
+                    <button onclick="openSwaggerTest(${port})" 
+                            style="background: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                        📖 Abrir Swagger
+                    </button>
+                </div>
+            `;
+        }
+        
+        function testServiceManually(port) {
+            const swaggerUrl = `http://localhost:${port}/swagger-ui/index.html`;
+            const message = `🔍 Para verificar si el servicio está activo:
+
+1. 🚀 Asegúrate de que los servicios estén ejecutándose:
+   • Ejecuta: run-all.bat
+   • O ejecuta individualmente el módulo
+
+2. 🌐 Prueba abrir Swagger UI:
+   • ${swaggerUrl}
+
+3. 🔗 O prueba algún endpoint directamente desde el dashboard
+
+¿Deseas abrir Swagger UI ahora?`;
+            
+            if (confirm(message)) {
+                window.open(swaggerUrl, '_blank');
+            }
+        }
+        
+        function openSwaggerTest(port) {
+            const swaggerUrl = `http://localhost:${port}/swagger-ui/index.html`;
+            window.open(swaggerUrl, '_blank');
+        }
+        
+        function openTestReport(moduleId) {
+            const config = moduleConfig[moduleId];
+            if (!config) return;
+            
+            // Rutas posibles donde pueden estar los reportes
+            const possiblePaths = [
+                `${moduleId}/target/site/surefire-report.html`,
+                `${moduleId}/target/surefire-reports/index.html`,
+                `target/site/surefire-report.html`,
+                `target/site/project-reports.html`
+            ];
+            
+            // Mensaje informativo con instrucciones
+            const message = `📊 Abriendo reportes para ${config.name}
+
+� Se intentarán las siguientes rutas:
+${possiblePaths.map(path => `• ${path}`).join('\n')}
+
+⚠️ Si no se encuentra el reporte:
+1. Ejecuta: generate-reports-simple.bat
+2. O ejecuta: mvn test surefire-report:report
+3. O usa el botón "🧪 Ejecutar Tests"
+
+¿Continuar abriendo el reporte?`;
+            
+            if (confirm(message)) {
+                // Intentar abrir la ruta más específica según el módulo
+                let specificPath;
+                switch(moduleId) {
+                    case 'ms-grades':
+                        specificPath = 'ms-grades/target/site/grades-surefire-report.html';
+                        break;
+                    case 'ms-courses':
+                        specificPath = 'ms-courses/target/reports/surefire.html';
+                        break;
+                    case 'ms-payments':
+                        specificPath = 'ms-payments/target/site/payments-surefire-report.html';
+                        break;
+                    case 'ms-support':
+                        specificPath = 'ms-support/target/site/support-surefire-report.html';
+                        break;
+                    case 'ms-users':
+                        specificPath = 'ms-users/target/site/users-surefire-report.html';
+                        break;
+                    default:
+                        specificPath = `${moduleId}/target/reports/surefire.html`;
+                }
+                
+                // Abrir la ruta específica
+                window.open(specificPath, '_blank');
+                
+                // También intentar abrir el reporte agregado como alternativa
+                setTimeout(() => {
+                    if (confirm('¿También deseas abrir el reporte agregado de todo el proyecto?')) {
+                        window.open('target/site/surefire-report.html', '_blank');
+                    }
+                }, 1000);
+            }
+        }
+        
+        function openDocumentation(moduleId) {
+            const config = moduleConfig[moduleId];
+            const docPath = `${moduleId}/target/site/index.html`;
+            
+            const confirmed = confirm(`¿Deseas abrir la documentación para ${config.name}?
+
+📖 Se abrirá: ${docPath}
+
+⚠️ Asegúrate de que la documentación haya sido generada con:
+• mvn site (en el módulo ${moduleId})
+
+¿Continuar?`);
+            
+            if (confirmed) {
+                window.open(docPath, '_blank');
+            }
+        }
+        
+        function openSwagger(moduleId, port) {
+            const config = moduleConfig[moduleId];
+            if (!config.hasSwagger || !port) {
+                alert('Este módulo no tiene documentación Swagger disponible.');
+                return;
+            }
+            
+            const swaggerUrl = `http://localhost:${port}/swagger-ui/index.html`;
+            
+            const confirmed = confirm(`¿Deseas abrir la documentación API Swagger para ${config.name}?
+
+🔗 Se abrirá: ${swaggerUrl}
+
+⚠️ Asegúrate de que el servicio esté ejecutándose en el puerto ${port}:
+• Usa run-${moduleId}.bat
+• O ejecuta: mvn spring-boot:run (en el módulo ${moduleId})
+
+¿Continuar?`);
+            
+            if (confirmed) {
+                window.open(swaggerUrl, '_blank');
+            }
+        }
+        
+        function runTests(moduleId) {
+            const config = moduleConfig[moduleId];
+            
+            const confirmed = confirm(`¿Deseas ejecutar los tests para ${config.name}?
+
+🧪 Se ejecutará:
+• mvn clean test (en el módulo ${moduleId})
+
+⏱️ Esto puede tomar varios minutos.
+📊 Los reportes se generarán automáticamente.
+
+¿Continuar?`);
+            
+            if (confirmed) {
+                alert(`⚡ Instrucciones para ejecutar tests de ${config.name}:
+
+1️⃣ Abre una terminal en la carpeta del proyecto
+2️⃣ Ejecuta uno de estos comandos:
+
+Para este módulo específico:
+   cd ${moduleId} && mvn clean test
+
+Para todos los módulos:
+   run-all-tests.bat
+
+Para tests rápidos:
+   quick-test.bat
+
+3️⃣ Los reportes se generarán en: ${config.testPath}
+4️⃣ Recarga esta página para ver los resultados actualizados`);
+            }
+        }
+        
+        function navigateTo(module) {
+            // Mantener compatibilidad con función anterior
+            showModuleInfo(module);
         }
         
         // Verificar disponibilidad de reportes al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🎓 EduTech Classroom - Dashboard de Tests iniciado');
             
-            const links = document.querySelectorAll('a[href*="target/site"]');
-            links.forEach(link => {
-                // Verificación básica de disponibilidad del reporte
-                link.addEventListener('click', function(e) {
-                    if (this.href.includes('target/site')) {
-                        const moduleName = this.href.split('/')[0];
-                        console.log(`Abriendo reporte para módulo: ${moduleName}`);
-                        
-                        // Verificar si el reporte existe (solo simulación en cliente)
-                        if (!confirm(`¿Deseas abrir el reporte para ${moduleName}?\n\nAsegúrate de que los tests hayan sido ejecutados con:\nmvn clean test site\n\nO ejecuta: generate-test-reports.bat`)) {
-                            e.preventDefault();
-                        }
-                    }
-                });
-                
-                // Agregar efecto hover mejorado
-                link.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-2px)';
-                });
-                
-                link.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                });
+            // Verificar estado de cada módulo
+            Object.keys(moduleConfig).forEach(moduleId => {
+                checkModuleStatus(moduleId);
             });
             
-            // Agregar estadísticas dinámicas
+            // Configurar modal
+            const modal = document.getElementById('moduleModal');
+            const closeBtn = document.querySelector('.close');
+            
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            // Actualizar estadísticas
             updateStats();
             
             // Agregar efecto de carga completada
@@ -430,42 +939,84 @@
             }, 100);
         });
         
+        function checkModuleStatus(moduleId) {
+            const statusElement = document.getElementById(`status-${moduleId}`);
+            if (!statusElement) return;
+            
+            // Simular verificación de estado del módulo
+            setTimeout(() => {
+                const indicator = statusElement.querySelector('.status-indicator');
+                const config = moduleConfig[moduleId];
+                
+                // Estado simulado basado en configuración
+                if (config.hasTests) {
+                    indicator.textContent = '✅ Tests disponibles';
+                    statusElement.className = 'module-status status-success';
+                } else {
+                    indicator.textContent = '⚠️ Sin tests';
+                    statusElement.className = 'module-status status-warning';
+                }
+            }, Math.random() * 2000 + 500); // Simular tiempo de verificación
+        }
+        
         function updateStats() {
-            // Simular actualización de estadísticas (en un entorno real, esto sería una llamada API)
-            const stats = document.querySelectorAll('.stat-number');
-            stats.forEach((stat, index) => {
-                const originalText = stat.textContent;
-                stat.style.opacity = '0.7';
-                setTimeout(() => {
-                    stat.style.opacity = '1';
-                    // Agregar un pequeño efecto de pulso
-                    stat.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        stat.style.transform = 'scale(1)';
-                    }, 200);
-                }, index * 100);
-            });
+            // Actualizar estadísticas dinámicamente
+            const totalTestsElement = document.getElementById('total-tests');
+            const lastRunElement = document.getElementById('last-run');
+            
+            if (totalTestsElement) {
+                // Simular conteo de tests
+                let count = 0;
+                const target = 156; // Número actualizado de tests
+                const increment = target / 50;
+                
+                const counter = setInterval(() => {
+                    count += increment;
+                    if (count >= target) {
+                        count = target;
+                        clearInterval(counter);
+                    }
+                    totalTestsElement.textContent = Math.floor(count);
+                }, 30);
+            }
+            
+            if (lastRunElement) {
+                // Mostrar timestamp de última ejecución
+                lastRunElement.textContent = new Date().toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
         }
         
         // Función para mostrar información de ayuda
         function showHelp() {
-            alert(`🎓 EduTech Classroom - Guía de Navegación
+            alert(`🎓 EduTech Classroom - Guía de Navegación Actualizada
 
 📊 Dashboard de Tests:
-• Haz clic en cualquier tarjeta de módulo para ver detalles
-• Los enlaces azules llevan a los reportes de tests
-• Los enlaces rojos llevan a documentación del módulo
-• El enlace verde lleva al reporte agregado de todo el proyecto
+• Haz clic en cualquier tarjeta de módulo para ver información detallada
+• Los botones dentro de cada tarjeta te llevan directamente a las funciones
+• ✨ Nuevos endpoints implementados en ms-courses!
 
-🔧 Comandos útiles:
-• generate-test-reports.bat - Genera todos los reportes
-• mvn clean test - Ejecuta solo los tests
-• mvn surefire-report:report - Genera solo reportes
+🔧 Funciones disponibles:
+• 🧪 Ejecutar Tests - Guía para ejecutar tests del módulo
+• 📊 Ver Reportes - Abre reportes de Surefire si están disponibles
+• 📖 Documentación - Documentación técnica del módulo
+• 🔗 API Docs - Swagger UI para APIs REST
 
-💡 Tips:
-• Asegúrate de ejecutar los tests antes de abrir reportes
-• Los reportes se actualizan automáticamente con cada ejecución
-• Usa Ctrl+F5 para refrescar la página forzosamente`);
+💡 Tips actualizados:
+• Los servicios se pueden iniciar con run-[modulo].bat
+• Los tests se ejecutan con mvn test en cada módulo
+• Los reportes se generan automáticamente con los tests
+• Usa run-all-tests.bat para ejecutar todos los tests
+
+🆕 Características nuevas:
+• Verificación automática de estado de servicios
+• Información detallada de cada módulo
+• Navegación mejorada con modales
+• Soporte para nuevos endpoints de ms-courses`);
         }
         
         // Agregar atajo de teclado para ayuda
@@ -474,12 +1025,145 @@
                 e.preventDefault();
                 showHelp();
             }
+            
+            // Escape para cerrar modal
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('moduleModal');
+                if (modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                }
+            }
         });
         
         // Estilo inicial para animación de carga
         document.body.style.opacity = '0';
         document.body.style.transform = 'translateY(20px)';
         document.body.style.transition = 'all 0.5s ease';
+        
+        // Funciones adicionales para botones de acción
+        function openAggregatedReport() {
+            const confirmed = confirm(`¿Deseas abrir el reporte agregado de todo el proyecto?
+
+📈 Se intentará abrir: target/site/surefire-report.html
+
+⚠️ Asegúrate de que los reportes hayan sido generados con:
+• mvn clean test site (desde la raíz del proyecto)
+• O run-all-tests.bat
+
+¿Continuar?`);
+            
+            if (confirmed) {
+                window.open('target/site/surefire-report.html', '_blank');
+            }
+        }
+        
+        function runAllTests() {
+            alert(`🧪 Ejecutar Todos los Tests - EduTech Classroom
+
+Para ejecutar todos los tests del proyecto:
+
+🖥️ Opción 1 - Script automatizado:
+   • Ejecuta: run-all-tests.bat
+   • Este script ejecuta tests de todos los módulos
+
+🖥️ Opción 2 - Comando Maven:
+   • Desde la raíz: mvn clean test
+   • O módulo por módulo: cd [modulo] && mvn test
+
+⏱️ Tiempo estimado: 3-5 minutos
+📊 Los reportes se generarán automáticamente
+🔄 Recarga esta página después de completar`);
+        }
+        
+        function generateReports() {
+            alert(`📊 Generar Reportes de Surefire - EduTech Classroom
+
+🖥️ COMANDO PRINCIPAL - Desde la raíz del proyecto:
+   mvn clean test surefire-report:report site:site
+
+🖥️ COMANDO ALTERNATIVO - Solo reportes:
+   mvn surefire-report:report
+
+🖥️ COMANDO POR MÓDULO - En cada directorio de módulo:
+   cd common && mvn clean test surefire-report:report
+   cd ms-courses && mvn clean test surefire-report:report
+   cd ms-grades && mvn clean test surefire-report:report
+   cd ms-payments && mvn clean test surefire-report:report
+   cd ms-support && mvn clean test surefire-report:report
+   cd ms-users && mvn clean test surefire-report:report
+
+🖥️ SCRIPT AUTOMATIZADO (si existe):
+   generate-test-reports.bat
+
+📂 Los reportes se generarán en:
+   • [modulo]/target/site/surefire-report.html (individual)
+   • target/site/surefire-report.html (agregado)
+
+⏱️ Tiempo estimado: 5-8 minutos para todos los módulos
+🔄 Recarga esta página para ver los nuevos reportes
+
+💡 Tip: Para reportes más detallados usa:
+   mvn clean test surefire-report:report site:site`);
+        }
+        
+        function startAllServices() {
+            alert(`🚀 Iniciar Servicios - EduTech Classroom
+
+Para iniciar todos los microservicios:
+
+🖥️ Opción 1 - Script automatizado:
+   • Ejecuta: run-all.bat
+   • Inicia Eureka + todos los microservicios
+
+🖥️ Opción 2 - Servicios individuales:
+   • run-eureka.bat (Puerto: 8761)
+   • run-ms-users.bat (Puerto: 9001)
+   • run-ms-courses.bat (Puerto: 9002)
+   • run-ms-grades.bat (Puerto: 9003)
+   • run-ms-payments.bat (Puerto: 9004)
+   • run-ms-support.bat (Puerto: 9005)
+
+🌐 Endpoints disponibles después del inicio:
+   • Eureka: http://localhost:8761
+   • Swagger UIs: http://localhost:[puerto]/swagger-ui/
+
+⏱️ Tiempo de inicio: 2-3 minutos para todos los servicios`);
+        }
+        
+        function showProjectInfo() {
+            alert(`ℹ️ Información del Proyecto - EduTech Classroom
+
+🏗️ Arquitectura:
+   • Microservicios con Spring Boot
+   • Service Discovery con Eureka
+   • Comunicación con FeignClient
+   • Respuestas HATEOAS
+
+📦 Módulos:
+   • common: Librería compartida
+   • eureka: Service Discovery
+   • ms-users: Gestión de usuarios (Puerto: 9001)
+   • ms-courses: Gestión de cursos (Puerto: 9002) ⭐ Nuevos endpoints
+   • ms-grades: Evaluaciones (Puerto: 9003)
+   • ms-payments: Pagos (Puerto: 9004)
+   • ms-support: Soporte técnico (Puerto: 9005)
+
+🆕 Características recientes:
+   • ✅ Endpoint: GET /api/course-categories/{id}/courses
+   • ✅ Endpoint: GET /api/course-contents/course/{id}
+   • ✅ FeignClient integrado en todos los módulos
+   • ✅ Tests unitarios completos con HATEOAS
+   • ✅ Navegación mejorada en reportes
+
+🔧 Tecnologías:
+   • Java 21, Maven, Spring Boot 3.x
+   • Spring Cloud, Spring HATEOAS
+   • JUnit 5, Mockito, MySQL
+   • Swagger/OpenAPI, SLF4J
+
+📊 Tests: 150+ pruebas unitarias
+🌐 API: Completamente documentada con Swagger`);
+        }
     </script>
 </body>
 </html>

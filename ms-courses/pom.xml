@@ -174,8 +174,8 @@
 		                    <include>**/Test*.java</include>
 		                </includes>
 		                
-		                <!-- Grupos de tests específicos (opcional) -->
-		                <groups>unit,integration</groups>
+		                <!-- Comentado el filtro de grupos que estaba causando problemas -->
+		                <!-- <groups>unit,integration</groups> -->
 		                
 		                <!-- Reportes específicos para courses -->
 		                <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
