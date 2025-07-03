@@ -108,13 +108,14 @@ public class CourseCategoryController {
     private EntityModel<CourseDTO> addLinksToCourseDto(CourseDTO course) {
         EntityModel<CourseDTO> courseModel = EntityModel.of(course);
         
-        // Agregar enlaces básicos para el curso (necesitaremos importar CourseController si existe)
-        // courseModel.add(linkTo(methodOn(CourseController.class).findById(course.getId())).withSelfRel());
-        // courseModel.add(linkTo(CourseController.class).withRel("courses"));
+        // Enlaces al CourseController
+        courseModel.add(linkTo(methodOn(CourseController.class).findById(course.getId())).withSelfRel());
+        courseModel.add(linkTo(CourseController.class).withRel("courses"));
         
-        // Por ahora, agregamos enlaces básicos
+        // Enlaces a categorías y contenido
         courseModel.add(linkTo(methodOn(CourseCategoryController.class).getCoursesByCategory(course.getCategoryId())).withRel("category-courses"));
         courseModel.add(linkTo(methodOn(CourseCategoryController.class).findById(course.getCategoryId())).withRel("category"));
+        courseModel.add(linkTo(methodOn(CourseContentController.class).getCourseContentsByCourseId(course.getId())).withRel("course-contents"));
         
         return courseModel;
     }
