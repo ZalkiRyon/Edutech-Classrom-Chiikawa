@@ -4,3 +4,30 @@ Monolitico/
 # Ignore documentation and debug files (keep locally, not in repo)
 *.md
 !README.md
+
+# Ignore redundant and temporary batch files
+# Keep only essential run/build scripts in repo
+
+# Redundant testing files (keep only run-all-tests.bat)
+test-all-modules.bat
+test-runner.bat
+verificacion-final.bat
+quick-test.bat
+test-users.bat
+test-courses-only.bat
+
+# Specific endpoint testing files (manual testing only)
+test-new-endpoints.bat
+test-course-content-endpoints.bat
+test-integration.bat
+test-feign-integration.bat
+
+# Temporary fix and troubleshooting files
+fix-*.bat
+configuration-summary.bat
+verify-*.bat
+generate-test-reports.bat
+
+# Development and debug files
+run-test.bat
+run-unit-tests-only.bat
