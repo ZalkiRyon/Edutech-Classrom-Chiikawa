@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes Surefire - EduTech Classroom</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
+        .header { background-color: #2c3e50; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .module { margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #fafafa; }
+        .module h3 { margin-top: 0; color: #2c3e50; }
+        .link { display: inline-block; margin: 5px 10px 5px 0; padding: 8px 15px; background-color: #3498db; color: white; text-decoration: none; border-radius: 4px; }
+        .link:hover { background-color: #2980b9; }
+        .success { color: #27ae60; font-weight: bold; }
+        .warning { color: #e67e22; font-weight: bold; }
+        .info { background-color: #ecf0f1; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .timestamp { color: #7f8c8d; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Informes de Pruebas Surefire</h1>
+        <p>EduTech Classroom - Arquitectura de Microservicios</p>
+        <p class="timestamp">Generado el: 3 de julio de 2025 - 12:05 PM</p>
+    </div>
+
+    <div class="container">
+        <div class="info">
+            <h2>🎯 Estado de Generación de Informes</h2>
+            <p class="success">✅ Informes Surefire generados exitosamente</p>
+            <p class="success">✅ Problema de ByteBuddy resuelto (sin fork de JVM)</p>
+            <p class="warning">⚠️ Tests de integración fallan (servicios no ejecutándose)</p>
+        </div>
+
+        <h2>📋 Informes Disponibles</h2>
+
+        <div class="module">
+            <h3>📄 Informe Principal (Agregado)</h3>
+            <p>Resumen consolidado de todos los módulos</p>
+            <a href="target/site/surefire-report.html" class="link">Ver Informe Principal</a>
+            <a href="target/site/index.html" class="link">Sitio Completo</a>
+        </div>
+
+        <div class="module">
+            <h3>🏢 Módulo: Common (Biblioteca Compartida)</h3>
+            <p>DTOs, excepciones y utilidades</p>
+            <a href="common/target/site/surefire-report.html" class="link">Informe Common</a>
+        </div>
+
+        <div class="module">
+            <h3>🔍 Módulo: Eureka (Descubrimiento de Servicios)</h3>
+            <p>Servidor de registro y descubrimiento</p>
+            <a href="eureka/target/site/surefire-report.html" class="link">Informe Eureka</a>
+        </div>
+
+        <div class="module">
+            <h3>👥 Módulo: MS-Users (Gestión de Usuarios)</h3>
+            <p>Autenticación, usuarios, roles y permisos</p>
+            <a href="ms-users/target/site/surefire-report.html" class="link">Informe MS-Users</a>
+        </div>
+
+        <div class="module">
+            <h3>📚 Módulo: MS-Courses (Gestión de Cursos)</h3>
+            <p>Cursos, categorías, contenidos e inscripciones</p>
+            <a href="ms-courses/target/site/surefire-report.html" class="link">Informe MS-Courses</a>
+        </div>
+
+        <div class="module">
+            <h3>📊 Módulo: MS-Grades (Calificaciones)</h3>
+            <p>Evaluaciones, notas y resultados académicos</p>
+            <a href="ms-grades/target/site/surefire-report.html" class="link">Informe MS-Grades</a>
+        </div>
+
+        <div class="module">
+            <h3>💳 Módulo: MS-Payments (Pagos)</h3>
+            <p>Pagos, transacciones y cupones</p>
+            <a href="ms-payments/target/site/surefire-report.html" class="link">Informe MS-Payments</a>
+        </div>
+
+        <div class="module">
+            <h3>🎧 Módulo: MS-Support (Soporte Técnico)</h3>
+            <p>Tickets de soporte y atención al usuario</p>
+            <a href="ms-support/target/site/surefire-report.html" class="link">Informe MS-Support</a>
+        </div>
+
+        <div class="info">
+            <h2>🔧 Configuración Aplicada</h2>
+            <ul>
+                <li><strong>forkCount=0</strong> - Sin fork de JVM para evitar problemas de ByteBuddy</li>
+                <li><strong>testFailureIgnore=true</strong> - Continuar aunque fallen tests</li>
+                <li><strong>parallel=none</strong> - Sin paralelización para estabilidad</li>
+                <li><strong>useSystemClassLoader=false</strong> - Configuración adicional de estabilidad</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h2>📈 Estadísticas Rápidas</h2>
+            <p><strong>Tests de Integración:</strong></p>
+            <ul>
+                <li>MS-Payments: 40 tests (36 exitosos, 1 fallo, 3 errores)</li>
+                <li>MS-Support: 30 tests (25 exitosos, 1 fallo, 4 errores)</li>
+                <li><strong>Causa principal:</strong> Servicios dependientes no ejecutándose</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
