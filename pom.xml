@@ -51,6 +51,7 @@
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>             <!-- Versión estable del plugin que limpia el directorio target/ antes de compilar -->
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>       <!-- Versión del plugin Surefire para ejecución de tests y reportes -->
         <maven-surefire-report-plugin.version>3.2.5</maven-surefire-report-plugin.version> <!-- Versión del plugin Surefire Report para generar informes HTML -->
+        <mockito.version>5.3.1</mockito.version>                                    <!-- Versión de Mockito para testing unitario con mocks -->
     </properties>
 
     <!-- 
@@ -323,6 +324,49 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-hateoas</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- 
+                Mockito Core: framework principal para crear mocks, stubs y spies en pruebas unitarias.
+                Permite simular dependencias externas y verificar interacciones en tests.
+                
+                Se utiliza con anotaciones como:
+                - @Mock: crea un mock de una clase o interfaz
+                - @InjectMocks: inyecta mocks en la clase bajo prueba
+                - @Spy: crea un spy de un objeto real
+                - @Captor: captura argumentos pasados a métodos
+                
+                Incluye métodos estáticos para verificación:
+                - when().thenReturn() → definir comportamiento de mocks
+                - verify() → verificar que se llamaron métodos específicos
+                - times(), never(), atLeast() → verificar número de invocaciones
+                
+                Esta gestión explícita de versión asegura consistencia en todos los módulos.
+            -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- 
+                Mockito JUnit Jupiter: extensión que integra Mockito con JUnit 5.
+                Permite usar @ExtendWith(MockitoExtension.class) para habilitar las anotaciones de Mockito 
+                en tests JUnit 5, eliminando la necesidad de inicializar mocks manualmente.
+                
+                Facilita el uso de:
+                - @Mock, @InjectMocks, @Spy directamente en clases de test
+                - Inicialización automática de mocks antes de cada test
+                - Limpieza automática después de cada test
+                
+                Se combina con spring-boot-starter-test para testing completo.
+            -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
