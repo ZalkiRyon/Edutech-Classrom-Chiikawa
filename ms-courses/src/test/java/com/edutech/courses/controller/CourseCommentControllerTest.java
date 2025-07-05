@@ -44,7 +44,7 @@ class CourseCommentControllerTest {
         courseCommentDTO.setId(1);
         courseCommentDTO.setCourseId(1);
         courseCommentDTO.setUserId(15);
-        courseCommentDTO.setCommentText("Excellent course! Very comprehensive.");
+        courseCommentDTO.setCommentText("Excelente curso! Muy completo.");
         courseCommentDTO.setRating(5);
         courseCommentDTO.setCreatedAt(Instant.now());
     }
@@ -60,7 +60,7 @@ class CourseCommentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.courseCommentDTOList").exists())
-                .andExpect(jsonPath("$._embedded.courseCommentDTOList[0].commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$._embedded.courseCommentDTOList[0].commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$._embedded.courseCommentDTOList[0].rating").value(5))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
@@ -76,7 +76,7 @@ class CourseCommentControllerTest {
         mockMvc.perform(get("/api/course-comments/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$.commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$.rating").value(5))
                 .andExpect(jsonPath("$.courseId").value(1))
                 .andExpect(jsonPath("$._links.self.href").exists())
@@ -95,7 +95,7 @@ class CourseCommentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(courseCommentDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$.commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$.rating").value(5))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
@@ -112,7 +112,7 @@ class CourseCommentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(courseCommentDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$.commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
         verify(courseCommentService).update(anyInt(), any(CourseCommentDTO.class));
@@ -141,7 +141,7 @@ class CourseCommentControllerTest {
         mockMvc.perform(get("/api/course-comments/course/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$[0].commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$[0].courseId").value(1))
                 .andExpect(jsonPath("$[0].rating").value(5));
 
@@ -158,7 +158,7 @@ class CourseCommentControllerTest {
         mockMvc.perform(get("/api/course-comments/user/15")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].commentText").value("Excellent course! Very comprehensive."))
+                .andExpect(jsonPath("$[0].commentText").value("Excelente curso! Muy completo."))
                 .andExpect(jsonPath("$[0].userId").value(15))
                 .andExpect(jsonPath("$[0].rating").value(5));
 

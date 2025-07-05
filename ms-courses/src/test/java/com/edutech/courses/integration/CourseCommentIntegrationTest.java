@@ -119,7 +119,7 @@ class CourseCommentIntegrationTest {
         commentDTO.setId(999); // Use a non-conflicting ID
         commentDTO.setCourseId(testCourse.getId());
         commentDTO.setUserId(15);
-        commentDTO.setCommentText("Great course!");
+        commentDTO.setCommentText("Buen curso!");
         commentDTO.setRating(5);
         commentDTO.setCreatedAt(Instant.now());
 
@@ -127,7 +127,7 @@ class CourseCommentIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(commentDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.commentText").value("Great course!"))
+                .andExpect(jsonPath("$.commentText").value("Buen curso!"))
                 .andExpect(jsonPath("$._links.self").exists());
     }
 
@@ -137,7 +137,7 @@ class CourseCommentIntegrationTest {
         CourseComment comment = new CourseComment();
         comment.setCourseId(testCourse.getId());
         comment.setUserId(15);  // Correcto: la entidad usa userId, no studentId
-        comment.setCommentText("Great course!");  // Correcto: la entidad usa commentText, no comment
+        comment.setCommentText("Buen curso!");  // Correcto: la entidad usa commentText, no comment
         comment.setRating(5);
         comment.setCreatedAt(Instant.now());  // Correcto: la entidad usa createdAt, no commentedAt
         comment = courseCommentRepository.save(comment);
@@ -145,7 +145,7 @@ class CourseCommentIntegrationTest {
         mockMvc.perform(get("/api/course-comments/" + comment.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.commentText").value("Great course!"))
+                .andExpect(jsonPath("$.commentText").value("Buen curso!"))
                 .andExpect(jsonPath("$._links.self").exists());
     }
 
@@ -155,7 +155,7 @@ class CourseCommentIntegrationTest {
         CourseComment comment = new CourseComment();
         comment.setCourseId(testCourse.getId());
         comment.setUserId(15);  // Correcto: la entidad usa userId, no studentId
-        comment.setCommentText("Great course!");  // Correcto: la entidad usa commentText, no comment
+        comment.setCommentText("Buen curso!");  // Correcto: la entidad usa commentText, no comment
         comment.setRating(5);
         comment.setCreatedAt(Instant.now());  // Correcto: la entidad usa createdAt, no commentedAt
         courseCommentRepository.save(comment);
@@ -164,6 +164,6 @@ class CourseCommentIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].commentText").value("Great course!"));
+                .andExpect(jsonPath("$[0].commentText").value("Buen curso!"));
     }
 }

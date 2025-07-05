@@ -49,8 +49,8 @@ class CourseControllerTest {
         
         courseDTO = new CourseDTO();
         courseDTO.setId(1);
-        courseDTO.setTitle("Java Programming");
-        courseDTO.setDescription("Learn Java from scratch");
+        courseDTO.setTitle("Programacion en Java");
+        courseDTO.setDescription("Aprende Java desde cero");
         courseDTO.setInstructorId(1);
         courseDTO.setCategoryId(1);
         courseDTO.setManagerId(2);
@@ -71,7 +71,7 @@ class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.courseDTOList").exists())
-                .andExpect(jsonPath("$._embedded.courseDTOList[0].title").value("Java Programming"))
+                .andExpect(jsonPath("$._embedded.courseDTOList[0].title").value("Programacion en Java"))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
         verify(courseService).findAll();
@@ -86,8 +86,8 @@ class CourseControllerTest {
         mockMvc.perform(get("/api/courses/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Java Programming"))
-                .andExpect(jsonPath("$.description").value("Learn Java from scratch"))
+                .andExpect(jsonPath("$.title").value("Programacion en Java"))
+                .andExpect(jsonPath("$.description").value("Aprende Java desde cero"))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
         verify(courseService).findById(1);
@@ -103,8 +103,8 @@ class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(courseDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Java Programming"))
-                .andExpect(jsonPath("$.description").value("Learn Java from scratch"))
+                .andExpect(jsonPath("$.title").value("Programacion en Java"))
+                .andExpect(jsonPath("$.description").value("Aprende Java desde cero"))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
         verify(courseService).create(any(CourseDTO.class));
@@ -120,7 +120,7 @@ class CourseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(courseDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Java Programming"))
+                .andExpect(jsonPath("$.title").value("Programacion en Java"))
                 .andExpect(jsonPath("$._links.self.href").exists());
 
         verify(courseService).update(anyInt(), any(CourseDTO.class));

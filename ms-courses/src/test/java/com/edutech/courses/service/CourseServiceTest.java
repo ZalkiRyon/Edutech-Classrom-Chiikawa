@@ -60,8 +60,8 @@ class CourseServiceTest {
         // Crear entidad Course básica
         testCourse = new Course();
         testCourse.setId(1);
-        testCourse.setTitle("Java Programming");
-        testCourse.setDescription("Learn Java from scratch");
+        testCourse.setTitle("Programacion en Java");
+        testCourse.setDescription("Aprende Java desde 0");
         testCourse.setInstructorId(1);
         testCourse.setCategoryId(1);
         testCourse.setManagerId(2);
@@ -73,8 +73,8 @@ class CourseServiceTest {
         // Crear DTO Course básico
         testCourseDTO = new CourseDTO();
         testCourseDTO.setId(1);
-        testCourseDTO.setTitle("Java Programming");
-        testCourseDTO.setDescription("Learn Java from scratch");
+        testCourseDTO.setTitle("Programacion en Java");
+        testCourseDTO.setDescription("Aprende Java desde 0");
         testCourseDTO.setInstructorId(1);
         testCourseDTO.setCategoryId(1);
         testCourseDTO.setManagerId(2);
@@ -97,7 +97,7 @@ class CourseServiceTest {
         // Crear categoría
         testCategory = new CourseCategory();
         testCategory.setId(1);
-        testCategory.setName("Programming");
+        testCategory.setName("Programacion");
     }
 
     @Test
@@ -113,7 +113,7 @@ class CourseServiceTest {
 
         // Then
         assertEquals(1, result.size());
-        assertEquals("Java Programming", result.get(0).getTitle());
+        assertEquals("Programacion en Java", result.get(0).getTitle());
         verify(courseRepo).findAll();
         verify(courseMapper).toDTO(testCourse);
     }
@@ -129,7 +129,7 @@ class CourseServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals("Java Programming", result.getTitle());
+        assertEquals("Programacion en Java", result.getTitle());
         verify(courseRepo).findById(1);
         verify(courseMapper).toDTO(testCourse);
     }
@@ -160,7 +160,7 @@ class CourseServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals("Java Programming", result.getTitle());
+        assertEquals("Programacion en Java", result.getTitle());
         verify(categRepo).findById(1);
         verify(userClient).findById(2); // manager validation
         verify(userClient).findById(1); // instructor validation
@@ -193,7 +193,7 @@ class CourseServiceTest {
 
         // Then
         assertNotNull(result);
-        assertEquals("Java Programming", result.getTitle());
+        assertEquals("Programacion en Java", result.getTitle());
         verify(courseRepo).findById(1);
         verify(courseMapper).toEntity(testCourseDTO);
         verify(courseRepo).save(any(Course.class));

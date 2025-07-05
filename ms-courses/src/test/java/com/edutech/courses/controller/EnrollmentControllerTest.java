@@ -163,6 +163,5 @@ class EnrollmentControllerTest {
         verify(enrollmentService).findByCourseId(1);
     }
 
-    // Note: Methods findByStatus and updateProgress don't exist in EnrollmentService
-    // These tests are commented out until those methods are implemented
+    
 }
