@@ -1,4 +1,2 @@
 # Ignore documentation and debug files (keep locally, not in repo)
-*.md
-!README.md
 target/

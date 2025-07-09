@@ -198,7 +198,7 @@ GET    /api/student-marks                            # Listar calificaciones de 
 POST   /api/student-marks                           # Crear calificaciones para estudiantes
 GET    /api/student-marks/{id}                      # Obtener calificaciones de un estudiante
 PUT    /api/student-marks/{id}                      # Actualizar calificaciones de un estudiante
-DELETE /api/student-marks/{id}                    # Eliminar calificaciones de un estudiante
+DELETE /api/student-marks/{id}                     # Eliminar calificaciones de un estudiante
 
 ```
 
