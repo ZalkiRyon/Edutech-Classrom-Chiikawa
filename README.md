@@ -4,19 +4,17 @@
 
 **EduTech Classroom** es una plataforma educativa moderna basada en **arquitectura de microservicios**, desarrollada por Chiikawa SPA. El proyecto implementa un sistema educativo completo con separación de responsabilidades, comunicación entre servicios mediante **FeignClients**, validaciones cruzadas, **HATEOAS para navegabilidad hipermedia** y documentación interactiva con **Swagger/OpenAPI**.
 
-## 📋 Estado Actual del Proyecto (Diciembre 2024)
-
-### ✅ Completado y Funcional
+## 📋 Estado Actual del Proyecto
 
 - **✅ Arquitectura de microservicios** con 5 servicios principales + Eureka
-- **✅ FeignClients implementados** para comunicación inter-servicios (9 clientes totales)
+- **✅ FeignClients implementados** para comunicación inter-servicios
 - **✅ Validaciones cruzadas** en tiempo real entre microservicios
 - **✅ HATEOAS completo** con navegabilidad hipermedia (JSON HAL)
 - **✅ Swagger/OpenAPI 3.0** documentación interactiva en todos los servicios
 - **✅ Spring Boot 3.2.0** con Java 21 compatible
 - **✅ Compilación exitosa** del proyecto completo y pruebas
 - **✅ Base de datos MySQL** configurada y funcional
-- **✅ Scripts de automatización** para ejecución y testing
+- **✅ Scripts de automatización** para ejecución
 
 ### Servicios Implementados
 
@@ -36,7 +34,7 @@
 - ✅ **Arquitectura de Microservicios** independientes y escalables
 - ✅ **Spring Boot 3.2.0** con **Java 21** compatible
 - ✅ **MySQL** como base de datos (compartida para desarrollo)
-- ✅ **FeignClient** para comunicación entre servicios (9 clientes totales)
+- ✅ **FeignClient** para comunicación entre servicios
 - ✅ **Validaciones cruzadas** en tiempo real entre microservicios
 - ✅ **HATEOAS completo** para navegabilidad hipermedia (JSON HAL)
 - ✅ **Swagger/OpenAPI 3.0** para documentación interactiva
@@ -80,20 +78,6 @@ cd ms-support && mvn spring-boot:run
 cd eureka && mvn spring-boot:run
 ```
 
-### Verificar Servicios Activos
-
-```bash
-# Verificar todos los puertos activos
-netstat -an | findstr :900
-
-# Verificar conectividad
-curl http://localhost:9001/api/users
-curl http://localhost:9002/api/courses
-curl http://localhost:9003/api/enrollments
-curl http://localhost:9004/api/payments
-curl http://localhost:9005/api/support-tickets
-```
-
 ## 📚 Documentación API (Swagger)
 
 ### URLs de Swagger UI
@@ -110,132 +94,145 @@ curl http://localhost:9005/api/support-tickets
 ## 📁 Estructura del Proyecto
 
 ```
-second-wind/
-├── common/                 # Módulo común (DTOs, excepciones, utilidades)
-├── ms-users/              # Microservicio de usuarios y roles
+Edutech-Classrom-Chiikawa/
+├── common/                # Módulo común (DTOs, excepciones, utilidades)
+├── eureka/                    # Servidor Eureka
+├── ms-users/                # Microservicio de usuarios y roles
 ├── ms-courses/            # Microservicio de cursos y categorías  
-├── ms-grades/             # Microservicio de inscripciones y calificaciones
-├── ms-payments/           # Microservicio de pagos y cupones
-├── ms-support/            # Microservicio de soporte técnico
-├── eureka/                # Servidor Eureka
-├── Monolitico/           # Monolito original (migrado)
-├── run-all.bat           # Ejecutar todos los servicios
-├── run-*.bat             # Scripts individuales por servicio
-├── test-integration.bat  # Pruebas de integración
-├── create-db.sql         # Script de base de datos
-├── pom.xml               # POM padre con configuración compartida
-└── README.md             # Este archivo
+├── ms-grades/              # Microservicio de inscripciones y calificaciones
+├── ms-payments/         # Microservicio de pagos y cupones
+├── ms-support/             # Microservicio de soporte técnico
+├──compile-bat               # Compilar todos los servicios
+├──compile-bat               # Compilar todos los servicios
+├──Guia_de_Navegacion # Navegación interactiva del proyecto via página HTML
+├──install-bat                  # Instalar dependencias del proyecto
+├── run-all.bat                 # Ejecutar todos los servicios en consolas independientes.
+├── run-*.bat                   # Scripts individuales por servicio
+├── create-db.sql             # Script de base de datos
+├── pom.xml                    # POM padre con configuración compartida
+└── README.md              # Este archivo
 ```
-### Endpoints PrincipalesAdd commentMore actions
+### Endpoints Principales
 
 #### ms-users (Puerto 9001)
 ```
+User
 GET    /api/users              # Listar usuarios
 POST   /api/users              # Crear usuario
 GET    /api/users/{id}         # Obtener usuario
 PUT    /api/users/{id}         # Actualizar usuario
-DELETE /api/users/{id}         # Eliminar usuario
+DELETE /api/users/{id}       # Eliminar usuario
 
-GET    /api/roles              # Listar roles
+Role
+GET    /api/roles               # Listar roles
 POST   /api/roles              # Crear rol
+GET    /api/roles/{id}         # Obtener rol
+PUT    /api/roles/{id}         # Actualizar rol
+DELETE /api/roles/{id}       # Eliminar rol
 ```
-
 #### ms-courses (Puerto 9002)
 ```
-GET    /api/courses            # Listar cursos
-POST   /api/courses            # Crear curso (valida instructor)
-GET    /api/courses/{id}       # Obtener curso
-PUT    /api/courses/{id}       # Actualizar curso
+Course
+GET    /api/courses               # Listar cursos
+POST   /api/courses              # Crear curso
+GET    /api/courses/{id}         # Obtener curso
+PUT    /api/courses/{id}         # Actualizar curso
 DELETE /api/courses/{id}       # Eliminar curso
 
-GET    /api/course-categories  # Listar categorías
-POST   /api/course-categories  # Crear categoría
+CourseCategory
+GET    /api/course-categories           # Listar categorías de cursos
+POST   /api/course-categories          # Crear categoría de curso
+GET    /api/course-categories/{id}     # Obtener categoría de curso
+PUT    /api/course-categories/{id}     # Actualizar categoría de curso
+DELETE /api/course-categories/{id}   # Eliminar categoría de curso
+
+CourseComment
+GET    /api/course-comment               # Listar comentarios de cursos
+POST   /api/course-comment               # Crear comentario en curso
+GET    /api/course-comment/{id}          # Obtener comentario de curso
+PUT    /api/course-comment/{id}          # Actualizar comentario
+DELETE /api/course-comment/{id}          # Eliminar comentario
+
+CourseContent
+GET    /api/course-content               # Listar contenidos
+POST   /api/course-content               # Crear contenido
+GET    /api/course-content/{id}          # Obtener contenido
+PUT    /api/course-content/{id}          # Actualizar contenido
+DELETE /api/course-content/{id}          # Eliminar contenido
+
+Enrollment
+GET    /api/enrollments                                  # Listar inscripciones
+POST   /api/enrollments                                 # Crear inscripción
+GET    /api/enrollments/{id}                            # Obtener inscripción
+PUT    /api/enrollments/{id}                            # Actualizar inscripción
+DELETE /api/enrollments/{id}                          # Eliminar inscripción
+GET    /api/enrollments/student/{studentId}   # Inscripciones por estudiante
+GET    /api/enrollments/course/{courseId}      # Inscripciones por curso
 ```
 
 #### ms-grades (Puerto 9003)
 ```
-GET    /api/enrollments                    # Listar inscripciones
-POST   /api/enrollments                    # Crear inscripción (valida student+course)
-GET    /api/enrollments/{id}               # Obtener inscripción
-PUT    /api/enrollments/{id}               # Actualizar inscripción
-DELETE /api/enrollments/{id}               # Eliminar inscripción
-GET    /api/enrollments/student/{studentId} # Inscripciones por estudiante
-GET    /api/enrollments/course/{courseId}   # Inscripciones por curso
+CourseQuiz
+GET    /api/course-quiz                                  # Listar pruebas de cursos
+POST   /api/course-quiz                                 # Crear pruebas para cursos
+GET    /api/course-quiz/{id}                            # Obtener pruebas de un curso
+PUT    /api/course-quiz/{id}                            # Actualizar pruebas de un curso
+DELETE /api/course-quiz/{id}                          # Eliminar pruebas de un curso
+
+CourseQuizQuestion
+GET    /api/course-quiz-question                                  # Listar preguntas de pruebas
+POST   /api/course-quiz-question                                 # Crear preguntas para pruebas
+GET    /api/course-quiz-question/{id}                            # Obtener preguntas de una prueba
+PUT    /api/course-quiz-question/{id}                            # Actualizar preguntas de una prueba
+DELETE /api/course-quiz-question/{id}                          # Eliminar preguntas de una prueba
+
+QuizResponse
+GET    /api/quiz-response                                # Listar respuestas de pruebas
+POST   /api/quiz-response                               # Crear respuestas para pruebas
+GET    /api/quiz-response/{id}                          # Obtener respuestas de una prueba
+PUT    /api/quiz-response/{id}                          # Actualizar respuestas de una prueba
+DELETE /api/quiz-response/{id}                        # Eliminar respuestas de una prueba
+
+StudentMark
+GET    /api/student-marks                            # Listar calificaciones de estudiantes
+POST   /api/student-marks                           # Crear calificaciones para estudiantes
+GET    /api/student-marks/{id}                      # Obtener calificaciones de un estudiante
+PUT    /api/student-marks/{id}                      # Actualizar calificaciones de un estudiante
+DELETE /api/student-marks/{id}                    # Eliminar calificaciones de un estudiante
+
 ```
 
 #### ms-payments (Puerto 9004)
 ```
-GET    /api/payments                # Listar pagos
-POST   /api/payments                # Crear pago (valida usuario)
-GET    /api/payments/{id}           # Obtener pago
-PUT    /api/payments/{id}           # Actualizar pago
-DELETE /api/payments/{id}           # Eliminar pago
-GET    /api/payments/user/{userId}  # Pagos por usuario
+Payment
+GET    /api/payments                           # Listar pagos
+POST   /api/payments                          # Crear pago (valida usuario)
+GET    /api/payments/{id}                     # Obtener pago
+PUT    /api/payments/{id}                     # Actualizar pago
+DELETE /api/payments/{id}                   # Eliminar pago
+GET    /api/payments/user/{userId}       # Pagos por usuario
 
-GET    /api/discount-coupons        # Listar cupones
-POST   /api/discount-coupons        # Crear cupón
-GET    /api/discount-coupons/{id}   # Obtener cupón
+DiscountCoupon
+GET    /api/discount-coupons                # Listar cupones
+POST   /api/discount-coupons               # Crear cupón
+GET    /api/discount-coupons/{id}          # Obtener cupón
+PUT    /api/discount-coupons/{id}          # Actualizar cupón
+DELETE /api/discount-coupons/{id}        # Eliminar cupón
 ```
 
 #### ms-support (Puerto 9005)
 ```
-GET    /api/support-tickets                      # Listar tickets
-POST   /api/support-tickets                      # Crear ticket (valida usuario)
-GET    /api/support-tickets/{id}                 # Obtener ticket
-PUT    /api/support-tickets/{id}                 # Actualizar ticket
-DELETE /api/support-tickets/{id}                 # Eliminar ticket
-GET    /api/support-tickets/user/{userId}        # Tickets por usuario
-GET    /api/support-tickets/support-user/{userId} # Tickets por agente
-GET    /api/support-tickets/status/{status}      # Tickets por estado
+SupportTicket
+GET    /api/support-tickets                                    # Listar tickets
+POST   /api/support-tickets                                   # Crear ticket 
+GET    /api/support-tickets/{id}                              # Obtener ticket
+PUT    /api/support-tickets/{id}                              # Actualizar ticket
+DELETE /api/support-tickets/{id}                            # Eliminar ticket
+GET    /api/support-tickets/user/{userId}                # Tickets por usuario
+GET    /api/support-tickets/support-user/{userId}  # Tickets por agente
+GET    /api/support-tickets/status/{status}              # Tickets por estado
 ```
 
-## 🔗 Validaciones Cruzadas
-
-### Casos de Prueba de Validación
-
-#### ms-grades ↔ ms-users + ms-courses
-```bash
-# ❌ Student ID inválido
-curl -X POST http://localhost:9003/api/enrollments \
-  -H "Content-Type: application/json" \
-  -d '{"studentId": 999, "courseId": 1, "enrollmentDate": "2024-01-15T10:00:00", "status": "ACTIVE"}'
-
-# ❌ Course ID inválido  
-curl -X POST http://localhost:9003/api/enrollments \
-  -H "Content-Type: application/json" \
-  -d '{"studentId": 1, "courseId": 999, "enrollmentDate": "2024-01-15T10:00:00", "status": "ACTIVE"}'
-
-# ✅ Ambos IDs válidos
-curl -X POST http://localhost:9003/api/enrollments \
-  -H "Content-Type: application/json" \
-  -d '{"studentId": 1, "courseId": 1, "enrollmentDate": "2024-01-15T10:00:00", "status": "ACTIVE"}'
-```
-
-#### ms-payments ↔ ms-users
-```bash
-# ❌ User ID inválido
-curl -X POST http://localhost:9004/api/payments \
-  -H "Content-Type: application/json" \
-  -d '{"userId": 999, "amount": 100.50, "paymentDate": "2024-01-15T10:00:00Z", "paymentMethod": "Credit Card", "paymentInstitution": "TestBank", "transactionId": "TEST001", "status": "Pending"}'
-
-# ✅ User ID válido
-curl -X POST http://localhost:9004/api/payments \
-  -H "Content-Type: application/json" \
-  -d '{"userId": 15, "amount": 100.50, "paymentDate": "2024-01-15T10:00:00Z", "paymentMethod": "Credit Card", "paymentInstitution": "TestBank", "transactionId": "TEST002", "status": "Completed"}'
-```
-
-#### ms-support ↔ ms-users
-```bash
-# ❌ User ID inválido
-curl -X POST http://localhost:9005/api/support-tickets \
-  -H "Content-Type: application/json" \
-  -d '{"userId": 888, "supportUserId": 16, "subject": "Test Ticket", "description": "Test description", "status": "Open", "createdAt": "2024-01-15T10:00:00Z"}'
-
-# ✅ User ID válido
-curl -X POST http://localhost:9005/api/support-tickets \
-  -H "Content-Type: application/json" \
-  -d '{"userId": 20, "supportUserId": 16, "subject": "Test Ticket", "description": "Test description", "status": "Open", "createdAt": "2024-01-15T10:00:00Z"}'
-```
 
 ## 🧪 Testing y Calidad de Código
 
@@ -248,22 +245,13 @@ curl -X POST http://localhost:9005/api/support-tickets \
 
 ### Tipos de Pruebas Implementadas
 
-#### 1. Pruebas Unitarias (Español)
+#### Pruebas Unitarias
 - **Servicios**: Lógica de negocio con mocks
 - **Controladores**: Endpoints REST con MockMvc
 - **Mappers**: Conversiones Entity ↔ DTO
-- **Nomenclatura**: Métodos con nombres descriptivos en español
+- **Nomenclatura**: Métodos con nombres descriptivos
 - **Comentarios**: Given/Dado, When/Cuando, Then/Entonces
 
-#### 2. Pruebas de Integración FeignClient (NUEVO) ✨
-- **ms-grades**: `FeignClientIntegrationTest` - UserClient, CourseClient (7 pruebas)
-- **ms-payments**: `PaymentsFeignClientIntegrationTest` - UserClient, CourseClient, EnrollmentClient (7 pruebas)  
-- **ms-support**: `SupportFeignClientIntegrationTest` - UserClient, CourseClient, GradeClient (7 pruebas)
-- **ms-courses**: `CoursesFeignClientIntegrationTest` - UserClient (7 pruebas)
-- **Total**: 28 pruebas de integración con servicios reales
-- **Requisito**: Microservicios ejecutándose en puertos 9001-9005
-- **Validaciones**: Comunicación real, performance < 5s, manejo de errores
-- **Textos**: Completamente en español (Given/Dado, When/Cuando, Then/Entonces)
 
 ### Ejecutar Pruebas
 
@@ -280,12 +268,6 @@ mvn test
 # Levantar servicios
 run-all.bat
 
-# Ejecutar pruebas de integración FeignClient (requiere servicios activos)
-test-feign-integration.bat
-
-# Verificar que servicios estén activos antes de integración
-netstat -an | findstr :900
-
 # Pruebas de un módulo específico
 cd ms-users && mvn test
 cd ms-courses && mvn test
@@ -293,11 +275,12 @@ cd ms-grades && mvn test
 cd ms-payments && mvn test
 cd ms-support && mvn test
 
-# Scripts de pruebas automatizadas
-test-runner.bat
-test-integration.bat
-```
+# Ejecutar solo pruebas unitarias de servicios
+mvn test -Dtest="*ServiceTest"
 
+# Ejecutar solo pruebas de integración
+mvn test -Dtest="*IntegrationTest"
+```
 ### Casos de Prueba Importantes
 
 - **Mappers manuales**: Conversión bidireccional Entity ↔ DTO
@@ -307,6 +290,91 @@ test-integration.bat
 - **Clientes Feign**: Comunicación entre microservicios (integración real)
 - **Validaciones cruzadas**: Integridad referencial distribuida
 - **Performance**: Tiempos de respuesta aceptables
+## ⚙️ Configuración de Base de Datos
+
+> **Nota:** El formato de fecha esperado en los JSON es `YYYY-MM-DD` (por ejemplo, `"2025-07-07"`).
+
+### Configuración Real del Proyecto
+
+El proyecto utiliza **MySQL** como base de datos principal con la siguiente configuración:
+
+#### Base de Datos
+- **Nombre de BD:** `edutech`
+- **Puerto:** `3306` (MySQL estándar)
+- **Charset:** `utf8mb4` con collation `utf8mb4_0900_ai_ci`
+
+#### Configuración en `application.yml` (ejemplo real del proyecto):
+
+```yaml
+spring:
+  application:
+    name: ms-courses  # Varía según el microservicio
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/edutech
+    username: root
+    password: ""  # Sin contraseña en desarrollo local
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  cloud:
+    discovery:
+      enabled: true
+server:
+  port: 9002  # Puerto específico por microservicio
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    com.edutech: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+```
+
+#### Puertos por Microservicio
+- **ms-users**: 9001
+- **ms-courses**: 9002  
+- **ms-grades**: 9003
+- **ms-payments**: 9004
+- **ms-support**: 9005
+- **eureka**: 8761
+
+#### Configuración de Eureka (Discovery Service)
+```yaml
+# eureka/src/main/resources/application.yml
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  server:
+    enable-self-preservation: false
+```
+
+#### Script de Base de Datos
+El proyecto incluye `create-db.sql` que crea:
+- Base de datos `edutech` con charset UTF-8
+- Tablas principales: `role`, `user`, `course`, `course_category`, etc.
+- Datos de prueba iniciales
+
+**Nota:** Todos los microservicios comparten la misma base de datos `edutech` en el entorno de desarrollo para simplificar la configuración local.
+
 
 ## 📖 Documentación API con Swagger/OpenAPI
 
@@ -314,11 +382,13 @@ test-integration.bat
 Todos los microservicios implementan documentación automática con **SpringDoc OpenAPI**:
 
 #### URLs de Swagger UI
+
 - **ms-users**: http://localhost:9001/swagger-ui/index.html
 - **ms-courses**: http://localhost:9002/swagger-ui/index.html  
 - **ms-grades**: http://localhost:9003/swagger-ui/index.html
 - **ms-payments**: http://localhost:9004/swagger-ui/index.html
 - **ms-support**: http://localhost:9005/swagger-ui/index.html
+- **eureka**: http://localhost:8761
 
 #### Características de la Documentación
 - ✅ **Documentación en Español** - Todas las descripciones en español
@@ -391,7 +461,7 @@ curl http://localhost:9002/api/courses/1
 curl http://localhost:9002/api/courses
 
 # Seguir enlace "update" para actualizar
-curl -X PUT http://localhost:9002/api/courses/1 -d '{...}'
+curl -X PUT http://localhost:9002/api/courses/1 -H "Content-Type: application/json" -d '{...}'
 ```
 
-**� El proyecto está operacional con arquitectura de microservicios completa y listo para desarrollo continuo.**
+**El proyecto está operacional con arquitectura de microservicios completa y listo para desarrollo continuo.**
