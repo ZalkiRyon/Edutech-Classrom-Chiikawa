@@ -100,11 +100,11 @@ Edutech-Classrom-Chiikawa/
 ├── ms-users/                # Microservicio de usuarios y roles
 ├── ms-courses/            # Microservicio de cursos y categorías  
 ├── ms-grades/              # Microservicio de inscripciones y calificaciones
-├── ms-payments/         # Microservicio de pagos y cupones
+├── ms-payments/            # Microservicio de pagos y cupones
 ├── ms-support/             # Microservicio de soporte técnico
 ├──compile-bat               # Compilar todos los servicios
 ├──compile-bat               # Compilar todos los servicios
-├──Guia_de_Navegacion # Navegación interactiva del proyecto via página HTML
+├──Guia_de_Navegacion        # Navegación interactiva del proyecto via página HTML
 ├──install-bat                  # Instalar dependencias del proyecto
 ├── run-all.bat                 # Ejecutar todos los servicios en consolas independientes.
 ├── run-*.bat                   # Scripts individuales por servicio
@@ -121,14 +121,14 @@ GET    /api/users              # Listar usuarios
 POST   /api/users              # Crear usuario
 GET    /api/users/{id}         # Obtener usuario
 PUT    /api/users/{id}         # Actualizar usuario
-DELETE /api/users/{id}       # Eliminar usuario
+DELETE /api/users/{id}         # Eliminar usuario
 
 Role
 GET    /api/roles               # Listar roles
 POST   /api/roles              # Crear rol
 GET    /api/roles/{id}         # Obtener rol
 PUT    /api/roles/{id}         # Actualizar rol
-DELETE /api/roles/{id}       # Eliminar rol
+DELETE /api/roles/{id}         # Eliminar rol
 ```
 #### ms-courses (Puerto 9002)
 ```
@@ -137,14 +137,14 @@ GET    /api/courses               # Listar cursos
 POST   /api/courses              # Crear curso
 GET    /api/courses/{id}         # Obtener curso
 PUT    /api/courses/{id}         # Actualizar curso
-DELETE /api/courses/{id}       # Eliminar curso
+DELETE /api/courses/{id}         # Eliminar curso
 
 CourseCategory
 GET    /api/course-categories           # Listar categorías de cursos
 POST   /api/course-categories          # Crear categoría de curso
 GET    /api/course-categories/{id}     # Obtener categoría de curso
 PUT    /api/course-categories/{id}     # Actualizar categoría de curso
-DELETE /api/course-categories/{id}   # Eliminar categoría de curso
+DELETE /api/course-categories/{id}     # Eliminar categoría de curso
 
 CourseComment
 GET    /api/course-comment               # Listar comentarios de cursos
@@ -161,13 +161,13 @@ PUT    /api/course-content/{id}          # Actualizar contenido
 DELETE /api/course-content/{id}          # Eliminar contenido
 
 Enrollment
-GET    /api/enrollments                                  # Listar inscripciones
-POST   /api/enrollments                                 # Crear inscripción
-GET    /api/enrollments/{id}                            # Obtener inscripción
-PUT    /api/enrollments/{id}                            # Actualizar inscripción
-DELETE /api/enrollments/{id}                          # Eliminar inscripción
-GET    /api/enrollments/student/{studentId}   # Inscripciones por estudiante
-GET    /api/enrollments/course/{courseId}      # Inscripciones por curso
+GET    /api/enrollments                            # Listar inscripciones
+POST   /api/enrollments                            # Crear inscripción
+GET    /api/enrollments/{id}                       # Obtener inscripción
+PUT    /api/enrollments/{id}                       # Actualizar inscripción
+DELETE /api/enrollments/{id}                       # Eliminar inscripción
+GET    /api/enrollments/student/{studentId}        # Inscripciones por estudiante
+GET    /api/enrollments/course/{courseId}          # Inscripciones por curso
 ```
 
 #### ms-grades (Puerto 9003)
